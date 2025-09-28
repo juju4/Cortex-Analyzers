@@ -5,7 +5,10 @@
   "url": "https://github.com/pjuhas/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Check IP address or domain using ip-api.com",
-  "dataTypeList": ["ip", "domain"],
+  "dataTypeList": [
+    "ip",
+    "domain"
+  ],
   "baseConfig": "IP-API",
   "command": "IP-API/IP-API.py",
   "configurationItems": [

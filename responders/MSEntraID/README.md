@@ -49,9 +49,9 @@ The first two values can be found at any time in the application's ***Overview**
    - **Option A (Broader Permissions):**
      - `Directory.ReadWrite.All`
      - `User.ReadWrite.All`
-     
+
      *(These permissions cover all responder functionalities.)*
-     
+
    - **Option B (Least Privileged – Recommended):**
      - For the **Revoke SignIn Sessions** responder: `User.RevokeSessions.All`
      - For the **Enable User** and **Disable User** responders:

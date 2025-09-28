@@ -27,7 +27,6 @@ class OutlookSubmodule(SubmoduleBaseclass):
         return False
 
     def analyze_file(self, path):
-
         m = Message(path)
 
         def xstr(s):

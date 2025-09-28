@@ -2,7 +2,11 @@
 from cortexutils.analyzer import Analyzer
 from censys.search import CensysHosts, CensysCerts
 
-from censys.common.exceptions import CensysNotFoundException, CensysRateLimitExceededException, CensysUnauthorizedException
+from censys.common.exceptions import (
+    CensysNotFoundException,
+    CensysRateLimitExceededException,
+    CensysUnauthorizedException,
+)
 
 import iocextract
 
@@ -30,7 +34,6 @@ class CensysAnalyzer(Analyzer):
             return result
         return {}
 
-
     def search_certificate(self, hash):
         c = CensysCerts(api_id=self.__uid, api_secret=self.__api_key)
 
@@ -41,8 +44,6 @@ class CensysAnalyzer(Analyzer):
             self.error(f"Error fetching certificate: {str(e)}")
             return {}
 
-
-
     def search_website(self, dom):
         c = CensysHosts(api_id=self.__uid, api_secret=self.__api_key)
         query = c.search("dns.names: " + dom, per_page=self.__max_records, pages=1)
@@ -50,27 +51,24 @@ class CensysAnalyzer(Analyzer):
             return result
         return {}
 
-
     def search_freetext(self, search):
         c = CensysHosts(api_id=self.__uid, api_secret=self.__api_key)
-        results = c.search(search, fields=self.__fields, max_records=self.__max_records, flatten=self.__flatten)
+        results = c.search(
+            search,
+            fields=self.__fields,
+            max_records=self.__max_records,
+            flatten=self.__flatten,
+        )
         return [result for result in results]
-
 
     def run(self):
         try:
-            if self.data_type == 'ip':
-                self.report({
-                    'ip': self.search_hosts(self.get_data())
-                })
-            elif self.data_type == 'hash':
-                self.report({
-                    'cert': self.search_certificate(self.get_data())
-                })
-            elif self.data_type == 'domain' or self.data_type == 'fqdn':
-                self.report({
-                    'website': self.search_website(self.get_data())
-                })
+            if self.data_type == "ip":
+                self.report({"ip": self.search_hosts(self.get_data())})
+            elif self.data_type == "hash":
+                self.report({"cert": self.search_certificate(self.get_data())})
+            elif self.data_type == "domain" or self.data_type == "fqdn":
+                self.report({"website": self.search_website(self.get_data())})
             # elif self.data_type == 'other':
             #     self.report({
             #         'matches': self.search_freetext(self.get_data())
@@ -98,8 +96,8 @@ class CensysAnalyzer(Analyzer):
         if ipv4s:
             ipv4s = list(dict.fromkeys(ipv4s))
             for i in ipv4s:
-                artifacts.append(self.build_artifact('ip', str(i)))
-        
+                artifacts.append(self.build_artifact("ip", str(i)))
+
         # if ipv6s:
         #     ipv6s = list(dict.fromkeys(ipv6s))
         #     for i in ipv6s:
@@ -108,34 +106,42 @@ class CensysAnalyzer(Analyzer):
         if hashes:
             hashes = list(dict.fromkeys(hashes))
             for j in hashes:
-                artifacts.append(self.build_artifact('hash', str(j)))
+                artifacts.append(self.build_artifact("hash", str(j)))
 
         if domains:
             domains = list(dict.fromkeys(domains))
             for k in domains:
-                artifacts.append(self.build_artifact('url', str(k)))
+                artifacts.append(self.build_artifact("url", str(k)))
         return artifacts
-    
+
     def summary(self, raw):
         taxonomies = []
 
-        if 'ip' in raw:
-            for ip_info in raw['ip']:
-                ip_address = ip_info.get('ip', 'Unknown IP')
-                asn = ip_info.get('autonomous_system', {}).get('asn', 'Unknown ASN')
-                country = ip_info.get('location', {}).get('country', 'Unknown Country')
-                city = ip_info.get('location', {}).get('city', 'Unknown City')
-                os_product = ip_info.get('operating_system', {}).get('product', 'Unknown OS')
-                service_count = len(ip_info.get('services', []))
-                #taxonomies.append(self.build_taxonomy('info', 'Censys', 'IP', ip_address))
-                #taxonomies.append(self.build_taxonomy('info', 'Censys', 'ASN', asn))
-                #taxonomies.append(self.build_taxonomy('info', 'Censys', 'Country', country))
-                #taxonomies.append(self.build_taxonomy('info', 'Censys', 'City', city))
-                #taxonomies.append(self.build_taxonomy('info', 'Censys', 'OperatingSystem', os_product))
-                taxonomies.append(self.build_taxonomy('info', 'Censys', 'OpenServices', service_count))
+        if "ip" in raw:
+            for ip_info in raw["ip"]:
+                ip_address = ip_info.get("ip", "Unknown IP")
+                asn = ip_info.get("autonomous_system", {}).get("asn", "Unknown ASN")
+                country = ip_info.get("location", {}).get("country", "Unknown Country")
+                city = ip_info.get("location", {}).get("city", "Unknown City")
+                os_product = ip_info.get("operating_system", {}).get(
+                    "product", "Unknown OS"
+                )
+                service_count = len(ip_info.get("services", []))
+                # taxonomies.append(self.build_taxonomy('info', 'Censys', 'IP', ip_address))
+                # taxonomies.append(self.build_taxonomy('info', 'Censys', 'ASN', asn))
+                # taxonomies.append(self.build_taxonomy('info', 'Censys', 'Country', country))
+                # taxonomies.append(self.build_taxonomy('info', 'Censys', 'City', city))
+                # taxonomies.append(self.build_taxonomy('info', 'Censys', 'OperatingSystem', os_product))
+                taxonomies.append(
+                    self.build_taxonomy("info", "Censys", "OpenServices", service_count)
+                )
 
-        elif 'website' in raw:
-            taxonomies.append(self.build_taxonomy('info', 'Censys', 'recordsFound', len(raw["website"])))
+        elif "website" in raw:
+            taxonomies.append(
+                self.build_taxonomy(
+                    "info", "Censys", "recordsFound", len(raw["website"])
+                )
+            )
             # for site in raw['website']:
             #     ip = site.get('ip', 'Unknown IP')
             #     asn = site.get('autonomous_system', {}).get('asn', 'Unknown ASN')
@@ -146,14 +152,16 @@ class CensysAnalyzer(Analyzer):
             #     taxonomies.append(self.build_taxonomy('info', 'Censys', 'Country', country))
             #     taxonomies.append(self.build_taxonomy('info', 'Censys', 'Services', service_count))
 
-        elif 'cert' in raw:
-            raw = raw['cert']
+        elif "cert" in raw:
+            raw = raw["cert"]
             validator_keys = ["nss", "microsoft", "apple", "chrome"]
             validator_count = 0
             trusted_count = 0
             for key in validator_keys:
                 validator = raw.get("validation", {}).get(key, {})
-                if validator.get("is_valid", False) and validator.get("has_trusted_path", False):
+                if validator.get("is_valid", False) and validator.get(
+                    "has_trusted_path", False
+                ):
                     trusted_count += 1
                 validator_count += 1
 
@@ -167,16 +175,20 @@ class CensysAnalyzer(Analyzer):
                     )
                 )
             else:
-                taxonomies.append(self.build_taxonomy('info', 'Censys', 'TrustedCount', f'{trusted_count}/{validator_count}'))
+                taxonomies.append(
+                    self.build_taxonomy(
+                        "info",
+                        "Censys",
+                        "TrustedCount",
+                        f"{trusted_count}/{validator_count}",
+                    )
+                )
 
         # elif 'matches' in raw:
         #     result_count = len(raw.get('matches', []))
         #     taxonomies.append(self.build_taxonomy('info', 'Censys ipv4 search', 'results', result_count))
 
-        return {
-            'taxonomies': taxonomies
-        }
-
+        return {"taxonomies": taxonomies}
 
 
 if __name__ == "__main__":

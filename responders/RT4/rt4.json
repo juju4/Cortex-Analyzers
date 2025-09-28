@@ -5,7 +5,11 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/tree/master/responders/RT4",
   "license": "MIT",
   "description": "Cortex Responder to create a ticket in RT4 from TheHive observables or alerts",
-  "dataTypeList": ["thehive:case_artifact", "thehive:alert", "thehive:case"],
+  "dataTypeList": [
+    "thehive:case_artifact",
+    "thehive:alert",
+    "thehive:case"
+  ],
   "command": "RT4/rt4.py",
   "baseConfig": "RT4",
   "configurationItems": [

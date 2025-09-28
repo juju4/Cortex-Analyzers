@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Creates a Slack channel for a TheHive case, invites participants, and optionally posts a summary.",
-  "dataTypeList": ["thehive:case"],
+  "dataTypeList": [
+    "thehive:case"
+  ],
   "command": "Slack/slack.py",
   "baseConfig": "Slack",
   "config": {

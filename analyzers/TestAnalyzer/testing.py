@@ -35,44 +35,38 @@ class TestAnalyzer(Analyzer):
                     # "_updatedBy": self.get_param("_updatedBy", None), ## Not supported / Not in input
                     # "_createdAt": self.get_param("_createdAt", None), ## Not supported / Not in input
                     # "_updatedAt": self.get_param("_updatedAt", None), ## Not supported / Not in input
-
                     # Core observable
                     "dataType": self.get_param("dataType", None),
                     "data": self.get_param("data", None),
-
                     # Dates
                     # "startDate": self.get_param("startDate", None),   ## Not supported / Not in input
-
                     # TLP / PAP
                     "tlp": self.get_param("tlp", None),
                     # "tlpLabel": self.get_param("tlpLabel", None),    ## Not supported / Not in input
                     "pap": self.get_param("pap", None),
                     # "papLabel": self.get_param("papLabel", None),    ## Not supported / Not in input
-
                     # Tags / IOC / Sighted
                     # "tags": self.get_param("tags", None),            ## Not supported / Not in input
                     # "ioc": self.get_param("ioc", None),              ## Not supported / Not in input
                     # "sighted": self.get_param("sighted", None),      ## Not supported / Not in input
                     # "sightedAt": self.get_param("sightedAt", None),  ## Not supported / Not in input
                     # "ignoreSimilarity": self.get_param("ignoreSimilarity", None), ## Not supported / Not in input
-
                     # Reports
                     # "reports": self.get_param("reports", None),      ## Not supported / Not in input
-
                     # Message
-                    "message": self.get_param("message", None), # Represents case ID!
-
+                    "message": self.get_param("message", None),  # Represents case ID!
                     # Extra data
                     # "extraData": self.get_param("extraData", None),  ## Not supported / Not in input
-
                     # File / attachment (if applicable)
-                    "file": self.get_param("file", None),            ## Not in input (null unless dataType=="file")
-                    "attachment": self.get_param("attachment", None),## Not supported / Not in input
-
+                    "file": self.get_param(
+                        "file", None
+                    ),  ## Not in input (null unless dataType=="file")
+                    "attachment": self.get_param(
+                        "attachment", None
+                    ),  ## Not supported / Not in input
                     # Job parameters & analyzer config blocks
                     "parameters": self.get_param("parameters", {}),
                     "config": self.get_param("config", {}),
-
                     # Proxy (if passed)
                     "proxy": self.get_param("proxy", {}),
                 }

@@ -24,12 +24,12 @@
                         <dt>{{ attr | uppercase }}</dt>
                         <dd class="wrap">{{ value }}</dd>
                     </div>
-                </div> 
+                </div>
           </dl>
       </div>
     </div>
 </div>
-  
+
 <!-- No results found -->
 <div class="panel panel-info" ng-if="success && content.results.length === 0">
       <div class="panel-heading">
@@ -39,7 +39,7 @@
           <p>No LDAP entries matched your query.</p>
       </div>
 </div>
-  
+
 <!-- Filtered results -->
 <div class="panel panel-warning" ng-if="success && content.filtered">
       <div class="panel-heading">
@@ -58,7 +58,7 @@
           </dl>
       </div>
 </div>
-  
+
 <!-- General error -->
 <div class="panel panel-danger" ng-if="!success">
       <div class="panel-heading">
@@ -67,4 +67,4 @@
       <div class="panel-body">
           <p>{{content.errorMessage}}</p>
       </div>
-</div>  
+</div>

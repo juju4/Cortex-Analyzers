@@ -4,7 +4,10 @@
   "url": "https://www.splunk.com",
   "author": "Unit777, LetMeR00t",
   "license": "AGPL-V3",
-  "dataTypeList": ["file", "filename"],
+  "dataTypeList": [
+    "file",
+    "filename"
+  ],
   "description": "Execute a savedsearch on a Splunk instance with a file/filename as argument",
   "baseConfig": "Splunk",
   "config": {

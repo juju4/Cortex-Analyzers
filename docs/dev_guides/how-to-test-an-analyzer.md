@@ -2,7 +2,7 @@
 
 ## Pre-requisites
 
-Create 2 folders named `input` and `output` in the folder of the neuron to test, and the file `input.json`: 
+Create 2 folders named `input` and `output` in the folder of the neuron to test, and the file `input.json`:
 
 ```
 ├── input
@@ -36,7 +36,7 @@ Create 2 folders named `input` and `output` in the folder of the neuron to test,
         "check_pap": true,
         "proxy_https": "",
         "cacerts": "",
-        "auto_extract_artifacts": false,        
+        "auto_extract_artifacts": false,
         "jobCache": 10
     },
     "pap": 2,
@@ -59,7 +59,7 @@ docker run --rm -v ${PWD}:/job cortexneurons/dshield_lookup:devel
 ```
 
 
-Running the program successfully should create at least a new file called `output.json` in the output directory: 
+Running the program successfully should create at least a new file called `output.json` in the output directory:
 
 - `output/output.json`
 

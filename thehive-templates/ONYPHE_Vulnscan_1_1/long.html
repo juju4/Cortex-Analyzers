@@ -18,23 +18,23 @@
     </div>
     <div ng-if="r.tag">
         <span ng-repeat="ta in r.tag">
-            <span style="font-weight: bold; background-color: orange; color:#111;" 
-                  class="badge text-bg-warning" 
+            <span style="font-weight: bold; background-color: orange; color:#111;"
+                  class="badge text-bg-warning"
                   ng-if="ta.indexOf('maybevulnerable') === 0">
                 &nbsp;{{ ta }}&nbsp;
             </span>
-            <span style="font-weight: bold; background-color: red; color:#fff;" 
-                  class="badge text-bg-danger" 
+            <span style="font-weight: bold; background-color: red; color:#fff;"
+                  class="badge text-bg-danger"
                   ng-if="ta.indexOf('vulnerable') === 0">
                 &nbsp;{{ ta }}&nbsp;
             </span>
-            <span style="font-weight: bold; background-color: red; color:#fff;" 
-                  class="badge text-bg-danger" 
+            <span style="font-weight: bold; background-color: red; color:#fff;"
+                  class="badge text-bg-danger"
                   ng-if="ta.indexOf('compromised') !== -1">
                 &nbsp;{{ ta }}&nbsp;
             </span>
-            <span style="font-weight: bold;" 
-                  class="badge text-bg-secondary" 
+            <span style="font-weight: bold;"
+                  class="badge text-bg-secondary"
                   ng-if="ta.indexOf('maybevulnerable') !== 0 && ta.indexOf('vulnerable') !== 0 && ta.indexOf('compromised') === -1">
                 &nbsp;{{ ta }}&nbsp;
             </span>

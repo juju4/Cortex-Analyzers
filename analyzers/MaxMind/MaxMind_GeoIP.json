@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use MaxMind to geolocate an IP address.",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "baseConfig": "MaxMind",
   "command": "MaxMind/geo.py"
 }

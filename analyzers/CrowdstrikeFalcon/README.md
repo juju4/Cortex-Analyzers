@@ -91,10 +91,10 @@ Provides a detailed list of alerts with contextual information.
 - **Permissions Required**: `Sandbox (Falcon Intelligence): Read, Write`
 
 #### **Available Configuration**
-- List of analyzers:  
+- List of analyzers:
   ![Analyzers List - Falcon Sandbox](./assets/analyzers-list-sandbox.png)
 
-- Configuration interface:  
+- Configuration interface:
   ![Configuration - Falcon Sandbox Analyzer](./assets/cortex-conf-sandbox.png)
 
 #### **Short Report**

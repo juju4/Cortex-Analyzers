@@ -77,13 +77,13 @@ You need a valid Axur API key to use the analyzer. Available exclusively to our 
                 "hits": 1,
                 "context": [
                     {
-                       "content": "texto", 
+                       "content": "texto",
                        "detection": 1687187006704,
                        "platform": "AXUR"
                     }
                 ]
             },
-            { 
+            {
                 "source": "MALICIOUS_URL",
                 "score": 2,
                 "hits": 1,

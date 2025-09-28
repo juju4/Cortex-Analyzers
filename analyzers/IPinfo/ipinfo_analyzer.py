@@ -9,10 +9,12 @@ class IPinfoAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.service = self.get_param(
-            "config.service", None, "IPinfo service is missing")
+            "config.service", None, "IPinfo service is missing"
+        )
 
         self.api_key = self.get_param(
-            "config.api_key", None, "IPinfo API key is missing")
+            "config.api_key", None, "IPinfo API key is missing"
+        )
 
     def summary(self, raw):
         taxonomies = []
@@ -29,50 +31,47 @@ class IPinfoAnalyzer(Analyzer):
             asn = raw.get("asn")
             if asn and asn.get("asn"):
                 taxonomies.append(
-                    self.build_taxonomy(
-                        level, namespace, "ASN", asn.get("asn"))
+                    self.build_taxonomy(level, namespace, "ASN", asn.get("asn"))
                 )
             if asn and asn.get("type"):
                 taxonomies.append(
-                    self.build_taxonomy(
-                        level, namespace, "ASNType", asn.get("type"))
+                    self.build_taxonomy(level, namespace, "ASNType", asn.get("type"))
                 )
             company = raw.get("company")
             if company and company.get("name"):
                 taxonomies.append(
                     self.build_taxonomy(
-                        level, namespace, "Company", company.get("name"))
+                        level, namespace, "Company", company.get("name")
+                    )
                 )
             privacy = raw.get("privacy")
             if privacy and privacy.get("vpn"):
                 taxonomies.append(
-                    self.build_taxonomy(
-                        level, namespace, "VPN", privacy.get("vpn"))
+                    self.build_taxonomy(level, namespace, "VPN", privacy.get("vpn"))
                 )
             if privacy and privacy.get("tor"):
                 taxonomies.append(
-                    self.build_taxonomy(
-                        level, namespace, "TOR", privacy.get("tor"))
+                    self.build_taxonomy(level, namespace, "TOR", privacy.get("tor"))
                 )
             if privacy and privacy.get("proxy"):
                 taxonomies.append(
-                    self.build_taxonomy(
-                        level, namespace, "Proxy", privacy.get("proxy"))
+                    self.build_taxonomy(level, namespace, "Proxy", privacy.get("proxy"))
                 )
             if privacy and privacy.get("relay"):
                 taxonomies.append(
-                    self.build_taxonomy(
-                        level, namespace, "Relay", privacy.get("relay"))
+                    self.build_taxonomy(level, namespace, "Relay", privacy.get("relay"))
                 )
             if privacy and privacy.get("hosting"):
                 taxonomies.append(
                     self.build_taxonomy(
-                        level, namespace, "Hosting", privacy.get("hosting"))
+                        level, namespace, "Hosting", privacy.get("hosting")
+                    )
                 )
             if privacy and privacy.get("service"):
                 taxonomies.append(
                     self.build_taxonomy(
-                        level, namespace, "PrivacyService", privacy.get("service"))
+                        level, namespace, "PrivacyService", privacy.get("service")
+                    )
                 )
 
         elif self.service == "hosted_domains":

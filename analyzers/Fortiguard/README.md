@@ -1,4 +1,4 @@
-### Fortiguard 
+### Fortiguard
 [Fortiguard](https://www.fortiguard.com/learnmore#wf) is a web filtering service commonly used in organizations.
 
 The analyzer comes in a single flavout that will return websense categorization for provided url or domain.

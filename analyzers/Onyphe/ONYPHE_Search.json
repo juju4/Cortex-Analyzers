@@ -5,7 +5,12 @@
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "description": "Retrieve results from ONYPHE Search API for a given ip, domain, fqdn or hash (sha256 TLS fingerprint) from specified category",
-  "dataTypeList": ["ip", "domain", "fqdn", "hash"],
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "fqdn",
+    "hash"
+  ],
   "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
   "config": {

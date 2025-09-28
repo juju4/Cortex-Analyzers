@@ -4,6 +4,7 @@
 from cortexutils.analyzer import Analyzer
 from greynoise.api import GreyNoise, APIConfig
 
+
 def get_ip_tag_names(tags: list) -> list:
     """Get tag names from tags list.
 
@@ -20,6 +21,7 @@ def get_ip_tag_names(tags: list) -> list:
 
     return tag_names
 
+
 class GreyNoiseAnalyzer(Analyzer):
     """
     GreyNoise API docs: https://docs.greynoise.io/reference/v3ip#/
@@ -27,7 +29,6 @@ class GreyNoiseAnalyzer(Analyzer):
     """
 
     def run(self):
-
         if self.data_type == "ip":
             api_key = self.get_param("config.key", None)
             api_config = APIConfig(
@@ -113,13 +114,21 @@ class GreyNoiseAnalyzer(Analyzer):
         try:
             taxonomies = []
 
-            scanner_found = raw.get("internet_scanner_intelligence", {}).get("found", False)
-            business_service_found = raw.get("business_service_intelligence", {}).get("found", False)
+            scanner_found = raw.get("internet_scanner_intelligence", {}).get(
+                "found", False
+            )
+            business_service_found = raw.get("business_service_intelligence", {}).get(
+                "found", False
+            )
             if scanner_found and not business_service_found:
-                #print("scanner_found and not business_service_found")
-                tag_names = get_ip_tag_names(raw.get("internet_scanner_intelligence", {}).get("tags", []))
+                # print("scanner_found and not business_service_found")
+                tag_names = get_ip_tag_names(
+                    raw.get("internet_scanner_intelligence", {}).get("tags", [])
+                )
                 tag_count = len(tag_names)
-                classification = raw.get("internet_scanner_intelligence", {}).get("classification", "unknown")
+                classification = raw.get("internet_scanner_intelligence", {}).get(
+                    "classification", "unknown"
+                )
                 actor = raw.get("internet_scanner_intelligence", {}).get("actor", "")
 
                 t1_level = classification_level_map.get(classification)(tag_count)
@@ -144,9 +153,13 @@ class GreyNoiseAnalyzer(Analyzer):
                     self.build_taxonomy(t2_level, t2_namespace, t2_predicate, t2_value)
                 )
             elif business_service_found and not scanner_found:
-                #print("business_service_found and not scanner_found")
-                trust_level = raw.get("business_service_intelligence", {}).get("trust_level", 0)
-                category = raw.get("business_service_intelligence", {}).get("category", "")
+                # print("business_service_found and not scanner_found")
+                trust_level = raw.get("business_service_intelligence", {}).get(
+                    "trust_level", 0
+                )
+                category = raw.get("business_service_intelligence", {}).get(
+                    "category", ""
+                )
                 if trust_level == 1:
                     classification = "benign"
                 else:
@@ -179,12 +192,18 @@ class GreyNoiseAnalyzer(Analyzer):
                     self.build_taxonomy(t3_level, t3_namespace, t3_predicate, t3_value)
                 )
             elif scanner_found and business_service_found:
-                #print("scanner_found and business_service_found")
-                tag_names = get_ip_tag_names(raw.get("internet_scanner_intelligence", {}).get("tags", []))
+                # print("scanner_found and business_service_found")
+                tag_names = get_ip_tag_names(
+                    raw.get("internet_scanner_intelligence", {}).get("tags", [])
+                )
                 tag_count = len(tag_names)
-                classification = raw.get("internet_scanner_intelligence", {}).get("classification", "unknown")
+                classification = raw.get("internet_scanner_intelligence", {}).get(
+                    "classification", "unknown"
+                )
                 actor = raw.get("internet_scanner_intelligence", {}).get("actor", "")
-                category = raw.get("business_service_intelligence", {}).get("category", "")
+                category = raw.get("business_service_intelligence", {}).get(
+                    "category", ""
+                )
                 name = raw.get("business_service_intelligence", {}).get("name", "")
 
                 t1_level = classification_level_map.get(classification)(tag_count)
@@ -227,7 +246,7 @@ class GreyNoiseAnalyzer(Analyzer):
                     self.build_taxonomy(t4_level, t4_namespace, t4_predicate, t4_value)
                 )
             else:
-                #print("neither scanner_found nor business_service_found")
+                # print("neither scanner_found nor business_service_found")
                 taxonomies.append(
                     self.build_taxonomy(
                         classification_level_map.get("unknown")(None),

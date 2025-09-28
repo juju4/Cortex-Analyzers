@@ -4,13 +4,14 @@ Records
 =======
 
 """
+
 # pylint:disable=R0903
 from abc import ABCMeta
 
 
 class Record(object):
-
     """All records are subclasses of the abstract class ``Record``"""
+
     __metaclass__ = ABCMeta
 
     _valid_attributes = None
@@ -24,28 +25,26 @@ class Record(object):
 
 
 class PlaceRecord(Record):
-
     """All records with :py:attr:`names` subclass :py:class:`PlaceRecord`"""
+
     __metaclass__ = ABCMeta
 
     def __init__(self, locales=None, **kwargs):
         if locales is None:
-            locales = ['en']
-        if kwargs.get('names') is None:
-            kwargs['names'] = {}
-        object.__setattr__(self, '_locales', locales)
+            locales = ["en"]
+        if kwargs.get("names") is None:
+            kwargs["names"] = {}
+        object.__setattr__(self, "_locales", locales)
         super(PlaceRecord, self).__init__(**kwargs)
 
     @property
     def name(self):
         """Dict with locale codes as keys and localized name as value"""
         # pylint:disable=E1101
-        return next((self.names.get(x) for x in self._locales if x in
-                     self.names), None)
+        return next((self.names.get(x) for x in self._locales if x in self.names), None)
 
 
 class City(PlaceRecord):
-
     """Contains data for the city record associated with an IP address
 
     This class contains the city-level data associated with an IP address.
@@ -83,11 +82,11 @@ class City(PlaceRecord):
       :type: dict
 
     """
-    _valid_attributes = set(['confidence', 'geoname_id', 'names'])
+
+    _valid_attributes = set(["confidence", "geoname_id", "names"])
 
 
 class Continent(PlaceRecord):
-
     """Contains data for the continent record associated with an IP address
 
     This class contains the continent-level data associated with an IP
@@ -124,11 +123,11 @@ class Continent(PlaceRecord):
       :type: dict
 
     """
-    _valid_attributes = set(['code', 'geoname_id', 'names'])
+
+    _valid_attributes = set(["code", "geoname_id", "names"])
 
 
 class Country(PlaceRecord):
-
     """Contains data for the country record associated with an IP address
 
     This class contains the country-level data associated with an IP address.
@@ -173,11 +172,11 @@ class Country(PlaceRecord):
       :type: dict
 
     """
-    _valid_attributes = set(['confidence', 'geoname_id', 'iso_code', 'names'])
+
+    _valid_attributes = set(["confidence", "geoname_id", "iso_code", "names"])
 
 
 class RepresentedCountry(Country):
-
     """Contains data for the represented country associated with an IP address
 
     This class contains the country-level data associated with an IP address
@@ -232,12 +231,11 @@ class RepresentedCountry(Country):
       :type: unicode
 
     """
-    _valid_attributes = set(['confidence', 'geoname_id', 'iso_code',
-                             'names', 'type'])
+
+    _valid_attributes = set(["confidence", "geoname_id", "iso_code", "names", "type"])
 
 
 class Location(Record):
-
     """Contains data for the location record associated with an IP address
 
     This class contains the location data associated with an IP address.
@@ -286,13 +284,21 @@ class Location(Record):
       :type: unicode
 
     """
-    _valid_attributes = set(['accuracy_radius', 'latitude', 'longitude',
-                             'metro_code', 'postal_code', 'postal_confidence',
-                             'time_zone'])
+
+    _valid_attributes = set(
+        [
+            "accuracy_radius",
+            "latitude",
+            "longitude",
+            "metro_code",
+            "postal_code",
+            "postal_confidence",
+            "time_zone",
+        ]
+    )
 
 
 class MaxMind(Record):
-
     """Contains data related to your MaxMind account
 
     Attributes:
@@ -305,11 +311,11 @@ class MaxMind(Record):
       :type: int
 
     """
-    _valid_attributes = set(['queries_remaining'])
+
+    _valid_attributes = set(["queries_remaining"])
 
 
 class Postal(Record):
-
     """Contains data for the postal record associated with an IP address
 
     This class contains the postal data associated with an IP address.
@@ -335,11 +341,11 @@ class Postal(Record):
       :type: int
 
     """
-    _valid_attributes = set(['code', 'confidence'])
+
+    _valid_attributes = set(["code", "confidence"])
 
 
 class Subdivision(PlaceRecord):
-
     """Contains data for the subdivisions associated with an IP address
 
     This class contains the subdivision data associated with an IP address.
@@ -385,11 +391,11 @@ class Subdivision(PlaceRecord):
       :type: dict
 
     """
-    _valid_attributes = set(['confidence', 'geoname_id', 'iso_code', 'names'])
+
+    _valid_attributes = set(["confidence", "geoname_id", "iso_code", "names"])
 
 
 class Subdivisions(tuple):
-
     """A tuple-like collection of subdivisions associated with an IP address
 
     This class contains the subdivisions of the country associated with the
@@ -400,6 +406,7 @@ class Subdivisions(tuple):
 
     This attribute is returned by ``city`` and ``insights``.
     """
+
     # pylint:disable=W0142
     def __new__(cls, locales, *subdivisions):
         subdivisions = [Subdivision(locales, **x) for x in subdivisions]
@@ -414,10 +421,10 @@ class Subdivisions(tuple):
     def most_specific(self):
         """The most specific (smallest) subdivision available.
 
-          If there are no :py:class:`Subdivision` objects for the response,
-          this returns an empty :py:class:`Subdivision`.
+        If there are no :py:class:`Subdivision` objects for the response,
+        this returns an empty :py:class:`Subdivision`.
 
-          :type: :py:class:`Subdivision`
+        :type: :py:class:`Subdivision`
         """
         try:
             return self[-1]
@@ -426,8 +433,7 @@ class Subdivisions(tuple):
 
 
 class Traits(Record):
-
-    """ Contains data for the traits record associated with an IP address
+    """Contains data for the traits record associated with an IP address
 
     This class contains the traits data associated with an IP address.
 
@@ -526,18 +532,23 @@ class Traits(Record):
 
       :type: unicode
 
-"""
-    _valid_attributes = set(['autonomous_system_number',
-                             'autonomous_system_organization',
-                             'domain',
-                             'is_anonymous_proxy',
-                             'is_satellite_provider',
-                             'isp',
-                             'ip_address',
-                             'organization',
-                             'user_type'])
+    """
+
+    _valid_attributes = set(
+        [
+            "autonomous_system_number",
+            "autonomous_system_organization",
+            "domain",
+            "is_anonymous_proxy",
+            "is_satellite_provider",
+            "isp",
+            "ip_address",
+            "organization",
+            "user_type",
+        ]
+    )
 
     def __init__(self, **kwargs):
-        for k in ['is_anonymous_proxy', 'is_satellite_provider']:
+        for k in ["is_anonymous_proxy", "is_satellite_provider"]:
             kwargs[k] = bool(kwargs.get(k, False))
         super(Traits, self).__init__(**kwargs)

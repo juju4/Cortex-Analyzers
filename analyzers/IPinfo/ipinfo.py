@@ -7,7 +7,7 @@ class IPinfoException(Exception):
     pass
 
 
-class IPinfo():
+class IPinfo:
     def __init__(self, api_key):
         self.base_url = "https://ipinfo.io"
         self.api_key = api_key
@@ -16,8 +16,7 @@ class IPinfo():
             raise IPinfoException("No API key is present")
 
         self.session = requests.Session()
-        self.session.headers.update(
-            {"Authorization": "Bearer {}".format(self.api_key)})
+        self.session.headers.update({"Authorization": "Bearer {}".format(self.api_key)})
 
     def details(self, ip_address):
         url = "{}/{}".format(self.base_url, ip_address)

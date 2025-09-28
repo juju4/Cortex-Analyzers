@@ -43,7 +43,12 @@ class VirusTotalAnalyzer(Analyzer):
         self.proxies = self.get_param("config.proxy.https", None)
         if os.environ.get("REQUESTS_CA_BUNDLE"):
             os.environ["SSL_CERT_FILE"] = os.environ["REQUESTS_CA_BUNDLE"]
-        self.vt = Client(apikey=self.virustotal_key, proxy=self.proxies, verify_ssl=None, trust_env=True)
+        self.vt = Client(
+            apikey=self.virustotal_key,
+            proxy=self.proxies,
+            verify_ssl=None,
+            trust_env=True,
+        )
 
     def get_file(self, hash):
         self.obs_path = "{}/{}".format(tempfile.gettempdir(), hash)
@@ -76,7 +81,9 @@ class VirusTotalAnalyzer(Analyzer):
 
         for ioc_type in raw.get("iocs", []):
             for ioc in raw.get("iocs").get(ioc_type):
-                artifacts.append(self.build_artifact(ioc_type, ioc.get("data"), tags=ioc.get("tags")))
+                artifacts.append(
+                    self.build_artifact(ioc_type, ioc.get("data"), tags=ioc.get("tags"))
+                )
 
         return artifacts
 
@@ -139,9 +146,7 @@ class VirusTotalAnalyzer(Analyzer):
                 level = "info"
             else:
                 level = "safe"
-            taxonomies.append(
-                self.build_taxonomy(level, namespace, predicate, value)
-            )
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         if self.service == "get":
             data_type = "files"
@@ -165,13 +170,15 @@ class VirusTotalAnalyzer(Analyzer):
                     taxonomies.append(
                         self.build_taxonomy(level, namespace, predicate, value)
                     )
-            
+
             if data_type in ["ip_addresses", "domains"]:
                 try:
                     result["resolutions"] = self.vt.get_json(
                         "/{}/{}/{}".format(data_type, raw["id"], "resolutions")
                     )
-                    value = "{} resolution(s)".format(result["resolutions"]["meta"]["count"])
+                    value = "{} resolution(s)".format(
+                        result["resolutions"]["meta"]["count"]
+                    )
                     if result["resolutions"]["meta"]["count"] == 0:
                         level = "safe"
                     elif result["resolutions"]["meta"]["count"] < 5:
@@ -217,7 +224,7 @@ class VirusTotalAnalyzer(Analyzer):
                             self.build_taxonomy(level, namespace, predicate, value)
                         )
                 except Exception:
-                    pass # Premium api key required
+                    pass  # Premium api key required
 
         if self.highlighted_antivirus:
             for av in (av for av in self.highlighted_antivirus if av):
@@ -234,21 +241,27 @@ class VirusTotalAnalyzer(Analyzer):
     def run(self):
         results = dict()
         iocs = dict()
-        iocs['ip'] = list()
-        iocs['domain'] = list()
-        iocs['url'] = list()
-        iocs['other'] = list()
-        
+        iocs["ip"] = list()
+        iocs["domain"] = list()
+        iocs["url"] = list()
+        iocs["other"] = list()
+
         if self.service == "scan":
             if self.data_type == "file":
                 filepath = self.get_param("file", None, "File is missing")
                 with open(filepath, "rb") as f:
                     resp = self.vt.scan_file(file=f, wait_for_completion=True)
                     results = resp.to_dict()
-                    file_hash = b64decode(results.get("id")).decode().split(':')[0]
-                    self.get_relation("contacted_domains", "files", file_hash, results, iocs)
-                    self.get_relation("contacted_ips", "files", file_hash, results, iocs)
-                    self.get_relation("contacted_urls", "files", file_hash, results, iocs)
+                    file_hash = b64decode(results.get("id")).decode().split(":")[0]
+                    self.get_relation(
+                        "contacted_domains", "files", file_hash, results, iocs
+                    )
+                    self.get_relation(
+                        "contacted_ips", "files", file_hash, results, iocs
+                    )
+                    self.get_relation(
+                        "contacted_urls", "files", file_hash, results, iocs
+                    )
 
             elif self.data_type == "url":
                 url = self.get_param("data", None, "Data is missing")
@@ -257,7 +270,9 @@ class VirusTotalAnalyzer(Analyzer):
                 url_b64 = results.get("id").split("-")[1]
                 self.get_relation("contacted_domains", "files", url_b64, results, iocs)
                 self.get_relation("contacted_ips", "files", url_b64, results, iocs)
-                self.get_relation("last_serving_ip_address", "files", url_b64, results, iocs)
+                self.get_relation(
+                    "last_serving_ip_address", "files", url_b64, results, iocs
+                )
             else:
                 self.error("Invalid data type")
 
@@ -284,22 +299,34 @@ class VirusTotalAnalyzer(Analyzer):
                     data = self.get_param("data", None, "Data is missing")
                     results = self.vt.get_object("/domains/{}".format(data)).to_dict()
                     self.get_relation("urls", "domains", data, results, iocs)
-                    self.get_relation("downloaded_files", "domains", data, results, iocs)
+                    self.get_relation(
+                        "downloaded_files", "domains", data, results, iocs
+                    )
                     self.get_relation("referrer_files", "domains", data, results, iocs)
 
                 elif self.data_type == "ip":
                     data = self.get_param("data", None, "Data is missing")
-                    results = self.vt.get_object("/ip_addresses/{}".format(data)).to_dict()
+                    results = self.vt.get_object(
+                        "/ip_addresses/{}".format(data)
+                    ).to_dict()
                     self.get_relation("urls", "ip_addresses", data, results, iocs)
 
                 elif self.data_type == "file":
                     filepath = self.get_param("file", None, "File is missing")
                     with open(filepath, "rb") as f:
                         file_hash = self.file_to_sha256(f)
-                        results = self.vt.get_object("/files/{}".format(file_hash)).to_dict()
-                        self.get_relation("contacted_domains", "files", file_hash, results, iocs)
-                        self.get_relation("contacted_ips", "files", file_hash, results, iocs)
-                        self.get_relation("contacted_urls", "files", file_hash, results, iocs)
+                        results = self.vt.get_object(
+                            "/files/{}".format(file_hash)
+                        ).to_dict()
+                        self.get_relation(
+                            "contacted_domains", "files", file_hash, results, iocs
+                        )
+                        self.get_relation(
+                            "contacted_ips", "files", file_hash, results, iocs
+                        )
+                        self.get_relation(
+                            "contacted_urls", "files", file_hash, results, iocs
+                        )
 
                 elif self.data_type == "hash":
                     data = self.get_param("data", None, "Data is missing")
@@ -312,9 +339,13 @@ class VirusTotalAnalyzer(Analyzer):
                     url = self.get_param("data", None, "Data is missing")
                     url_b64 = urlsafe_b64encode(url.encode()).decode().split("=")[0]
                     results = self.vt.get_object("/urls/{}".format(url_b64)).to_dict()
-                    self.get_relation("contacted_domains", "urls", url_b64, results, iocs)
+                    self.get_relation(
+                        "contacted_domains", "urls", url_b64, results, iocs
+                    )
                     self.get_relation("contacted_ips", "urls", url_b64, results, iocs)
-                    self.get_relation("last_serving_ip_address", "urls", url_b64, results, iocs)
+                    self.get_relation(
+                        "last_serving_ip_address", "urls", url_b64, results, iocs
+                    )
                 else:
                     self.error("Invalid data type")
                 self.get_yararuleset(results, iocs)
@@ -323,7 +354,9 @@ class VirusTotalAnalyzer(Analyzer):
                 # if aged and enabled rescan
                 if self.data_type == "hash" and self.rescan_hash_older_than_days:
                     if (
-                        datetime.fromtimestamp(results["attributes"]["last_analysis_date"])
+                        datetime.fromtimestamp(
+                            results["attributes"]["last_analysis_date"]
+                        )
                         - datetime.now()
                     ).days > self.rescan_hash_older_than_days:
                         filepath = self.get_param("file", None, "File is missing")
@@ -362,7 +395,7 @@ class VirusTotalAnalyzer(Analyzer):
                 self.get_file(data)
         else:
             self.error("Invalid service")
-        results['iocs'] = iocs
+        results["iocs"] = iocs
         self.report(self.convert_WhistleBlowerDict_to_dict(results))
 
     def convert_WhistleBlowerDict_to_dict(self, o):
@@ -372,44 +405,52 @@ class VirusTotalAnalyzer(Analyzer):
             return [self.convert_WhistleBlowerDict_to_dict(v) for v in o]
         else:
             return o
+
     def get_yararuleset(self, results, iocs):
-        for yara_result in results["attributes"].get( "crowdsourced_yara_results", []):
+        for yara_result in results["attributes"].get("crowdsourced_yara_results", []):
             yara_ruleset = self.vt.get_object(
-                        "/yara_rulesets/{}".format(yara_result["ruleset_id"])
-                        ).to_dict()
-            iocs["other"].append({
-                "data": yara_ruleset["attributes"]["rules"],
-                "tags": [
-                    "detection:YARA",
-                    "ruleset:{}".format(yara_ruleset["attributes"]["name"])
-                ]
-            })
+                "/yara_rulesets/{}".format(yara_result["ruleset_id"])
+            ).to_dict()
+            iocs["other"].append(
+                {
+                    "data": yara_ruleset["attributes"]["rules"],
+                    "tags": [
+                        "detection:YARA",
+                        "ruleset:{}".format(yara_ruleset["attributes"]["name"]),
+                    ],
+                }
+            )
 
     def get_ids_results(self, results, iocs):
         for ids_result in results["attributes"].get("crowdsourced_ids_results", []):
-            iocs["other"].append({
-                "data": ids_result["rule_raw"],
-                "tags": [
-                    "detection:IDS",
-                    "rule-src:{}".format(ids_result["rule_source"])
-                ]
-            })
+            iocs["other"].append(
+                {
+                    "data": ids_result["rule_raw"],
+                    "tags": [
+                        "detection:IDS",
+                        "rule-src:{}".format(ids_result["rule_source"]),
+                    ],
+                }
+            )
 
     def get_relation(self, relation, data_type, data, results, iocs):
         try:
-            result = self.vt.get_json(
-                "/{}/{}/{}".format(data_type, data, relation)
-            )
+            result = self.vt.get_json("/{}/{}/{}".format(data_type, data, relation))
             if not "relations" in results:
                 results["relations"] = {}
-            results['relations'][relation] = result
-            for url in result['data']:
-                iocs["url"].append({
-                    "data": url['attributes']['url'],
-                    "tags": ["known-relationship:{}".format(data_type.replace("_", "-"))]
-                })
+            results["relations"][relation] = result
+            for url in result["data"]:
+                iocs["url"].append(
+                    {
+                        "data": url["attributes"]["url"],
+                        "tags": [
+                            "known-relationship:{}".format(data_type.replace("_", "-"))
+                        ],
+                    }
+                )
         except Exception:
-            pass #Premium api required
+            pass  # Premium api required
+
 
 if __name__ == "__main__":
     VirusTotalAnalyzer().run()

@@ -1,10 +1,10 @@
 ### HarfangLab responder
 
-This responder allows to interact with a HarfangLab EDR manager for several kinds of use cases, such as: 
+This responder allows to interact with a HarfangLab EDR manager for several kinds of use cases, such as:
   * Isolating/unisolating an endpoint
   * Getting forensics data from an endpoint (running processes, loaded drivers, sessions, prefeteches, services...)
   * Getting raw forensics artifacts (MFT, USN journal, hives...)
-  * Hunting in telemetry (processes, network connections, driver loading...) 
+  * Hunting in telemetry (processes, network connections, driver loading...)
 
 The detailed list of HarfangLab's responders is the following:
 
@@ -41,5 +41,3 @@ The detailed list of HarfangLab's responders is the following:
 |HarfangLab_SearchHash                  | case_artifact / hash                  | Case artifact with **hash** observable. | Allows to search the file hash in the whole telemetry.                               |
 |HarfangLab_SearchSourceIP              | case_artifact / ip                    | Case artifact with **ip** observable. | Allows to search the source IP in the whole telemetry.                                 |
 |HarfangLab_GetBinary                   | case_artifact / hash                  | Case artifact with **hash** observable. | Allows to search the file hash in the whole telemetry.                               |
-
-

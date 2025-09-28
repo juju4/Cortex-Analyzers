@@ -12,21 +12,31 @@ class AnyRunAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.url = "https://api.any.run/v1"
         self.token = self.get_param("config.token", None, "Service token is missing")
-        self.privacy_type = self.get_param("config.privacy_type", None, "Privacy type is missing")
+        self.privacy_type = self.get_param(
+            "config.privacy_type", None, "Privacy type is missing"
+        )
         self.verify_ssl = self.get_param("config.verify_ssl", True, None)
         if not self.verify_ssl:
             requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         self.env_bitness = self.get_param("config.env_bitness", None, None)
         self.env_version = self.get_param("config.env_version", None, None)
         self.env_type = self.get_param("config.env_type", None, None)
-        self.opt_network_connect = self.get_param("config.opt_network_connect", None, None)
-        self.opt_network_fakenet = self.get_param("config.opt_network_fakenet", None, None)
+        self.opt_network_connect = self.get_param(
+            "config.opt_network_connect", None, None
+        )
+        self.opt_network_fakenet = self.get_param(
+            "config.opt_network_fakenet", None, None
+        )
         self.opt_network_tor = self.get_param("config.opt_network_tor", None, None)
         self.opt_network_mitm = self.get_param("config.opt_network_mitm", None, None)
         self.opt_network_geo = self.get_param("config.opt_network_geo", None, None)
-        self.opt_kernel_heavyevasion = self.get_param("config.opt_kernel_heavyevasion", None, None)
+        self.opt_kernel_heavyevasion = self.get_param(
+            "config.opt_kernel_heavyevasion", None, None
+        )
         self.opt_timeout = self.get_param("config.opt_timeout", None, None)
-        self.obj_ext_startfolder = self.get_param("config.obj_ext_startfolder", None, None)
+        self.obj_ext_startfolder = self.get_param(
+            "config.obj_ext_startfolder", None, None
+        )
         self.obj_ext_browser = self.get_param("config.obj_ext_browser", None, None)
 
     def summary(self, raw):
@@ -62,18 +72,20 @@ class AnyRunAnalyzer(Analyzer):
                 while status_code in (None, 429) and tries <= 15:
                     with open(filepath, "rb") as sample:
                         files = {"file": (filename, sample)}
-                        data = {"opt_privacy_type": self.privacy_type,
-                                "env_bitness": self.env_bitness,
-                                "env_version": self.env_version,
-                                "env_type": self.env_type,
-                                "opt_network_connect": self.opt_network_connect,
-                                "opt_network_fakenet": self.opt_network_fakenet,
-                                "opt_network_tor": self.opt_network_tor,
-                                "opt_network_mitm": self.opt_network_mitm,
-                                "opt_network_geo": self.opt_network_geo,
-                                "opt_kernel_heavyevasion": self.opt_kernel_heavyevasion,
-                                "opt_timeout": self.opt_timeout,
-                                "obj_ext_startfolder": self.obj_ext_startfolder }
+                        data = {
+                            "opt_privacy_type": self.privacy_type,
+                            "env_bitness": self.env_bitness,
+                            "env_version": self.env_version,
+                            "env_type": self.env_type,
+                            "opt_network_connect": self.opt_network_connect,
+                            "opt_network_fakenet": self.opt_network_fakenet,
+                            "opt_network_tor": self.opt_network_tor,
+                            "opt_network_mitm": self.opt_network_mitm,
+                            "opt_network_geo": self.opt_network_geo,
+                            "opt_kernel_heavyevasion": self.opt_kernel_heavyevasion,
+                            "opt_timeout": self.opt_timeout,
+                            "obj_ext_startfolder": self.obj_ext_startfolder,
+                        }
                         response = requests.post(
                             "{0}/analysis".format(self.url),
                             files=files,
@@ -94,20 +106,22 @@ class AnyRunAnalyzer(Analyzer):
                         self.error(response.json()["message"])
             elif self.data_type == "url":
                 url = self.get_param("data", None, "Url is missing")
-                data = {"obj_type": "url", 
-                        "obj_url": url, 
-                        "opt_privacy_type": self.privacy_type,
-                        "env_bitness": self.env_bitness,
-                        "env_version": self.env_version,
-                        "env_type": self.env_type,
-                        "opt_network_connect": self.opt_network_connect,
-                        "opt_network_fakenet": self.opt_network_fakenet,
-                        "opt_network_tor": self.opt_network_tor,
-                        "opt_network_mitm": self.opt_network_mitm,
-                        "opt_network_geo": self.opt_network_geo,
-                        "opt_kernel_heavyevasion": self.opt_kernel_heavyevasion,
-                        "opt_timeout": self.opt_timeout,
-                        "obj_ext_browser": self.obj_ext_browser }
+                data = {
+                    "obj_type": "url",
+                    "obj_url": url,
+                    "opt_privacy_type": self.privacy_type,
+                    "env_bitness": self.env_bitness,
+                    "env_version": self.env_version,
+                    "env_type": self.env_type,
+                    "opt_network_connect": self.opt_network_connect,
+                    "opt_network_fakenet": self.opt_network_fakenet,
+                    "opt_network_tor": self.opt_network_tor,
+                    "opt_network_mitm": self.opt_network_mitm,
+                    "opt_network_geo": self.opt_network_geo,
+                    "opt_kernel_heavyevasion": self.opt_kernel_heavyevasion,
+                    "opt_timeout": self.opt_timeout,
+                    "obj_ext_browser": self.obj_ext_browser,
+                }
                 while status_code in (None, 429) and tries <= 15:
                     response = requests.post(
                         "{0}/analysis".format(self.url),
@@ -155,7 +169,7 @@ class AnyRunAnalyzer(Analyzer):
             for incident in final_report.get("incidents", []):
                 incident.pop("events", None)
             for process in final_report.get("processes", []):
-                process.pop("modules", None)   
+                process.pop("modules", None)
             self.report(final_report)
 
         except requests.exceptions.RequestException as e:

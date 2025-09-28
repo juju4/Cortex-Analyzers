@@ -6,7 +6,8 @@
   "license": "AGPL-V3",
   "description": "Sync TheHive status back to CS Alerts or Incidents",
   "dataTypeList": [
-    "thehive:case", "thehive:alert"
+    "thehive:case",
+    "thehive:alert"
   ],
   "command": "CrowdstrikeFalcon/CrowdstrikeFalconSync.py",
   "baseConfig": "CrowdstrikeFalcon",

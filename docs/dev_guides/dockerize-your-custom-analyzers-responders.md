@@ -1,8 +1,8 @@
 # Dockerize you custom Analyzers & Responders
 
 ## Cortex-Analyzers catalogs
-Since Cortex version 3.0, Analyzers and Responders can be executed as docker containers, and this is useful in several ways. The first is you do not have to bother with libraries and dependancies to run the program ; download the image, run it, trash it.  
-We provide up-to-date docker images for all programs publicly available on our repository (https://github.com/TheHive-Project/Cortex-Analyzers). To use them, you just need to specify the catalog in the `application.conf` file for Cortex: 
+Since Cortex version 3.0, Analyzers and Responders can be executed as docker containers, and this is useful in several ways. The first is you do not have to bother with libraries and dependancies to run the program ; download the image, run it, trash it.
+We provide up-to-date docker images for all programs publicly available on our repository (https://github.com/TheHive-Project/Cortex-Analyzers). To use them, you just need to specify the catalog in the `application.conf` file for Cortex:
 
 ```json
 analyzer {
@@ -11,14 +11,14 @@ analyzer {
         ]
 ```
 
-## What if you use custom and private Analyzers and Responders ? 
-If you are using you own programs and want them to be processed as docker container, you can. You need to: 
+## What if you use custom and private Analyzers and Responders ?
+If you are using you own programs and want them to be processed as docker container, you can. You need to:
 - Build your images
 - Build your catalog
 - Register you catalog in Cortex
 
 ### Build your images
-You need to build your docker image for each Analyzer/Responder. Ours are built with this *Dockerfile*  template except if a *Dockerfile* is present in the folder: 
+You need to build your docker image for each Analyzer/Responder. Ours are built with this *Dockerfile*  template except if a *Dockerfile* is present in the folder:
 
 ```dockerfile
 FROM python:3-alpine
@@ -34,7 +34,7 @@ ENTRYPOINT ["python", "{command}"]
 This file is also in the repository: [Cortex-Analyzers/Dockerfile_template at master · TheHive-Project/Cortex-Analyzers · GitHub](https://github.com/TheHive-Project/Cortex-Analyzers/blob/master/utils/docker/Dockerfile_template)
 
 ### Build your catalog
-A catalog is required for Analyzers and Responders. A catalog is a list of flavor definitions (typically the json definition of the flavor) and for each of them the *dockerImage* attribute is added with the name of the associated image. 
+A catalog is required for Analyzers and Responders. A catalog is a list of flavor definitions (typically the json definition of the flavor) and for each of them the *dockerImage* attribute is added with the name of the associated image.
 This catalog, when registered in Cortex's configuration file, allows the discovery of the available Analyzers or Responders and tells Cortex how to run each worker using the dockerImage attribute. Below is an example of a catalog file that contains a single Analyzer:
 
 
@@ -75,7 +75,7 @@ This catalog, when registered in Cortex's configuration file, allows the discove
 ```
 
 ### Register your catalogs in Cortex configuration
-Update your Cortex configuration file (`/etc/cortex/application.conf`) with your own catalog; e.g. for *Analyzers*:  
+Update your Cortex configuration file (`/etc/cortex/application.conf`) with your own catalog; e.g. for *Analyzers*:
 
 ```yml
 analyzer {
@@ -108,7 +108,7 @@ To use it, update the variable `DOCKER_REPOSITORY` first (for example with the n
 
 ```bash
 cd ./Custom-Analyzers
-bash /path/to/build.sh 
+bash /path/to/build.sh
 ```
 
 Once finished, you should find your docker images built, and catalogs as well in `./analyzers/analyzers.json` and  `./responders/responders.json`.
@@ -118,7 +118,7 @@ Once finished, you should find your docker images built, and catalogs as well in
 #!/usr/bin/env bash
 
 ###
-# This program assumes your analyzers and responders folder looks like: 
+# This program assumes your analyzers and responders folder looks like:
 #
 #     Custom-Analyzers
 #     ├── analyzers/
@@ -131,10 +131,10 @@ Once finished, you should find your docker images built, and catalogs as well in
 #             ├── README.md
 #             └── requirements.txt
 #
-# Usage: 
+# Usage:
 # Update DOCKER_REPOSITORY variable
 # cd ./Custom-Analyzers
-# bash /path/to/build.sh 
+# bash /path/to/build.sh
 ###
 
 # Set your docker repository name
@@ -154,7 +154,7 @@ EOF
 
     DEFAULT_DOCKERFILE=/tmp/default_dockerfile
 	  TAG=`cat ${JSON} | jq -r '( "'"$DOCKER_REPOSITORY"'" + "/" + (.name | ascii_downcase) + ":" + (.version))'`
-    WORKER_NAME=`cat ${JSON} | jq -r '(.version)'`  
+    WORKER_NAME=`cat ${JSON} | jq -r '(.version)'`
     COMMAND=`cat ${JSON} | jq -r '(.command)'`
     DIRNAME=`dirname ${JSON}`
 	  WORKER_NAME=`basename ${DIRNAME}`
@@ -169,18 +169,18 @@ EOF
 build_catalog() {
     DIR=$1
     echo '[' > ${DIR}/${DIR}.json
-    
+
 
     first=1
     for JSON in ${DIR}/*/*.json
     do
-		  build_image ${JSON} 
+		  build_image ${JSON}
         if test -z "${first}"
         then
     	      echo ',' >> ${DIR}/${DIR}.json
         else
     	      first=
-        fi  
+        fi
         jq 'del(.command) + { dockerImage: ("'"$DOCKER_REPOSITORY"'" + "/" + (.name | ascii_downcase) + ":" + (.version)) }' ${JSON} >> ${DIR}/${DIR}.json
     done
 

@@ -5,12 +5,14 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Unlock ip on CheckPoint Gaia",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "CheckPoint/checkpoint.py",
-  "baseConfig": "CheckPoint", 
+  "baseConfig": "CheckPoint",
   "config": {
     "service": "unlock"
-  },  
+  },
   "configurationItems": [
     {
       "name": "server",

@@ -23,10 +23,17 @@ from cortexutils.analyzer import Analyzer
 class VxStreamSandboxAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.basic_url = 'https://www.hybrid-analysis.com/api/v2/'
+        self.basic_url = "https://www.hybrid-analysis.com/api/v2/"
 
-        self.api_key = self.get_param('config.key', None, 'VxStream Sandbox API key is missing')
-        self.headers = {'User-Agent': 'VxStream', 'api-key': self.api_key, 'accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded'}
+        self.api_key = self.get_param(
+            "config.key", None, "VxStream Sandbox API key is missing"
+        )
+        self.headers = {
+            "User-Agent": "VxStream",
+            "api-key": self.api_key,
+            "accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
 
     def summary(self, raw_report):
         taxonomies = []
@@ -45,9 +52,9 @@ class VxStreamSandboxAnalyzer(Analyzer):
         }
 
         # define json keys to loop
-        if self.data_type in ['hash', 'file']:
+        if self.data_type in ["hash", "file"]:
             minireports = raw_report["results"]
-        elif self.data_type in ['filename', 'url', 'domain']:
+        elif self.data_type in ["filename", "url", "domain"]:
             minireports = raw_report["results"]["result"]
 
         if len(minireports) != 0:
@@ -61,39 +68,61 @@ class VxStreamSandboxAnalyzer(Analyzer):
             for minireport in minireports:
                 if minireport["verdict"] is not None:
                     if last_verdict_time is None:
-                        last_verdict_time = int(datetime.timestamp(datetime.strptime(minireport["analysis_start_time"][:10] + minireport["analysis_start_time"][11:19], "%Y-%m-%d%H:%M:%S")))
+                        last_verdict_time = int(
+                            datetime.timestamp(
+                                datetime.strptime(
+                                    minireport["analysis_start_time"][:10]
+                                    + minireport["analysis_start_time"][11:19],
+                                    "%Y-%m-%d%H:%M:%S",
+                                )
+                            )
+                        )
                         last_verdict = minireport["verdict"]
                         # Set the initial threat score
                         highest_threat_score = minireport.get("threat_score")
                     else:
-                        new_verdict_time = int(datetime.timestamp(datetime.strptime(minireport["analysis_start_time"][:10] + minireport["analysis_start_time"][11:19], "%Y-%m-%d%H:%M:%S")))
+                        new_verdict_time = int(
+                            datetime.timestamp(
+                                datetime.strptime(
+                                    minireport["analysis_start_time"][:10]
+                                    + minireport["analysis_start_time"][11:19],
+                                    "%Y-%m-%d%H:%M:%S",
+                                )
+                            )
+                        )
                         if abs(last_verdict_time - new_verdict_time) <= 3600:
                             last_verdict_time = new_verdict_time
                             try:
-                                if verdicts[minireport["verdict"]] > verdicts[last_verdict]:
+                                if (
+                                    verdicts[minireport["verdict"]]
+                                    > verdicts[last_verdict]
+                                ):
                                     last_verdict = minireport["verdict"]
                             except KeyError:
                                 continue
                     # Update the highest threat score if the current one is greater
                     current_threat_score = minireport.get("threat_score")
                     if current_threat_score is not None:
-                        if highest_threat_score is None or current_threat_score > highest_threat_score:
+                        if (
+                            highest_threat_score is None
+                            or current_threat_score > highest_threat_score
+                        ):
                             highest_threat_score = current_threat_score
 
             report_verdict = last_verdict
 
             # create shield badge for short.html
-            if report_verdict == 'malicious':
-                level = 'malicious'
+            if report_verdict == "malicious":
+                level = "malicious"
                 value = "Malicious"
-            elif report_verdict == 'suspicious':
-                level = 'suspicious'
+            elif report_verdict == "suspicious":
+                level = "suspicious"
                 value = "Suspicious"
-            elif report_verdict == 'whitelisted':
-                level = 'safe'
+            elif report_verdict == "whitelisted":
+                level = "safe"
                 value = "Whitelisted"
-            elif report_verdict == 'no specific threat':
-                level = 'info'
+            elif report_verdict == "no specific threat":
+                level = "info"
                 value = "No Specific Threat"
 
             # Add the highest threat score if available
@@ -101,7 +130,7 @@ class VxStreamSandboxAnalyzer(Analyzer):
                 value = f"{value} (Threat Score: {highest_threat_score})"
 
         else:
-            level = 'info'
+            level = "info"
             value = "Unknown"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
@@ -109,32 +138,38 @@ class VxStreamSandboxAnalyzer(Analyzer):
 
     def run(self):
         try:
-            if self.data_type == 'hash':
-                query_url = 'search/hash'
-                query_data = {'hash': self.get_param('data', None, 'Hash is missing')}
+            if self.data_type == "hash":
+                query_url = "search/hash"
+                query_data = {"hash": self.get_param("data", None, "Hash is missing")}
 
-            elif self.data_type == 'file':
-                query_url = 'search/hash'
-                hashes = self.get_param('attachment.hashes', None)
+            elif self.data_type == "file":
+                query_url = "search/hash"
+                hashes = self.get_param("attachment.hashes", None)
 
                 if hashes is None:
-                    filepath = self.get_param('file', None, 'File is missing')
-                    query_data = {'hash': hashlib.sha256(open(filepath, 'rb').read()).hexdigest()}
+                    filepath = self.get_param("file", None, "File is missing")
+                    query_data = {
+                        "hash": hashlib.sha256(open(filepath, "rb").read()).hexdigest()
+                    }
                 else:
                     # find SHA256 hash
-                    query_data = {'hash': next(h for h in hashes if len(h) == 64)}
+                    query_data = {"hash": next(h for h in hashes if len(h) == 64)}
 
-            elif self.data_type == 'filename':
-                query_url = 'search/terms'
-                query_data = {'filename': self.get_param('data', None, 'Filename is missing')}
+            elif self.data_type == "filename":
+                query_url = "search/terms"
+                query_data = {
+                    "filename": self.get_param("data", None, "Filename is missing")
+                }
 
-            elif self.data_type == 'url':
-                query_url = 'search/terms'
-                query_data = {'url': self.get_param('data', None, 'URL is missing')}
+            elif self.data_type == "url":
+                query_url = "search/terms"
+                query_data = {"url": self.get_param("data", None, "URL is missing")}
 
-            elif self.data_type == 'domain':
-                query_url = 'search/terms'
-                query_data = {'domain': self.get_param('data', None, 'Domain is missing')}
+            elif self.data_type == "domain":
+                query_url = "search/terms"
+                query_data = {
+                    "domain": self.get_param("data", None, "Domain is missing")
+                }
 
             else:
                 self.notSupported()
@@ -143,22 +178,26 @@ class VxStreamSandboxAnalyzer(Analyzer):
 
             error = True
             while error:
-                r = requests.post(url, headers=self.headers, data=query_data, verify=True)
+                r = requests.post(
+                    url, headers=self.headers, data=query_data, verify=True
+                )
 
                 if "validation_errors" in r.json():
-                    if "Exceeded maximum API requests per minute(5)" in r.json()["validation_errors"][0]["errors"]:
+                    if (
+                        "Exceeded maximum API requests per minute(5)"
+                        in r.json()["validation_errors"][0]["errors"]
+                    ):
                         time.sleep(60)
                     else:
                         self.error(r.json()["validation_errors"][0]["errors"][0])
                 else:
                     error = False
 
-            self.report({'results': r.json()})
+            self.report({"results": r.json()})
 
         except ValueError as e:
             self.unexpectedError(e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     VxStreamSandboxAnalyzer().run()
-

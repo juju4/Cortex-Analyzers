@@ -49,21 +49,21 @@ When a domain artifact is submitted to this analyzer, it will:
 
 ### Template Setup in TheHive
 
-To customize the display of analyzer results in TheHive, you can use **analyzer templates**. 
+To customize the display of analyzer results in TheHive, you can use **analyzer templates**.
 
 Follow these steps to install the templates for the `Watcher_CheckDomain` analyzer:
 
-1. Navigate to **TheHive** web interface  
-2. Go to **Admin** > **Entities Management** > **Analyzer templates**  
-3. Click on **Import templates**  
-4. Browse to the template directory  
-5. Select both `short.html` and `long.html` files  
-6. Click **Import**  
+1. Navigate to **TheHive** web interface
+2. Go to **Admin** > **Entities Management** > **Analyzer templates**
+3. Click on **Import templates**
+4. Browse to the template directory
+5. Select both `short.html` and `long.html` files
+6. Click **Import**
 7. Make sure the templates are correctly associated with the `Watcher_CheckDomain` analyzer
 
 Once done, TheHive will use these templates to display the analyzer output with better readability and style.
 
 ### Author
 
-**Thales Group CERT** - [thalesgroup-cert on GitHub](https://github.com/thalesgroup-cert)  
+**Thales Group CERT** - [thalesgroup-cert on GitHub](https://github.com/thalesgroup-cert)
 **Ygal NEZRI** - [@ygalnezri](https://github.com/ygalnezri)

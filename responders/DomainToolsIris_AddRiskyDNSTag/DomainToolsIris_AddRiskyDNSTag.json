@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Add Tag saying that the case contains a risky DNS.",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "DomainToolsIris_AddRiskyDNSTag/domaintoolsiris_responder.py",
   "baseConfig": "DomainToolsIris",
   "configurationItems": [

@@ -8,25 +8,25 @@ from requests import sessions
 
 
 class VMRayClientError(Exception):
-    """ Parent class for all specific errors used by VMRayClient. """
+    """Parent class for all specific errors used by VMRayClient."""
 
     pass
 
 
 class VMRayAPIError(VMRayClientError):
-    """ Raised in case the VMRay API returns an eror. """
+    """Raised in case the VMRay API returns an eror."""
 
     pass
 
 
 class UnknownHashTypeError(VMRayClientError):
-    """ Raised when length of hash as hex-string (or in bits) is not 32 (128 bit), 40 (160 bit) or 64 (256 bit). """
+    """Raised when length of hash as hex-string (or in bits) is not 32 (128 bit), 40 (160 bit) or 64 (256 bit)."""
 
     pass
 
 
 class BadResponseError(VMRayClientError):
-    """ Raised in case the VMRay API returns a non-2xx status code. """
+    """Raised in case the VMRay API returns a non-2xx status code."""
 
     pass
 
@@ -73,7 +73,7 @@ class VMRayClient(object):
         recursive_sample_limit=10,
         reanalyze=True,
         verify=True,
-        **optional_parameters
+        **optional_parameters,
     ):
         self.url = url
         self.key = key

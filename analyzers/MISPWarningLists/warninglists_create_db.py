@@ -5,11 +5,11 @@ import re
 import json
 import logging
 import ipaddress
-from glob import glob 
+from glob import glob
 from tqdm import tqdm
 from tld import get_tld
 
-logging.basicConfig(filename='import.log',level=logging.DEBUG)
+logging.basicConfig(filename="import.log", level=logging.DEBUG)
 
 
 import psycopg2.extras
@@ -26,6 +26,7 @@ conn = engine.connect()
 
 # UPDATE TLD FROM MOZILLA
 from tld.utils import update_tld_names
+
 update_tld_names()
 
 
@@ -37,19 +38,22 @@ sha256_re = re.compile(r"^[a-f0-9]{64}(:.+)?$", re.IGNORECASE)
 sha512_re = re.compile(r"^[a-f0-9]{128}(:.+)?$", re.IGNORECASE)
 
 
-
 items = {}
 avoid_list = []
 
-file_list = [file for file in glob(warninglists_path, recursive=True) if file.split("/")[-2] not in avoid_list]
+file_list = [
+    file
+    for file in glob(warninglists_path, recursive=True)
+    if file.split("/")[-2] not in avoid_list
+]
 for file_item in file_list:
-    with open(file_item, 'r') as f:
+    with open(file_item, "r") as f:
         json_data = json.load(f)
         file_name = file_item.split("/")[-2]
         items[file_name] = {}
-        items[file_name]['version'] = str(json_data['version'])
-        items[file_name]['list'] = {x:{} for x in json_data['list']}
-    
+        items[file_name]["version"] = str(json_data["version"])
+        items[file_name]["list"] = {x: {} for x in json_data["list"]}
+
 for k, v in items.items():
     logging.debug(f"NAME: {k} - VERSION: {v['version']} - ITEMS: {len(v['list'])}")
 
@@ -57,48 +61,52 @@ for k, v in items.items():
 # In[7]:
 
 for k, v in tqdm(items.items()):
-    for item in v['list'].keys():        
-        new_item = item    
-        if new_item.startswith('.'):
-            new_item = "*" + new_item        
-        if new_item.endswith('.'):
+    for item in v["list"].keys():
+        new_item = item
+        if new_item.startswith("."):
+            new_item = "*" + new_item
+        if new_item.endswith("."):
             new_item = new_item[:-1]
         try:
             ipaddress.ip_address(new_item)
-            items[k]['list'][item]['type'] = 'cidr'
-            items[k]['list'][item]['address'] = new_item
-        except:      
+            items[k]["list"][item]["type"] = "cidr"
+            items[k]["list"][item]["address"] = new_item
+        except:
             try:
                 ipaddress.ip_network(new_item)
-                items[k]['list'][item]['type'] = 'cidr'
-                items[k]['list'][item]['address'] = new_item
+                items[k]["list"][item]["type"] = "cidr"
+                items[k]["list"][item]["address"] = new_item
             except:
                 if md5_re.match(new_item):
-                    items[k]['list'][item]['type'] = 'md5'
-                    items[k]['list'][item]['hash'] = new_item
+                    items[k]["list"][item]["type"] = "md5"
+                    items[k]["list"][item]["hash"] = new_item
                 elif sha1_re.match(new_item):
-                    items[k]['list'][item]['type'] = 'sha1'
-                    items[k]['list'][item]['hash'] = new_item
+                    items[k]["list"][item]["type"] = "sha1"
+                    items[k]["list"][item]["hash"] = new_item
                 elif sha224_re.match(new_item):
-                    items[k]['list'][item]['type'] = 'sha224'
-                    items[k]['list'][item]['hash'] = new_item
+                    items[k]["list"][item]["type"] = "sha224"
+                    items[k]["list"][item]["hash"] = new_item
                 elif sha256_re.match(new_item):
-                    items[k]['list'][item]['type'] = 'sha256'
-                    items[k]['list'][item]['hash'] = new_item
+                    items[k]["list"][item]["type"] = "sha256"
+                    items[k]["list"][item]["hash"] = new_item
                 elif sha512_re.match(new_item):
-                    items[k]['list'][item]['type'] = 'sha512'
-                    items[k]['list'][item]['hash'] = new_item
+                    items[k]["list"][item]["type"] = "sha512"
+                    items[k]["list"][item]["hash"] = new_item
                 else:
                     if new_item.find(".") == -1:
                         logging.error(f"NOT VALID: {new_item} [{k}]")
                         continue
                     try:
                         ext = get_tld(new_item, fix_protocol=True, as_object=True)
-                        items[k]['list'][item]['type'] = 'url-domain'
-                        items[k]['list'][item]['subdomain'] = ext.subdomain if ext.subdomain != '' else None
-                        items[k]['list'][item]['domain'] = ext.domain
-                        items[k]['list'][item]['tld'] = ext.tld
-                        items[k]['list'][item]['query'] = ext.parsed_url[2] if ext.parsed_url[2] != '' else None
+                        items[k]["list"][item]["type"] = "url-domain"
+                        items[k]["list"][item]["subdomain"] = (
+                            ext.subdomain if ext.subdomain != "" else None
+                        )
+                        items[k]["list"][item]["domain"] = ext.domain
+                        items[k]["list"][item]["tld"] = ext.tld
+                        items[k]["list"][item]["query"] = (
+                            ext.parsed_url[2] if ext.parsed_url[2] != "" else None
+                        )
                     except:
                         logging.error(f"NOT VALID: {new_item} [{k}]")
 
@@ -157,13 +165,13 @@ last_versions = [x for x in conn.execute(s)]
 print(f"{len(last_versions)} list already available in db")
 
 
-# INSERT, UPDATE OR SKIP 
+# INSERT, UPDATE OR SKIP
 raw_conn = engine.raw_connection()
 cursor = raw_conn.cursor()
 
 for k, v in tqdm(items.items()):
     name = k
-    version = items[k]['version']
+    version = items[k]["version"]
     if (name, version) not in last_versions:
         if name in [x[0] for x in last_versions]:
             logging.debug(f"{(name, version)} is an update - DELETE OLD RELEASE")
@@ -171,21 +179,28 @@ for k, v in tqdm(items.items()):
             conn.execute(d)
 
         logging.debug(f"{(name, version)} not in db - BULK IMPORTING")
-        tbi = [{
-            'list_name': name,
-            'list_version': version,
-            'address': item.get('address', None),
-            'hash': item.get('hash', None),
-            'subdomain': item.get('subdomain', None),
-            'domain': item.get('domain', None),
-            'tld': item.get('tld', None),
-            'query': item.get('query', None),
-        } for item_old_name, item in v['list'].items()]
-        psycopg2.extras.execute_batch(cursor, """INSERT INTO warninglists(list_name, list_version, address, hash, subdomain, domain, tld, query) VALUES (%(list_name)s, %(list_version)s, %(address)s, %(hash)s, %(subdomain)s, %(domain)s, %(tld)s, %(query)s)""", tbi)
+        tbi = [
+            {
+                "list_name": name,
+                "list_version": version,
+                "address": item.get("address", None),
+                "hash": item.get("hash", None),
+                "subdomain": item.get("subdomain", None),
+                "domain": item.get("domain", None),
+                "tld": item.get("tld", None),
+                "query": item.get("query", None),
+            }
+            for item_old_name, item in v["list"].items()
+        ]
+        psycopg2.extras.execute_batch(
+            cursor,
+            """INSERT INTO warninglists(list_name, list_version, address, hash, subdomain, domain, tld, query) VALUES (%(list_name)s, %(list_version)s, %(address)s, %(hash)s, %(subdomain)s, %(domain)s, %(tld)s, %(query)s)""",
+            tbi,
+        )
         raw_conn.commit()
     else:
         logging.debug(f"{name}, {version} already in db - SKIPPING")
-        
+
 cursor.close()
 conn.close()
 raw_conn.close()

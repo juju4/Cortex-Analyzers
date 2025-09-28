@@ -5,7 +5,9 @@
   "url": "https://github.com/LDO-CERT/cortex-analyzer",
   "version": "1.0",
   "description": "Check if a  domain is sinkholed via DNS Sinkhole server",
-  "dataTypeList": ["domain"],
+  "dataTypeList": [
+    "domain"
+  ],
   "command": "DNSSinkhole/dnssinkhole.py",
   "baseConfig": "DNSSinkhole",
   "configurationItems": [

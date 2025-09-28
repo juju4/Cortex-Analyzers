@@ -16,7 +16,6 @@ class Hunterio(Analyzer):
         self.key = self.get_param("config.key", None, "Missing hunter.io API key")
 
     def summary(self, raw):
-
         taxonomies = []
         namespace = "Hunter.io"
         if self.service == "domainsearch":

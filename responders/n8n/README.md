@@ -30,5 +30,5 @@ In the Cortex UI:
 |-----------------|--------|----------|--------------------------------------|
 | `webhook` | string | Yes      | The full URL of the n8n workflow webhook  |
 
-Example value:  
+Example value:
 `http(s)://your.n8n_instance.com/webhook/abc123`

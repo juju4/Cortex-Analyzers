@@ -43,8 +43,7 @@ class ThreatResponseAnalyzer(Analyzer):
 
     def run(self):
         def identify_hash(observable):
-            """Validate the provided hash is a supported type
-            """
+            """Validate the provided hash is a supported type"""
             # RegEx for supported checksum types MD5, SHA1, SHA256
             hash_mapping = {
                 re.compile(r"^[A-Za-z0-9]{32}$"): "md5",
@@ -57,8 +56,7 @@ class ThreatResponseAnalyzer(Analyzer):
                     return hash_mapping[expression]
 
         def parse_verdicts(response_json):
-            """Parse response from Threat Response and extract verdicts
-            """
+            """Parse response from Threat Response and extract verdicts"""
             verdicts = []
             for module in response_json.get("data", []):
                 module_name = module["module"]
@@ -77,15 +75,13 @@ class ThreatResponseAnalyzer(Analyzer):
             return verdicts
 
         def parse_targets(response_json):
-            """Parse response Threat Response and extract targets
-            """
+            """Parse response Threat Response and extract targets"""
             result = []
             for module in response_json.get("data", []):
                 module_name = module["module"]
                 targets = []
 
                 for doc in module.get("data", {}).get("sightings", {}).get("docs", []):
-
                     for target in doc.get("targets", []):
                         element = deepcopy(target)
                         element.pop("observed_time", None)

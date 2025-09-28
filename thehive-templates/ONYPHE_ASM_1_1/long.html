@@ -35,7 +35,7 @@
             </dl>
             <dl ng-if="r.cve" class="dl-horizontal">
                 <dt>CVE(s):</dt>
-                <dd><span ng-repeat="cv in r.cve">{{ cv }}<br></span></dd> 
+                <dd><span ng-repeat="cv in r.cve">{{ cv }}<br></span></dd>
             </dl>
             <dl class="dl-horizontal">
                 <dt>Hostname(s):</dt>
@@ -51,27 +51,27 @@
             </dl>
             <dl class="dl-horizontal">
                 <dt>Device:</dt>
-                <dd ng-if="r.device.product">{{r.device.productvendor}} {{r.device.product}}</dd> 
-                <dd ng-if="!r.device.product">{{r.device.class}}</dd> 
+                <dd ng-if="r.device.product">{{r.device.productvendor}} {{r.device.product}}</dd>
+                <dd ng-if="!r.device.product">{{r.device.class}}</dd>
             </dl>
             <dl class="dl-horizontal">
                 <dt>URL:</dt>
-                <dd ng-if="r.forward && r.tls == 'true' && r.port == '443'">https://{{r.forward}}{{r.url}}</dd> 
-                <dd ng-if="r.forward && r.tls == 'true' && r.port != '443'">https://{{r.forward}}:{{r.port}}{{r.url}}</dd> 
-                <dd ng-if="r.forward && r.tls == 'false' && r.port == '80'">http://{{r.forward}}{{r.url}}</dd> 
-                <dd ng-if="r.forward && r.tls == 'false' && r.port != '80'">http://{{r.forward}}:{{r.port}}{{r.url}}</dd> 
-                <dd ng-if="!r.forward && r.tls == 'true' && r.port == '443'">https://{{r.ip}}{{r.url}}</dd> 
-                <dd ng-if="!r.forward && r.tls == 'true' && r.port != '443'">https://{{r.ip}}:{{r.port}}{{r.url}}</dd> 
-                <dd ng-if="!r.forward && r.tls == 'false' && r.port == '80'">http://{{r.ip}}{{r.url}}</dd> 
-                <dd ng-if="!r.forward && r.tls == 'false' && r.port != '80'">http://{{r.ip}}:{{r.port}}{{r.url}}</dd> 
+                <dd ng-if="r.forward && r.tls == 'true' && r.port == '443'">https://{{r.forward}}{{r.url}}</dd>
+                <dd ng-if="r.forward && r.tls == 'true' && r.port != '443'">https://{{r.forward}}:{{r.port}}{{r.url}}</dd>
+                <dd ng-if="r.forward && r.tls == 'false' && r.port == '80'">http://{{r.forward}}{{r.url}}</dd>
+                <dd ng-if="r.forward && r.tls == 'false' && r.port != '80'">http://{{r.forward}}:{{r.port}}{{r.url}}</dd>
+                <dd ng-if="!r.forward && r.tls == 'true' && r.port == '443'">https://{{r.ip}}{{r.url}}</dd>
+                <dd ng-if="!r.forward && r.tls == 'true' && r.port != '443'">https://{{r.ip}}:{{r.port}}{{r.url}}</dd>
+                <dd ng-if="!r.forward && r.tls == 'false' && r.port == '80'">http://{{r.ip}}{{r.url}}</dd>
+                <dd ng-if="!r.forward && r.tls == 'false' && r.port != '80'">http://{{r.ip}}:{{r.port}}{{r.url}}</dd>
             </dl>
             <dl ng-if="r.organization" class="dl-horizontal">
                 <dt>Organization:</dt>
-                <dd>{{r.organization}}</dd> 
+                <dd>{{r.organization}}</dd>
             </dl>
             <dl ng-if="r.cpe" class="dl-horizontal">
                 <dt>CPE(s):</dt>
-                <dd><span ng-repeat="cp in r.cpe">{{ cp }}<br></span></dd> 
+                <dd><span ng-repeat="cp in r.cpe">{{ cp }}<br></span></dd>
             </dl>
         </uib-accordion-group>
     </uib-accordion>

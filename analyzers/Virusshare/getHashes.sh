@@ -2,13 +2,13 @@
 # This script downloads all available Virusshare.com hash files using curl and wget. It can be called as: ./getHashes.sh PATH
 
 
-display_usage() { 
+display_usage() {
     echo "getHashes v0.3"
-    echo "  Fetch all Virusshare.com hashes" 
+    echo "  Fetch all Virusshare.com hashes"
     echo -e "\n  Usage: $0 <path> \n"
-} 
+}
 
-if [  $# -ne 1 ]; then 
+if [  $# -ne 1 ]; then
     display_usage
     exit 1
 fi
@@ -35,4 +35,3 @@ do
   sleep 3
 done <<< `curl -s -L https://virusshare.com/hashes.4n6 | grep -E "VirusShare_[0-9]{5}\.md5" | cut -d\" -f2 | cut -d\/ -f2`
 popd
-

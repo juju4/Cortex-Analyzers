@@ -1,12 +1,12 @@
 # Gatewatcher CTI Identity
 
 ### What does this responder do?
-During a run, the responder (associated with a case) checks for leaked emails related to a specific domain within a specified timeframe. 
+During a run, the responder (associated with a case) checks for leaked emails related to a specific domain within a specified timeframe.
   - For each leaked email found, an alert is raised containing detailed information in the description field, and the email is added as an observable. Each alert is linked to the case, and the alert observables are added to the case observables.
   - If an alert is raised for a leaked email that already exists and is linked to another case, the alert description is updated with the latest information. The alert is unlinked from the previous case and linked to the current case. The previous case retains the email as an observable.
 
 ## Basic Workflows
-### Unique run 
+### Unique run
   - The responder can be run once directly from the 'theHive' interface. From a case, you can select the responder and run it. The responder will execute with the configuration set in the 'Cortex responder configuration' interface.
 
   ### Add to a task manager
@@ -30,7 +30,7 @@ During a run, the responder (associated with a case) checks for leaked emails re
   - ![alt text](./assets/responder_conf_var.png)
     - When running the script, the `minutes` argument is mandatory. To retrieve all leaked emails for a given domain, configure the responder on Cortex and execute it manually within a case.
 
-- The job can take time to finish, so to avoid timeouts, adjust the timeout parameters. By default, the timeout is set to 15 minutes.   
+- The job can take time to finish, so to avoid timeouts, adjust the timeout parameters. By default, the timeout is set to 15 minutes.
 
 ## How to edit the script
 - A script is available in the "script" directory to allow you to automate the execution of the responder.
@@ -44,17 +44,17 @@ During a run, the responder (associated with a case) checks for leaked emails re
     - For Cortex:
       - `cortex_fqdn`
       - `cortex_api_key`
-      - In responder_conf (You can also edit other parameters): 
+      - In responder_conf (You can also edit other parameters):
         - `LISApiKey`
-        - `theHiveFQDN` 
+        - `theHiveFQDN`
 - Make the script executable:
   - Run : `chmod +x /path/of/the/script/script.py`
 
 ## How to Setup the script in a cron/task manager
 
-- Add this script to a cron/task manager to run it automatically at regular intervals. 
+- Add this script to a cron/task manager to run it automatically at regular intervals.
   - For exemple, to run it every 30 minutes on Linux:
-    - Add the script to the 'crontab': 
+    - Add the script to the 'crontab':
       - Edit the cron manager: `crontab -e`
       - Add the line to the file with the following pattern: `*/30 * * * * /path/to/bin/python3 /path/of/the/script/script.py domain_name 30` (to capture logs in a file, you can add to the the line `>> /path/of/the/script/logs.log 2>&1`).
       - Now the script will run every 30 minutes.

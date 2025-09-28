@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "MIT",
   "description": "Query Inoitsu for a compromised email address.",
-  "dataTypeList": ["mail"],
+  "dataTypeList": [
+    "mail"
+  ],
   "command": "Inoitsu/inoitsu_analyzer.py",
   "baseConfig": "Inoitsu",
   "configurationItems": [],

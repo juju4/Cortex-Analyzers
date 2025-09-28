@@ -10,21 +10,21 @@
 
 ############################
 #  REQUIREMENTS            #
-############################ 
+############################
 # - jq (from https://stedolan.github.io/jq/ - ex: `apt install jq`)
 # - json-spec (`pip3 install json-spec`)
 # - python3 + json lib
- 
 
-######### 
+
+#########
 # USAGE #
 #########
 # $ bash utils/docker/build-customimage.sh -t TYPE -b DEFINITION_FILE
 # with:
 # -t : type of neurons (analyzer or responder)
 # -b : path to analyzer or responder description file
-# 
-# Example: 
+#
+# Example:
 # $ cd /opt/Cortex-Analyzers
 # $ bash utils/docker/build-customimage.sh -t analyzer -b analyzers/EmlParser/EmlParser.json
 
@@ -32,29 +32,29 @@
 
 #############################
 #  VARIABLES TO CUSTOMISE   #
-############################# 
+#############################
 ## Set the path for custom analyzers (configured in Cortex)
 analyzerspath="/opt/customneurons/analyzers"
 ## Set the path to your custom responders repository  (configured in Cortex)
 responderspath="/opt/customneurons/responders"
 # Set the path to your docker images archives
 dockerimagearchives="/opt/backup-images"
-# Set a name for the docker image registry 
+# Set a name for the docker image registry
 dockerimageregistryname="localhost"
-# Set a name for the docker image repository 
+# Set a name for the docker image repository
 dockerimagerepositoryname="customimages"
 
 ###################################
 # HOW TO  RELOAD DOCKERIMAGES     #
 ###################################
 #
-# for I in `ls "${dockerimagearchives}/${dockerimagerepositoryname}-*.tar`; do docker load < $I ; done 
+# for I in `ls "${dockerimagearchives}/${dockerimagerepositoryname}-*.tar`; do docker load < $I ; done
 #
 
 
 ############################
 #  PROGRAM VARIABLES       #
-############################ 
+############################
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -237,7 +237,7 @@ log () {
     TAG="[INFO]: "
     COLOR=${BLUE}
     ;;
-    
+
   esac
 
   echo -e "${TAG}${MESSAGE}"
@@ -251,21 +251,21 @@ display-help()
 {
    # Display Help
   HELP="Build docker images for Custom analyzers and responders
-  
+
    Syntax: $0 [options]
-   
+
    options:
    -h          Print this Help.
-   -t type     Type: 'analyzer' or 'responder' 
+   -t type     Type: 'analyzer' or 'responder'
    -b path     Path of analyzer or responder json file
    "
-  
+
   log success "${HELP}"
 }
 
 
 ##########################################
-# CHECK TYPE AND RETURN DESTINATION PATH # 
+# CHECK TYPE AND RETURN DESTINATION PATH #
 # FOR THE UPDATED JSON FILE              #
 ##########################################
 neuron-type() {
@@ -286,7 +286,7 @@ neuron-type() {
 ############################
 json-validate() {
   jsondata=$1
-  cat ${jsondata} | python3 -mjson.tool > /dev/null && log ok "JSON validated" 
+  cat ${jsondata} | python3 -mjson.tool > /dev/null && log ok "JSON validated"
 }
 
 
@@ -351,7 +351,7 @@ docker-commands() {
     cd ${folderpath} && \
     (
       (
-      docker build -t ${dockerimagename} . && log ok "Docker image ${dockerimagename} build successfully" 
+      docker build -t ${dockerimagename} . && log ok "Docker image ${dockerimagename} build successfully"
       ) || \
       (
         log ko "Docker build failed. See ${LOGFILE} for more information" && exit 1
@@ -368,13 +368,13 @@ docker-commands() {
 build-image() {
   jsonpath=$1
   folderpath=$(dirname ${jsonpath})
-  neurontype=$2 
+  neurontype=$2
   if [ -d ${folderpath} ]
   then
     # Get name of the analyzer/responder
     if [ -f ${jsonpath} ]
     then
-      json-validate ${jsonpath} && validate-json-schema ${jsonpath} && neuronname=$(cat ${jsonpath} | jq '.name' | tr  '[:upper:]'  '[:lower:]' | tr -d '"') 
+      json-validate ${jsonpath} && validate-json-schema ${jsonpath} && neuronname=$(cat ${jsonpath} | jq '.name' | tr  '[:upper:]'  '[:lower:]' | tr -d '"')
     else
       log ko "JSON file does not exist"
       exit
@@ -383,13 +383,13 @@ build-image() {
     dockerimagename="${dockerimageregistryname}/${dockerimagerepositoryname}/${neuronname}:latest"
     # Set docker image archive name
     archivename="${dockerimagearchives}/${dockerimagerepositoryname}-${neuronname}.tar"
-    
+
     # if no Dockerfile, create a default one
     (
       [[ -f "${folderpath}/Dockerfile" ]] || \
       builddockerfile "${folderpath}/Dockerfile" ${workername} ${command}
     )
-    
+
     # build and Save docker image
     docker-commands ${folderpath} ${dockerimagename}
 
@@ -436,7 +436,7 @@ done
 # AND RUN MAIN PROGRAMS             #
 #####################################
 run() {
-  if [ -z "${t+x}" ] || [ -z "${b+x}" ] 
+  if [ -z "${t+x}" ] || [ -z "${b+x}" ]
   then
     display-help
   else

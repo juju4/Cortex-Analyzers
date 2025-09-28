@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Scan a file with MetaDefender Core",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "command": "MetaDefender/metadefender_lookup.py",
   "baseConfig": "MetaDefender",
   "config": {

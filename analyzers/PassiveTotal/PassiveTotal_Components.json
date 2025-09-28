@@ -5,7 +5,11 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "PassiveTotal Components Lookup.",
-  "dataTypeList": ["domain", "fqdn", "ip"],
+  "dataTypeList": [
+    "domain",
+    "fqdn",
+    "ip"
+  ],
   "command": "PassiveTotal/passivetotal_analyzer.py",
   "baseConfig": "PassiveTotal",
   "config": {

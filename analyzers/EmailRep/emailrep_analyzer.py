@@ -8,8 +8,7 @@ from emailrep import EmailRep
 class EmailRepAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.key = self.get_param('config.key', None)
-
+        self.key = self.get_param("config.key", None)
 
     def summary(self, raw):
         taxonomies = []

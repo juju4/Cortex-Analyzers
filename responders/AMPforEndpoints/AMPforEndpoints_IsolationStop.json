@@ -5,7 +5,9 @@
   "url": "https://github.com/CiscoSecurity",
   "license": "MIT",
   "description": "Stop host isolation for an AMP for Endpoints connector",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "AMPforEndpoints/AMPforEndpoints.py",
   "baseConfig": "AMPforEndpoints",
   "config": {

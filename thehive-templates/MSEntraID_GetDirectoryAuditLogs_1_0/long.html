@@ -101,7 +101,7 @@
                             <td><strong>Result Reason</strong></td>
                             <td>{{ audit.resultReason || 'N/A' }}</td>
                         </tr>
-                        
+
                         <!-- Dynamic rendering for Initiated By -->
                         <tr ng-if="audit.initiatedBy">
                             <td><strong>Initiated By</strong></td>
@@ -114,7 +114,7 @@
                                 </table>
                             </td>
                         </tr>
-                        
+
                         <!-- Dynamic rendering for Modified Properties -->
                         <tr ng-if="audit.modifiedProperties && audit.modifiedProperties.length">
                             <td><strong>Modified Properties</strong></td>
@@ -130,7 +130,7 @@
                                 </div>
                             </td>
                         </tr>
-                        
+
                         <!-- Dynamic rendering for Target Resources -->
                         <tr ng-if="audit.targetResources && audit.targetResources.length">
                             <td><strong>Target Resources</strong></td>
@@ -146,7 +146,7 @@
                                 </div>
                             </td>
                         </tr>
-                        
+
                         <!-- Dynamic rendering for Additional Details -->
                         <tr ng-if="audit.additionalDetails && audit.additionalDetails.length">
                             <td><strong>Additional Details</strong></td>

@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get Reputation score and other basic information from Network Entity Reputation Database (NERD)",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "baseConfig": "NERD",
   "command": "NERD/nerd_analyzer.py",
   "configurationItems": [

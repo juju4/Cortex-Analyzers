@@ -1,5 +1,6 @@
 # Config item classes
 
+
 class RT4ResponderConfig(dict):
     """Define what an RT4 Responder Config should allow and how it can be set (dict
     that only takes certain keys).
@@ -9,49 +10,50 @@ class RT4ResponderConfig(dict):
     Configs should be updated like so: config.update(1, **newdata) where 1 = weight/rank and newdata is a dict of k,v's. In this
     case, the newdata would not be entered since its weight is not greater than the existing data.
     """
-    
+
     def __init__(self, weight=None, **kwargs):
         self.WEIGHTS = {
-            'global': 1,
-            'template': 2,
-            'case': 3,
-            'alert': 3,
-            'case_artifact': 4,
-            'observable': 4
+            "global": 1,
+            "template": 2,
+            "case": 3,
+            "alert": 3,
+            "case_artifact": 4,
+            "observable": 4,
         }
-        self.allowed_keys = set([
-            'Queue',
-            'Status',
-            'Owner',
-            'Requestor',
-            'Cc',
-            'AdminCc',
-            'Subject',
-            'Text',
-            'Priority',
-            'InitialPriority',
-            'FinalPriority',
-            'TimeEstimated',
-            'Starts',
-            'Due',
-            'Files',
-            'template',
-            'indicator_list'
-        ])
-        
+        self.allowed_keys = set(
+            [
+                "Queue",
+                "Status",
+                "Owner",
+                "Requestor",
+                "Cc",
+                "AdminCc",
+                "Subject",
+                "Text",
+                "Priority",
+                "InitialPriority",
+                "FinalPriority",
+                "TimeEstimated",
+                "Starts",
+                "Due",
+                "Files",
+                "template",
+                "indicator_list",
+            ]
+        )
+
         # 'normal' dict init, no weight but requires key_to_list_mapping
-        if 'key_to_list_mapping' in kwargs:
-            super().__init__(kwargs.get('key_to_list_mapping'))
+        if "key_to_list_mapping" in kwargs:
+            super().__init__(kwargs.get("key_to_list_mapping"))
         # RT4 init, be sure we have weights
         else:
             super().__init__(self)
             self.__setitem__(weight, **kwargs)
 
-
     # override default 'set' method so users can't accidentally set config items without a corresponding weight
     def __setitem__(self, weight, **kwargs):
         for key, value in kwargs.items():
-            if key in self.allowed_keys or key.startswith('CF_'):
+            if key in self.allowed_keys or key.startswith("CF_"):
                 weight_key = "{}_weight".format(key)
                 # map string weight to int if needed
                 if isinstance(weight, str):
@@ -68,7 +70,7 @@ class RT4ResponderConfig(dict):
     # override default 'update' method to include weighting
     def update(self, weight, **kwargs):
         self.__setitem__(weight, **kwargs)
-        
+
     # override default 'keys' method to only display keys related to RT4
     def keys(self):
         for key in super().keys():
@@ -88,7 +90,7 @@ class RT4ResponderConfig(dict):
 
     # create custom '__copy__' method. we do this so that copies don't include all the case/artifact details
     def __copy__(self):
-        return self.__class__(**{'key_to_list_mapping': self.items()})
+        return self.__class__(**{"key_to_list_mapping": self.items()})
 
     def copy(self):
         "Returns a copy of this object."

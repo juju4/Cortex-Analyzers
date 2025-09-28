@@ -5,7 +5,9 @@
   "url": "https://github.com/dadokkio/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Retrieve ET reputation, related malware, and IDS requests for a given IP address.",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "command": "EmergingThreats/emergingthreats_analyzer.py",
   "baseConfig": "EmergingThreats",
   "configurationItems": [

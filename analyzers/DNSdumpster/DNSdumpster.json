@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Query domain information from DNSdumpster.com.",
-  "dataTypeList": ["domain"],
+  "dataTypeList": [
+    "domain"
+  ],
   "command": "DNSdumpster/dnsdumpster.py",
   "baseConfig": "DNSdumpster",
   "configurationItems": [],

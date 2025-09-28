@@ -17,7 +17,9 @@ class FalconCustomIOC(Responder):
     def __init__(self):
         Responder.__init__(self)
         self.falconapi_endpoint = self.get_param(
-            "config.falconapi_endpoint", None, "Falcon API Endpoint: US-1 | US-2 | US-GOV-1 | EU-1",
+            "config.falconapi_endpoint",
+            None,
+            "Falcon API Endpoint: US-1 | US-2 | US-GOV-1 | EU-1",
         )
         self.falconapi_clientid = self.get_param(
             "config.falconapi_clientid", None, "Falcon clientid missing"
@@ -34,12 +36,8 @@ class FalconCustomIOC(Responder):
         self.hash_block_expiration_days = self.get_param(
             "config.hash_block_expiration_days", 30
         )
-        self.action_to_take = self.get_param(
-            "config.action_to_take", "detect"
-        )
-        self.severity_level = self.get_param(
-            "config.severity_level", "high"
-        )
+        self.action_to_take = self.get_param("config.action_to_take", "detect")
+        self.severity_level = self.get_param("config.severity_level", "high")
         self.tag_added_to_cs = self.get_param(
             "config.tag_added_to_cs", "Cortex Incident - FalconCustomIOC"
         )
@@ -101,49 +99,66 @@ class FalconCustomIOC(Responder):
                     data_type = "sha256"
 
             if data_type in ("fqdn", "domain"):
-                expiration_date = datetime.today() + relativedelta(days=self.domain_block_expiration_days)
+                expiration_date = datetime.today() + relativedelta(
+                    days=self.domain_block_expiration_days
+                )
             elif data_type in ("ip", "ipv4", "ipv6", "ip6"):
-                expiration_date = datetime.today() + relativedelta(days=self.ip_block_expiration_days)
+                expiration_date = datetime.today() + relativedelta(
+                    days=self.ip_block_expiration_days
+                )
             elif data_type in ("hash", "sha256", "md5"):
-                expiration_date = datetime.today() + relativedelta(days=self.hash_block_expiration_days)
+                expiration_date = datetime.today() + relativedelta(
+                    days=self.hash_block_expiration_days
+                )
             expiration = expiration_date.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-            incident_title = self.get_param("data.case.title", None, "Can't get case title").encode("utf-8")[:128]
+            incident_title = self.get_param(
+                "data.case.title", None, "Can't get case title"
+            ).encode("utf-8")[:128]
 
             auth = OAuth2(
                 client_id=self.falconapi_clientid,
                 client_secret=self.falconapi_key,
-                base_url=self.falconapi_endpoint
+                base_url=self.falconapi_endpoint,
             )
-            
-            falcon_api = IOC(auth_object=auth)
-            response = falcon_api.indicator_create(action=self.action_to_take,
-                                                   applied_globally=True,
-                                                   comment="TheHive IOC incident",
-                                                   description=incident_title.decode("utf-8"),
-                                                   expiration=expiration,
-                                                   filename="",
-                                                   ignore_warnings=False,
-                                                   platforms='mac,windows,linux',
-                                                   severity=self.severity_level,
-                                                   source="Cortex - FalconCustomIOC [" + incident_title.decode("utf-8") + "]",
-                                                   tags=self.tag_added_to_cs,
-                                                   type=ioctypes[data_type],
-                                                   value=ioc.strip()
-                                                   )
-            
-            response_error = str(response['body']['errors'])
-            response_ressources = str(response['body']['resources'])
 
-            if response['body']['errors'] is None:
+            falcon_api = IOC(auth_object=auth)
+            response = falcon_api.indicator_create(
+                action=self.action_to_take,
+                applied_globally=True,
+                comment="TheHive IOC incident",
+                description=incident_title.decode("utf-8"),
+                expiration=expiration,
+                filename="",
+                ignore_warnings=False,
+                platforms="mac,windows,linux",
+                severity=self.severity_level,
+                source="Cortex - FalconCustomIOC ["
+                + incident_title.decode("utf-8")
+                + "]",
+                tags=self.tag_added_to_cs,
+                type=ioctypes[data_type],
+                value=ioc.strip(),
+            )
+
+            response_error = str(response["body"]["errors"])
+            response_ressources = str(response["body"]["resources"])
+
+            if response["body"]["errors"] is None:
                 self.report(
-                    {"message": f"{ioc} successuflly submitted to Crowdstrike Falcon custom IOC api - status code: {response['status_code']}"}
+                    {
+                        "message": f"{ioc} successuflly submitted to Crowdstrike Falcon custom IOC api - status code: {response['status_code']}"
+                    }
                 )
-            elif 'Duplicate type' in response_ressources:
-                self.error(f"Not submitted because of duplicated entry - {ioc} already found on your Falcon CustomIOC database")
+            elif "Duplicate type" in response_ressources:
+                self.error(
+                    f"Not submitted because of duplicated entry - {ioc} already found on your Falcon CustomIOC database"
+                )
                 return False
             else:
-                self.error(f"Error: unable to complete action - received {response['status_code']} status code from FalconIOC API with the following message: {response_error}")
+                self.error(
+                    f"Error: unable to complete action - received {response['status_code']} status code from FalconIOC API with the following message: {response_error}"
+                )
                 return False
 
         except Exception as ex:
@@ -152,11 +167,8 @@ class FalconCustomIOC(Responder):
         return True
 
     def operations(self, raw):
-        return [
-            self.build_operation(
-                "AddTagToArtifact", tag=self.tag_added_to_thehive
-            )
-        ]
+        return [self.build_operation("AddTagToArtifact", tag=self.tag_added_to_thehive)]
+
 
 if __name__ == "__main__":
     FalconCustomIOC().run()

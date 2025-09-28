@@ -1,4 +1,4 @@
-### PhishTank 
+### PhishTank
 [PhishTank](https://phishtank.com/) is a free community site where anyone can submit, verify, track and share phishing data.
 
 The analyzer comes in a single flavour that returns the availability of submitted url in PhishTank database.

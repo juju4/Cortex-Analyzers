@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use VirusTotal to run new analysis on hash.",
-  "dataTypeList": ["hash"],
+  "dataTypeList": [
+    "hash"
+  ],
   "baseConfig": "VirusTotal",
   "config": {
     "service": "rescan"

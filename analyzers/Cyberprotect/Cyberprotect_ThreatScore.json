@@ -1,11 +1,17 @@
 {
   "name": "Cyberprotect_ThreatScore",
-  "author": "Rémi Allain, Cyberprotect",
+  "author": "R\u00e9mi Allain, Cyberprotect",
   "license": "AGPL-V3",
   "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
   "version": "3.0",
   "description": "ThreatScore is a cyber threat scoring system provided by Cyberprotect",
-  "dataTypeList": ["domain", "hash", "ip", "url", "user-agent"],
+  "dataTypeList": [
+    "domain",
+    "hash",
+    "ip",
+    "url",
+    "user-agent"
+  ],
   "command": "Cyberprotect/CyberprotectAnalyzer.py",
   "baseConfig": "Cyberprotect",
   "config": {

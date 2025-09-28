@@ -4,7 +4,10 @@
   "url": "https://www.splunk.com",
   "author": "Unit777, LetMeR00t",
   "license": "AGPL-V3",
-  "dataTypeList": ["url", "uri_path"],
+  "dataTypeList": [
+    "url",
+    "uri_path"
+  ],
   "description": "Execute a savedsearch on a Splunk instance with an URL or a URI path as argument",
   "baseConfig": "Splunk",
   "config": {

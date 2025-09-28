@@ -5,11 +5,13 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
   "description": "Retrieve ip reverse DNS resolutions on Shodan.",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "command": "Shodan/shodan_analyzer.py",
   "baseConfig": "Shodan",
   "config": {
-      "service": "reverse_dns"
+    "service": "reverse_dns"
   },
   "configurationItems": [
     {

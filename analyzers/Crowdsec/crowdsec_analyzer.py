@@ -50,7 +50,9 @@ class CrowdsecAnalyzer(Analyzer):
                 else (
                     levelorange
                     if raw["reputation"] == "suspicious"
-                    else levelgreen if raw["reputation"] == "safe" else levelinfo
+                    else levelgreen
+                    if raw["reputation"] == "safe"
+                    else levelinfo
                 )
             )
             taxonomies.append(

@@ -80,7 +80,7 @@ The mandatory blocks are `Subject` and `Text` inside which are the respective co
 
 Inside the jinja2 template, all block names are passed at RT ticket variables with their respective block values upon ticket creation. Therefore, any number of blocks corresponding to RT fields can also be assigned to further customize setting ticket variables at the template level.
 
-*Example*: 
+*Example*:
 
 `{% block CF_Classification %}Phishing{% endblock %}`
 
@@ -117,7 +117,7 @@ As already alluded to, there are 4 ways to customize ticket creation options:
    - Owner
    - Status
    - Custom Fields
-   - Template 
+   - Template
 2. Template level
    - All of the above except Template, plus:
    - Requestor/Cc/AdminCc

@@ -5,11 +5,14 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use DomainTools to get a reputation score on a domain or fqdn",
-  "dataTypeList": ["domain","fqdn"],
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
   "command": "DomainTools/domaintools_analyzer.py",
   "baseConfig": "DomainTools",
   "config": {
-      "service": "reputation"
+    "service": "reputation"
   },
   "configurationItems": [
     {

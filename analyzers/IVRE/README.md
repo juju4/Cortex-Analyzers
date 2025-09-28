@@ -28,4 +28,3 @@ Supply the following parameters to the analyzer in order to use it:
 - `use_data` (boolean): should the analyzer use the data purpose?
 - `use_passive` (boolean): should the analyzer use the passive purpose?
 - `use_scans` (boolean): should the analyzer use the scans purpose?
-

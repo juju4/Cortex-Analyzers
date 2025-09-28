@@ -5,7 +5,11 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get information from the RST Threat Feed, which integrated with Vulners, for a domain, url or an IP address.",
-  "dataTypeList": ["url", "domain", "ip"],
+  "dataTypeList": [
+    "url",
+    "domain",
+    "ip"
+  ],
   "command": "Vulners/vulners_analyzer.py",
   "baseConfig": "Vulners",
   "config": {
@@ -24,7 +28,10 @@
   "subscription_required": true,
   "free_subscription": true,
   "service_homepage": "https://vulners.com",
-  "service_logo": {"path":"assets/vulners_logo.png", "caption": "logo"},
+  "service_logo": {
+    "path": "assets/vulners_logo.png",
+    "caption": "logo"
+  },
   "screenshots": [
     {
       "path": "assets/vulners_api.png",

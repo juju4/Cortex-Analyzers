@@ -21,7 +21,7 @@
                 <div class="btn-group" role="group"><a target="_blank" href="{{content.analysis.reports.graph}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>Graph</button></a></div>
                 <div class="btn-group" role="group"><a target="_blank" href="{{content.analysis.reports.MISP}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>MISP</button></a></div>
                 <div class="btn-group" role="group"><a target="_blank" href="{{content.analysis.reports.IOC}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>IOC</button></a></div>
-            </div>   
+            </div>
         </div>
 
         <div>
@@ -64,10 +64,10 @@
                     </dl>
                 </div>
             </dl>
-        </div>        
+        </div>
 
         <div>
-            <h3>Scores</h3>     
+            <h3>Scores</h3>
             <div class="btn-group-xs btn-group-justified" role="group">
                 <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.executableDropped" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.executableDropped]">Executable Dropped</button></div>
                 <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.crashedTask" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.crashedTask]">Crashed Task</button></div>
@@ -95,15 +95,15 @@
                 <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.staticDetections" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.staticDetections]">Static Detections</button></div>
             </div>
             <br/>
-            <div class="btn-group-xs btn-group-justified" role="group">            
+            <div class="btn-group-xs btn-group-justified" role="group">
                 <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.spam" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.spam]">Spam</button></div>
                 <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.networkThreats" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.networkThreats]">Network Threats</button></div>
                 <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.cpuOverrun" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.cpuOverrun]">Cpu Overrun</button></div>
                 <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.debugOutput" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.debugOutput]">Debug Output</button></div>
-            </div>   
+            </div>
         </div>
 
-        <div ng-if="content.mitre.length > 0">  
+        <div ng-if="content.mitre.length > 0">
             <h3>Mitre</h3>
             <div class="btn-group btn-group-justified" role="group">
                 <div class="btn-group" role="group" ng-repeat="mitre in content.mitre">

@@ -5,11 +5,13 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Joe Sandbox file analysis without Internet access.",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "command": "JoeSandbox/joesandbox_analyzer.py",
   "baseConfig": "JoeSandbox",
   "config": {
-      "service": "file_analysis_noinet"
+    "service": "file_analysis_noinet"
   },
   "configurationItems": [
     {
@@ -48,28 +50,27 @@
       "type": "boolean",
       "multi": false,
       "required": true,
-      "defaultValue": false 
+      "defaultValue": false
     },
-	{
+    {
       "name": "images",
       "description": "Allow images in the report",
       "type": "boolean",
       "multi": false,
       "required": true,
-      "defaultValue": false 
+      "defaultValue": false
     },
-	{
-	  "name": "observables",
+    {
+      "name": "observables",
       "description": "Creat observables form report",
       "type": "boolean",
       "multi": false,
       "required": true,
-      "defaultValue": false 
-	}
+      "defaultValue": false
+    }
   ],
   "registration_required": true,
   "subscription_required": true,
-
   "screenshots": [
     {
       "path": "assets/HTML_report.png",
@@ -79,5 +80,5 @@
       "path": "assets/images_preview.png",
       "caption": "EmlParser: images preview"
     }
-  ]  
+  ]
 }

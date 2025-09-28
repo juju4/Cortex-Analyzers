@@ -5,6 +5,7 @@ import requests
 import json
 from cortexutils.responder import Responder
 
+
 class Watcher_MonitorManager(Responder):
     def __init__(self):
         super(Watcher_MonitorManager, self).__init__()
@@ -12,14 +13,20 @@ class Watcher_MonitorManager(Responder):
         # Load URL and API key from config
         base_url = self.get_param("config.watcher_url", None, "Watcher URL is missing.")
         self.watcher_url = f"{base_url.rstrip('/')}/api/site_monitoring/site/"
-        self.watcher_api_key = self.get_param("config.watcher_api_key", None, "Watcher API key is missing.")
-        self.the_hive_custom_field = self.get_param("config.the_hive_custom_field", "watcher-id", "Custom Field is missing.")
-        self.service = self.get_param("config.service", None, "Service parameter is missing.")
+        self.watcher_api_key = self.get_param(
+            "config.watcher_api_key", None, "Watcher API key is missing."
+        )
+        self.the_hive_custom_field = self.get_param(
+            "config.the_hive_custom_field", "watcher-id", "Custom Field is missing."
+        )
+        self.service = self.get_param(
+            "config.service", None, "Service parameter is missing."
+        )
 
         # Set headers
         self.headers = {
             "Authorization": f"Token {self.watcher_api_key}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
 
     def validate_artifact(self, data):
@@ -42,16 +49,16 @@ class Watcher_MonitorManager(Responder):
         """Check if the domain is already being monitored."""
         try:
             response = requests.get(
-                self.watcher_url,
-                headers=self.headers,
-                verify=False
+                self.watcher_url, headers=self.headers, verify=False
             )
             response.raise_for_status()
             sites = response.json()
 
             for site in sites:
                 if site.get("domain_name") == domain:
-                    self.error(f"Domain '{domain}' already exists in Watcher and is being monitored.")
+                    self.error(
+                        f"Domain '{domain}' already exists in Watcher and is being monitored."
+                    )
                     return True
             return False
         except requests.exceptions.RequestException as e:
@@ -63,11 +70,7 @@ class Watcher_MonitorManager(Responder):
         if self.is_domain_already_monitored(domain):
             return
 
-        payload = {
-            "action": "add",
-            "domain_name": domain,
-            "ticket_id": source_ref
-        }
+        payload = {"action": "add", "domain_name": domain, "ticket_id": source_ref}
 
         try:
             response = requests.post(
@@ -82,7 +85,7 @@ class Watcher_MonitorManager(Responder):
 
             return {
                 "Message": f"Domain '{domain}' successfully added to monitoring with {self.the_hive_custom_field}: '{source_ref}'.",
-                "WatcherResponse": response_data
+                "WatcherResponse": response_data,
             }
         except requests.exceptions.RequestException as e:
             self.error(f"Failed to add domain '{domain}' to monitoring: {str(e)}")
@@ -91,9 +94,7 @@ class Watcher_MonitorManager(Responder):
         """Get the site ID associated with a given domain."""
         try:
             response = requests.get(
-                self.watcher_url,
-                headers=self.headers,
-                verify=False
+                self.watcher_url, headers=self.headers, verify=False
             )
             response.raise_for_status()
             sites = response.json()
@@ -104,7 +105,9 @@ class Watcher_MonitorManager(Responder):
 
             self.error(f"Domain '{domain}' not found in Watcher.")
         except requests.exceptions.RequestException as e:
-            self.error(f"API request error while fetching site ID for domain '{domain}': {str(e)}")
+            self.error(
+                f"API request error while fetching site ID for domain '{domain}': {str(e)}"
+            )
         return None
 
     def remove_monitor(self, domain, source_ref):
@@ -115,9 +118,7 @@ class Watcher_MonitorManager(Responder):
 
         try:
             response = requests.delete(
-                f"{self.watcher_url}{site_id}/",
-                headers=self.headers,
-                verify=False
+                f"{self.watcher_url}{site_id}/", headers=self.headers, verify=False
             )
             response.raise_for_status()
 
@@ -125,7 +126,7 @@ class Watcher_MonitorManager(Responder):
 
             return {
                 "Message": f"Domain '{domain}' successfully removed from monitoring.",
-                "WatcherResponse": response_data
+                "WatcherResponse": response_data,
             }
         except requests.exceptions.RequestException as e:
             self.error(f"Failed to remove domain '{domain}' from monitoring: {str(e)}")
@@ -151,6 +152,7 @@ class Watcher_MonitorManager(Responder):
 
         # Send the report
         self.report(report)
+
 
 if __name__ == "__main__":
     Watcher_MonitorManager().run()

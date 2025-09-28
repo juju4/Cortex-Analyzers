@@ -10,7 +10,7 @@ mkdir ${TEST_PATH}
 for I in analyzers responders assets images AUTHORS AUTHORS docs *.md ; do cp -rv $I ${TEST_PATH} ; done
 cd ${TEST_PATH}
 gh repo clone TheHive-Project/doc-builder
-#cp -rv ../../doc-builder . 
+#cp -rv ../../doc-builder .
 
 doc-builder/build/Cortex-Neurons/generate.py
 

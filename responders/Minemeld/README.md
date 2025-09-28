@@ -5,7 +5,7 @@ This responder sends observables you select to a [Palo Alto Minemeld](https://ww
 #### Requirements
 The following options are required in the Palo Alto Minemeld Responder configuration:
 
-- `minemeld_url` : URL of the Minemeld instance to which you will be posting indicators   
+- `minemeld_url` : URL of the Minemeld instance to which you will be posting indicators
 - `minemeld_user`: user accessing the Minemeld instance
 - `minemeld_password`:  password for the user accessing the Minemeld instance
 - `minemeld_indicator_list`: name of Minemeld indicator list (already created in Minemeld)

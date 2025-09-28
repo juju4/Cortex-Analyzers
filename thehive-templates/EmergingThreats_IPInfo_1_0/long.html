@@ -4,7 +4,7 @@
             #mapid { width: 800px;height: 600px; }
         </style>
 
-        
+
 <div class="report-EmergingThreats" ng-if="success">
 
     <div class="panel panel-info" ng-if="content.reputation && content.reputation != '-' && content.reputation != 'Error'">
@@ -49,7 +49,7 @@
         <div class="panel-heading">
             <strong>Geoloc</strong>
         </div>
-      
+
         <div class="panel-body">
             <div ng-repeat="geo in content.geoloc track by $index">
                 <dl class="dl-horizontal">
@@ -69,14 +69,14 @@
                     <dd class="wrap"><span class="geo_lat">{{ geo.latitude }}</span> / <span class="geo_lon">{{ geo.longitude }}</span></dd>
                 </dl>
             </div>
-                
+
             <div id="mapid"></div>
-        
+
                 <script>
-                   
+
                 $(document).ready(function(){
                     setTimeout(function(){
-                    
+
                             var lat = $(".geo_lat").map(function(){return parseInt($(this).text());}).get();
                             var lon = $(".geo_lon").map(function(){return parseInt($(this).text());}).get();
                             var mymap = L.map('mapid', {center:[0,0], zoom:3});
@@ -86,19 +86,19 @@
                                 zoomOffset: -1,
                                 id: 'mapbox/streets-v11'
                             }).addTo(mymap);
-                            
+
 							var group = new L.featureGroup().addTo(mymap);
 
 							$.each( lon, function( index, value ){
                                 marker = L.marker([lat[index] , lon[index]]);
                                 marker.addTo(group);
                             });
-                            
+
                             mymap.fitBounds(group.getBounds(),{maxZoom: 4});
                     }, 3000);
                 });
 
-         
+
                 </script>
             </div>
         </div>
@@ -216,7 +216,7 @@
             <dl class="dl-horizontal">
                 <dt>Updated</dt>
                 <dd class="wrap">{{ content.whois.registrant.updated }}</dd>
-            </dl>            
+            </dl>
             <h4>Registrar</h4>
             <dl class="dl-horizontal">
                 <dt>Country</dt>

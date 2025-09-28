@@ -8,7 +8,6 @@ cd = pyclamd.ClamdUnixSocket()
 
 
 class ClamAnalyzer(Analyzer):
-
     def __init__(self):
         Analyzer.__init__(self)
 

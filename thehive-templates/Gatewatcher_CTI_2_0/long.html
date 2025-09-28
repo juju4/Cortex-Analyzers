@@ -8,7 +8,7 @@
 </div>
 
 <div ng-if="success && content.IsOnGw">
-  <!-- For IOCs Search !--> 
+  <!-- For IOCs Search !-->
   <div ng-if="content.DataType != 'mail' && content.DataType != 'ip'">
     <div class="panel panel-info" ng-repeat="ioc in content.IOCs">
       <div class="panel-heading">
@@ -30,7 +30,7 @@
           <dt>SHA256</dt>
           <dd class="wrap">{{ioc.SHA256}}</dd>
         </dl>
-  
+
         <dl class="dl-horizontal" ng-if="ioc.CreationDate">
           <dt>Creation Date</dt>
           <dd class="wrap">{{ioc.CreationDate}}</dd>
@@ -139,7 +139,7 @@
       </div>
     </div>
   </div>
-  <!-- End of Email leaked -->  
+  <!-- End of Email leaked -->
   <!-- For IP reputation !-->
   <div ng-if="content.DataType == 'ip'">
     <div class="panel-heading">

@@ -8,19 +8,23 @@ from cortexutils.analyzer import Analyzer
 
 
 class HIBPQueryAnalyzer(Analyzer):
-
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.get_param('config.service', None, 'Service parameter is missing')
-        self.api_url = self.get_param('config.url', None, 'Missing API URL')
-        self.unverified = self.get_param('config.unverified', None, 'Missing Unverified option')
-        self.truncate = self.get_param('config.truncate', None, 'Missing Truncate option')
-        self.api_key = self.get_param('config.api_key', None, 'Missing Api Key')
-        self.retries = self.get_param('config.retries', 5, 'Missing Retries option')
+        self.service = self.get_param(
+            "config.service", None, "Service parameter is missing"
+        )
+        self.api_url = self.get_param("config.url", None, "Missing API URL")
+        self.unverified = self.get_param(
+            "config.unverified", None, "Missing Unverified option"
+        )
+        self.truncate = self.get_param(
+            "config.truncate", None, "Missing Truncate option"
+        )
+        self.api_key = self.get_param("config.api_key", None, "Missing Api Key")
+        self.retries = self.get_param("config.retries", 5, "Missing Retries option")
 
     @staticmethod
     def cleanup(return_data):
-
         response = dict()
         matches = []
 
@@ -28,7 +32,7 @@ class HIBPQueryAnalyzer(Analyzer):
             x = ast.literal_eval(str(entry))
             matches.append(x)
 
-        response['CompromisedAccounts'] = matches
+        response["CompromisedAccounts"] = matches
 
         return response
 
@@ -36,14 +40,13 @@ class HIBPQueryAnalyzer(Analyzer):
         results = dict()
 
         try:
-
-            hibpurl = '{}{}?includeUnverified={}&truncateResponse={}'.format(
+            hibpurl = "{}{}?includeUnverified={}&truncateResponse={}".format(
                 self.api_url, data, self.unverified, self.truncate
             )
 
             headers = {
-                'User-Agent': 'HIBP-Cortex-Analyzer',
-                'hibp-api-key': self.api_key
+                "User-Agent": "HIBP-Cortex-Analyzer",
+                "hibp-api-key": self.api_key,
             }
 
             _query = requests.get(hibpurl, headers=headers)
@@ -55,7 +58,7 @@ class HIBPQueryAnalyzer(Analyzer):
             elif _query.status_code == 404:
                 return dict()
             elif _query.status_code == 429:
-                retry_after = _query.headers.get('retry-after')
+                retry_after = _query.headers.get("retry-after")
 
                 # if header retry-after is missing
                 if retry_after is None:
@@ -63,16 +66,16 @@ class HIBPQueryAnalyzer(Analyzer):
 
                 self.retries = self.retries - 1
                 if self.retries < 0:
-                    self.error('API Access error: %s' % _query.text)
+                    self.error("API Access error: %s" % _query.text)
 
                 # recursive call after waiting
                 time.sleep(retry_after)
                 return self.hibp_query(data)
             else:
-                self.error('API Access error: %s' % _query.text)
+                self.error("API Access error: %s" % _query.text)
 
         except Exception as e:
-            self.error('API Request error: %s' % str(e))
+            self.error("API Request error: %s" % str(e))
 
         return results
 
@@ -95,29 +98,34 @@ class HIBPQueryAnalyzer(Analyzer):
 
         # Add taxonomy for breach counts
         if len(raw) > 0:
-            accounts = raw.get('CompromisedAccounts', [])
+            accounts = raw.get("CompromisedAccounts", [])
 
-            verified = len([a for a in accounts if a.get('IsVerified', None) == True])
+            verified = len([a for a in accounts if a.get("IsVerified", None) == True])
             if verified > 0:
-                taxonomies.append(self.build_taxonomy('info', 'HIBP', 'Verified', verified))
+                taxonomies.append(
+                    self.build_taxonomy("info", "HIBP", "Verified", verified)
+                )
 
-            unverified = len([a for a in accounts if a.get('IsVerified', None) == False])
+            unverified = len(
+                [a for a in accounts if a.get("IsVerified", None) == False]
+            )
             if unverified > 0:
-                taxonomies.append(self.build_taxonomy('info', 'HIBP', 'Unverified',unverified))
+                taxonomies.append(
+                    self.build_taxonomy("info", "HIBP", "Unverified", unverified)
+                )
 
         return {"taxonomies": taxonomies}
 
     def run(self):
-
-        if self.service == 'query':
-            if self.data_type == 'mail':
-                data = self.get_param('data', None, 'Data is missing')
+        if self.service == "query":
+            if self.data_type == "mail":
+                data = self.get_param("data", None, "Data is missing")
                 self.report(self.hibp_query(data))
             else:
-                self.error('Invalid data type')
+                self.error("Invalid data type")
         else:
-            self.error('Invalid service')
+            self.error("Invalid service")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     HIBPQueryAnalyzer().run()

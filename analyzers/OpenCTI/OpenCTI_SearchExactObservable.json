@@ -22,7 +22,7 @@
     "mail-subject"
   ],
   "config": {
-      "service": "search_exact"
+    "service": "search_exact"
   },
   "baseConfig": "OpenCTI",
   "command": "OpenCTI/opencti.py",
@@ -61,6 +61,9 @@
   "subscription_required": false,
   "free_subscription": false,
   "service_homepage": "https://www.opencti.io",
-  "service_logo": {"path":"assets/logo_opencti.png", "caption": "logo"},
+  "service_logo": {
+    "path": "assets/logo_opencti.png",
+    "caption": "logo"
+  },
   "screenshots": []
 }

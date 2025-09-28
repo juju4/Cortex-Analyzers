@@ -86,7 +86,11 @@ class PESubmodule(SubmoduleBaseclass):
                     "Value": self.compilation_timestamp(pedict),
                 }
             )
-            table.append({"Info": "Target machine", "Value": self.pe_machine(pedict)}),
+            (
+                table.append(
+                    {"Info": "Target machine", "Value": self.pe_machine(pedict)}
+                ),
+            )
             table.append({"Info": "Entry Point", "Value": self.pe_entrypoint(pedict)})
             return table
 

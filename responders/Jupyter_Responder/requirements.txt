@@ -1,9 +1,9 @@
-papermill
+black
+cortexutils
+ipykernel
+ipython
 jupyter
 nbconvert
 nbformat
+papermill
 tornado
-ipython
-ipykernel
-cortexutils
-black

@@ -10,7 +10,9 @@
     "max_tlp": 3
   },
   "description": "Query domains against the certificate transparency lists available at crt.sh.",
-  "dataTypeList": ["domain"],
+  "dataTypeList": [
+    "domain"
+  ],
   "command": "Crtsh/crtshquery.py",
   "configurationItems": [],
   "registration_required": true,

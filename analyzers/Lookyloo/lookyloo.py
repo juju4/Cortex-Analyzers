@@ -11,11 +11,16 @@ from time import sleep
 from base64 import b64encode
 from datetime import datetime
 
+
 class Lookyloo(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.lookyloo_instance = self.get_param("config.Lookyloo_instance", "https://lookyloo.circl.lu/") # By default, it will query the public instance of Lookyloo
-        self.timeout = self.get_param("config.Capture_timeout", 120) # Default timeout set at 120s
+        self.lookyloo_instance = self.get_param(
+            "config.Lookyloo_instance", "https://lookyloo.circl.lu/"
+        )  # By default, it will query the public instance of Lookyloo
+        self.timeout = self.get_param(
+            "config.Capture_timeout", 120
+        )  # Default timeout set at 120s
 
         # The proxy will be automatically setup by Cortex
         self.lookyloo = LK(self.lookyloo_instance)
@@ -25,14 +30,14 @@ class Lookyloo(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        level = "info" # Put the report in blue
+        level = "info"  # Put the report in blue
         namespace = "Lookyloo"
         predicate = ""
         value = ""
 
-        if (len(raw["redirections"]) > 0):
-            if (len(raw["screenshot"]) > 0):
-                level = "safe" # Put the report in green
+        if len(raw["redirections"]) > 0:
+            if len(raw["screenshot"]) > 0:
+                level = "safe"  # Put the report in green
                 predicate = "Screenshot"
                 value = "OK"
             else:
@@ -75,15 +80,22 @@ class Lookyloo(Analyzer):
         lk_report_url = self.get_url(uuid)
         status_report = ""
 
-        if (len(redirects) > 0):
-            if (len(screen_b64) > 0):
+        if len(redirects) > 0:
+            if len(screen_b64) > 0:
                 status_report = "Capture done"
             else:
                 status_report = "Domain resolved"
         else:
             status_report = "Domain not resolved"
 
-        report_dict = {"submitted_url": url, "redirections": redirects, "url": lk_report_url, "submission_date": date,"status": status_report, "screenshot": screen_b64}
+        report_dict = {
+            "submitted_url": url,
+            "redirections": redirects,
+            "url": lk_report_url,
+            "submission_date": date,
+            "status": status_report,
+            "screenshot": screen_b64,
+        }
         self.report(report_dict)
 
     def submit(self, site):
@@ -97,17 +109,25 @@ class Lookyloo(Analyzer):
     def wait_result(self, uuid):
         timer = 0
         status = 0
-        print("Waiting results (timeout set at " + str(self.timeout) + "s)", end="", flush=True)
-        while(timer < self.timeout and status != 1):
+        print(
+            "Waiting results (timeout set at " + str(self.timeout) + "s)",
+            end="",
+            flush=True,
+        )
+        while timer < self.timeout and status != 1:
             print(".", end="", flush=True)
             status = self.lookyloo.get_status(uuid)
             status = status["status_code"]
             timer += 1
             sleep(1)
-        if(status == 1): # if it get results
+        if status == 1:  # if it get results
             print("\nCapture done in " + str(timer) + "s")
         else:
-            print("\nTimeout exceeded after " + str(self.timeout) + "s, results are not ready")
+            print(
+                "\nTimeout exceeded after "
+                + str(self.timeout)
+                + "s, results are not ready"
+            )
         return status
 
     def get_screenshot(self, uuid):
@@ -121,11 +141,12 @@ class Lookyloo(Analyzer):
     # return the URL of the lookyloo capture web interface.
     def get_url(self, uuid):
         url = ""
-        if (self.lookyloo_instance[-1] == '/'):
+        if self.lookyloo_instance[-1] == "/":
             url = self.lookyloo_instance + "tree/" + uuid
         else:
             url = self.lookyloo_instance + "/tree/" + uuid
         return url
+
 
 if __name__ == "__main__":
     Lookyloo().run()

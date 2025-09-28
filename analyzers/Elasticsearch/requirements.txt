@@ -1,5 +1,5 @@
-elasticsearch>=8.0.0
 cortexutils
+elasticsearch>=8.0.0
+python-dateutil
 pytz
 requests
-python-dateutil

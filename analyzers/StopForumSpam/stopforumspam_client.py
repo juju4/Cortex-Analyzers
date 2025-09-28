@@ -1,4 +1,4 @@
-""" Class to interact with StopForumSpam's API
+"""Class to interact with StopForumSpam's API
 
 The API is documented at http://www.stopforumspam.com/usage
 
@@ -22,8 +22,7 @@ import requests
 
 
 class StopforumspamClient:
-
-    _type_conversion = {'ip': 'ip', 'mail': 'email'}
+    _type_conversion = {"ip": "ip", "mail": "email"}
 
     def __init__(self, proxies=None):
         self.client = requests.Session()
@@ -31,21 +30,21 @@ class StopforumspamClient:
 
     def _set_payload(type, data):
         return {
-            'json': True,
-            'confidence': True,
-            'unix': True,
-            StopforumspamClient._type_conversion[type]: data
+            "json": True,
+            "confidence": True,
+            "unix": True,
+            StopforumspamClient._type_conversion[type]: data,
         }
 
     def _data_conversion(self, data):
-        if 'appears' in data:
-            data['appears'] = (data['appears'] == 1)
-        if 'torexit' in data:
-            data['torexit'] = (data['torexit'] == 1)
+        if "appears" in data:
+            data["appears"] = data["appears"] == 1
+        if "torexit" in data:
+            data["torexit"] = data["torexit"] == 1
         return data
 
     def get_data(self, datatype, data):
-        """ Look for an IP address or an email address in the spammer database.
+        """Look for an IP address or an email address in the spammer database.
 
         :param datatype: Which type of data is to be looked up.
                          Allowed values are 'ip' or 'mail'.
@@ -58,11 +57,11 @@ class StopforumspamClient:
         result = {}
         params = StopforumspamClient._set_payload(datatype, data)
         response = self.client.get(
-            'https://api.stopforumspam.org/api',
-            params=params, proxies=self.proxies)
+            "https://api.stopforumspam.org/api", params=params, proxies=self.proxies
+        )
         response.raise_for_status()
         report = response.json()
-        if report['success']:
+        if report["success"]:
             data = report[StopforumspamClient._type_conversion[datatype]]
             result = self._data_conversion(data)
         else:

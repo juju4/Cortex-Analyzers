@@ -89,8 +89,7 @@ class SentinelOne(Analyzer):
             return False, True
 
     def _create_query_and_get_id(self, query: str) -> Union[str, None]:
-        """Create Query and Get ID
-        """
+        """Create Query and Get ID"""
         to_date = datetime.utcnow()
         response = requests.post(
             self.s1_console_url + self.s1_api_endpoints["create-query-and-get-id"],
@@ -101,8 +100,12 @@ class SentinelOne(Analyzer):
                 ),
                 "toDate": to_date.strftime(self.s1_datetime_format),
                 "query": query,
-                "accountIds": [self.s1_account_id,],
-                "queryType": ["events",],
+                "accountIds": [
+                    self.s1_account_id,
+                ],
+                "queryType": [
+                    "events",
+                ],
             },
         )
         if response.status_code == requests.codes.ok:
@@ -200,7 +203,6 @@ class SentinelOne(Analyzer):
                 f'EventType = "DNS Resolved" AND DNSRequest contains "{data}"'
             )
             if query_id is not None:
-
                 # wait for query to finish
                 done, errored = False, False
                 while not (done or errored):

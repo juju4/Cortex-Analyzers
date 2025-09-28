@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "APLv2",
   "description": "Determine whether an IP has known scanning activity using GreyNoise.",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "baseConfig": "GreyNoise",
   "command": "GreyNoise/greynoisev3.py",
   "configurationItems": [

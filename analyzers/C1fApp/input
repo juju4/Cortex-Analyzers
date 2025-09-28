@@ -5,6 +5,6 @@
         "service": "query",
         "key": "Get your key from www.c1fapp.com",
         "url": "https://www.c1fapp.com/cifapp/api/"
-	
+
     }
 }

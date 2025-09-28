@@ -1,4 +1,4 @@
-The **ValidateObservable** analyzer is designed to validate multiple observable datatypes. 
+The **ValidateObservable** analyzer is designed to validate multiple observable datatypes.
 
 * _ip_
 * _domain_

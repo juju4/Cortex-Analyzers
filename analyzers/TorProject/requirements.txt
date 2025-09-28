@@ -1,6 +1,6 @@
 cortexutils
-requests
 datetime
+diskcache
 python-dateutil
 pytz
-diskcache
+requests

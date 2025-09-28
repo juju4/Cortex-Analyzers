@@ -5,11 +5,13 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use DomainTools Iris API to investigate a domain.",
-  "dataTypeList": ["domain"],
+  "dataTypeList": [
+    "domain"
+  ],
   "command": "DomainToolsIris/domaintoolsiris_analyzer.py",
   "baseConfig": "DomainToolsIris",
   "config": {
-      "service": "investigate-domain"
+    "service": "investigate-domain"
   },
   "configurationItems": [
     {

@@ -5,7 +5,11 @@
   "url": "https://www.paloaltonetworks.com/",
   "license": "AGPL-V3",
   "description": "Unblock internal domain",
-  "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
+  "dataTypeList": [
+    "thehive:alert",
+    "thehive:case_artifact",
+    "thehive:case"
+  ],
   "command": "PaloAltoNGFW/unblock_internal_domain.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
@@ -36,7 +40,7 @@
       "type": "string",
       "multi": false,
       "required": true,
-	  "defaultValue": "TheHive Block list internal domain"
+      "defaultValue": "TheHive Block list internal domain"
     },
     {
       "name": "TheHive_instance",
@@ -46,11 +50,11 @@
       "required": true
     },
     {
-	  "name": "TheHive_API_key",
-	  "description": "TheHive API key with read access",
-	  "type": "string",
-	  "multi": false,
-	  "required": true
+      "name": "TheHive_API_key",
+      "description": "TheHive API key with read access",
+      "type": "string",
+      "multi": false,
+      "required": true
     }
   ]
 }

@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Find look alike image via Google Cloud Vision API using the Web_Detection service ",
-  "dataTypeList": ["file", "url"],
+  "dataTypeList": [
+    "file",
+    "url"
+  ],
   "command": "GoogleVisionAPI/GoogleVisionAPI_WebDetection.py",
   "baseConfig": "GoogleVisionAPI",
   "config": {

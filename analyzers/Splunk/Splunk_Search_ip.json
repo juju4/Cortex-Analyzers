@@ -4,7 +4,9 @@
   "url": "https://www.splunk.com",
   "author": "Unit777, LetMeR00t",
   "license": "AGPL-V3",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "description": "Execute a savedsearch on a Splunk instance with an IP as argument",
   "baseConfig": "Splunk",
   "config": {

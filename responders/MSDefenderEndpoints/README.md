@@ -28,7 +28,7 @@ Responder needs one of the following licenses:
 
 ##### Steps
 
-With your Global administrator credentials, login to the Azure portal.   
+With your Global administrator credentials, login to the Azure portal.
 * Azure Active Directory > App registrations > New registration.
 
 In the registration form:

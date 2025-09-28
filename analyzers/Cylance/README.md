@@ -1,6 +1,6 @@
 # Cylance hashlookup
 
-Cylance hash lookup enables you to query possible infected clients of yours using a SHA256 hash. 
+Cylance hash lookup enables you to query possible infected clients of yours using a SHA256 hash.
 The response includes information about the matching sample(s) along with information about affected clients.
 
 # FAQ

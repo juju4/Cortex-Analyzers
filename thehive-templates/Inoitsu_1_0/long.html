@@ -8,7 +8,7 @@
         No data found
       </div>
       <div ng-if="(content | json) !== '{}'">
-      
+
       <div ng-if="(content.Leaked)">
         <dl class=" dl-horizontal">
           <dt>Compromised:</dt>
@@ -35,14 +35,14 @@
           <dd class="wrap">{{ content.Exposure_rating }}</dd>
         </dl>
         </div>
-        
+
         <div ng-if="!(content.Leaked)">
         <dl class=" dl-horizontal">
           <dt>Compromised:</dt>
           <dd class="wrap">{{ content.Leaked }}</dd>
         </dl>
         </div>
-        
+
       </div>
     </div>
   </div>

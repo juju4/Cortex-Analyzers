@@ -1,2 +1,2 @@
-cortexutils
 autofocus-client-library
+cortexutils

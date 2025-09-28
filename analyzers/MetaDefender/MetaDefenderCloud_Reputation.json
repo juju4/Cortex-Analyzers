@@ -5,7 +5,11 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get the latest MetaDefender Cloud reputation report .",
-  "dataTypeList": ["ip", "url", "domain"],
+  "dataTypeList": [
+    "ip",
+    "url",
+    "domain"
+  ],
   "command": "MetaDefender/metadefender_lookup.py",
   "baseConfig": "MetaDefender",
   "config": {

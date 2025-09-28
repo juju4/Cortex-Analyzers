@@ -4,7 +4,9 @@
   "url": "https://www.splunk.com",
   "author": "LetMeR00t",
   "license": "AGPL-V3",
-  "dataTypeList": ["other"],
+  "dataTypeList": [
+    "other"
+  ],
   "description": "Execute a savedsearch on a Splunk instance with a user ID as argument",
   "baseConfig": "Splunk",
   "config": {

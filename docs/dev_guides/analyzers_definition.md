@@ -18,12 +18,12 @@
 │   └── domaintools_logo.png
 ├── domaintoolsiris_analyzer.py
 └── requirements.txt
-``` 
+```
 
 
 ### JSON files
 
-An analyzers is composed of, on flavor at least, and can be defined with several flavors. One `JSON` file describes a flavor. 
+An analyzers is composed of, on flavor at least, and can be defined with several flavors. One `JSON` file describes a flavor.
 #### Example of an Analyzer's flavor definition file (`DomainToolsIris_Investigate.json`)
 
 ```json
@@ -83,7 +83,7 @@ An analyzers is composed of, on flavor at least, and can be defined with several
 
 ### README.md
 
-This file contains global information and requirements regarding the Analyzer. It can also contains additionnal developers notes. 
+This file contains global information and requirements regarding the Analyzer. It can also contains additionnal developers notes.
 
 #### Formatting
 
@@ -105,5 +105,3 @@ This file is using Mardkown text formatting. There is no specific requirements e
 
 
 ### requirements.txt
-
-

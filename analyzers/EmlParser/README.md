@@ -1,6 +1,6 @@
 This Analyzer allows you to view the content of an email without opening it in a dedicated application.
 
-This programs gathers headers, message content, files, gives access to the raw message and extracts following observables: 
+This programs gathers headers, message content, files, gives access to the raw message and extracts following observables:
 
 - email addresses from headers
 - IP addresses and hostnames from headers
@@ -11,7 +11,7 @@ Extracted observables are enriched with tags giving context.
 
 ### Email visualisation
 An option permits to get an overview of the HTML rendered email. The program creates a screenshot of html parts of the message, inline and attachment parts.
-By default, this option is **not** enabled. To proceed, the Analyzer requires the program `wkhtmltoimage` beeing installed on the system. 
+By default, this option is **not** enabled. To proceed, the Analyzer requires the program `wkhtmltoimage` beeing installed on the system.
 
 When enabled, the Analyzer tries to render the html included in the email. If it fails, a dedicated message is displayed.
 

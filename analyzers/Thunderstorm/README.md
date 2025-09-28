@@ -14,7 +14,7 @@ The Thunderstorm analyzer submits a file sample to a local or public THOR Thunde
 
 The reports contain useful meta data and a list of matching rules. Each rule links to a related public report or states that the rules was based on internal research.
 
-The reports include a total score and sub scores defined in the matching YARA rules. 
+The reports include a total score and sub scores defined in the matching YARA rules.
 
 The score and level indicate the criticality of the finding.
 

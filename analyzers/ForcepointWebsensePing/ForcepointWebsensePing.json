@@ -5,7 +5,12 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use ForcepointWebsensePing to determine which category a certain URL is assigned to.",
-  "dataTypeList": ["url", "ip", "domain", "fqdn"],
+  "dataTypeList": [
+    "url",
+    "ip",
+    "domain",
+    "fqdn"
+  ],
   "command": "ForcepointWebsensePing/forcepointwebsenseping.py",
   "baseConfig": "ForcepointWebsensePing",
   "config": {
@@ -171,7 +176,7 @@
         "Vehicles",
         "Search Engines and Portals",
         "Alcohol and Tobacco",
-        "Collaboration – Office",
+        "Collaboration \u2013 Office",
         "Content Delivery Networks",
         "Cultural Institutions",
         "Educational Institutions",

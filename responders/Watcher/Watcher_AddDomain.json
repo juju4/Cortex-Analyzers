@@ -5,7 +5,9 @@
   "url": "https://github.com/thalesgroup-cert/Watcher",
   "license": "AGPL-V3",
   "description": "Add a domain to monitoring in the Website Monitoring module on Watcher.",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "Watcher/watcher.py",
   "baseConfig": "Watcher",
   "config": {

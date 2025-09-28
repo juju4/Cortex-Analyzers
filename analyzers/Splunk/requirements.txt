@@ -1,2 +1,2 @@
-splunk-sdk
 cortexutils
+splunk-sdk

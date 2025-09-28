@@ -10,12 +10,12 @@ fields in each record may be populated. See
 http://dev.maxmind.com/geoip/geoip2/web-services for more details.
 
 """
+
 # pylint:disable=R0903
 import geoip2.records
 
 
 class Country(object):
-
     """Model for the GeoIP2 Precision: Country and the GeoIP2 Country database
 
     This class provides the following attributes:
@@ -65,32 +65,28 @@ class Country(object):
 
     def __init__(self, raw_response, locales=None):
         if locales is None:
-            locales = ['en']
-        self.continent = \
-            geoip2.records.Continent(locales,
-                                     **raw_response.get('continent', {}))
-        self.country = \
-            geoip2.records.Country(locales,
-                                   **raw_response.get('country', {}))
-        self.registered_country = \
-            geoip2.records.Country(locales,
-                                   **raw_response.get('registered_country',
-                                                      {}))
+            locales = ["en"]
+        self.continent = geoip2.records.Continent(
+            locales, **raw_response.get("continent", {})
+        )
+        self.country = geoip2.records.Country(
+            locales, **raw_response.get("country", {})
+        )
+        self.registered_country = geoip2.records.Country(
+            locales, **raw_response.get("registered_country", {})
+        )
         # pylint:disable=bad-continuation
-        self.represented_country \
-            = geoip2.records.RepresentedCountry(locales,
-                                                **raw_response.get(
-                                                'represented_country', {}))
+        self.represented_country = geoip2.records.RepresentedCountry(
+            locales, **raw_response.get("represented_country", {})
+        )
 
-        self.maxmind = \
-            geoip2.records.MaxMind(**raw_response.get('maxmind', {}))
+        self.maxmind = geoip2.records.MaxMind(**raw_response.get("maxmind", {}))
 
-        self.traits = geoip2.records.Traits(**raw_response.get('traits', {}))
+        self.traits = geoip2.records.Traits(**raw_response.get("traits", {}))
         self.raw = raw_response
 
 
 class City(Country):
-
     """Model for the GeoIP2 Precision: City and the GeoIP2 City database
     .. attribute:: city
 
@@ -154,19 +150,15 @@ class City(Country):
 
     def __init__(self, raw_response, locales=None):
         super(City, self).__init__(raw_response, locales)
-        self.city = \
-            geoip2.records.City(locales, **raw_response.get('city', {}))
-        self.location = \
-            geoip2.records.Location(**raw_response.get('location', {}))
-        self.postal = \
-            geoip2.records.Postal(**raw_response.get('postal', {}))
-        self.subdivisions = \
-            geoip2.records.Subdivisions(locales,
-                                        *raw_response.get('subdivisions', []))
+        self.city = geoip2.records.City(locales, **raw_response.get("city", {}))
+        self.location = geoip2.records.Location(**raw_response.get("location", {}))
+        self.postal = geoip2.records.Postal(**raw_response.get("postal", {}))
+        self.subdivisions = geoip2.records.Subdivisions(
+            locales, *raw_response.get("subdivisions", [])
+        )
 
 
 class Insights(City):
-
     """Model for the GeoIP2 Precision: Insights web service endpoint
 
     .. attribute:: city
@@ -231,7 +223,6 @@ class Insights(City):
 
 
 class ConnectionType(object):
-
     """Model class for the GeoIP2 Connection-Type
 
     This class provides the following attribute:
@@ -257,13 +248,12 @@ class ConnectionType(object):
     """
 
     def __init__(self, raw):
-        self.connection_type = raw.get('connection_type')
-        self.ip_address = raw.get('ip_address')
+        self.connection_type = raw.get("connection_type")
+        self.ip_address = raw.get("ip_address")
         self.raw = raw
 
 
 class Domain(object):
-
     """Model class for the GeoIP2 Domain
 
     This class provides the following attribute:
@@ -283,13 +273,12 @@ class Domain(object):
     """
 
     def __init__(self, raw):
-        self.domain = raw.get('domain')
-        self.ip_address = raw.get('ip_address')
+        self.domain = raw.get("domain")
+        self.ip_address = raw.get("ip_address")
         self.raw = raw
 
 
 class ISP(object):
-
     """Model class for the GeoIP2 ISP
 
     This class provides the following attribute:
@@ -328,10 +317,9 @@ class ISP(object):
 
     # pylint:disable=too-many-arguments
     def __init__(self, raw):
-        self.autonomous_system_number = raw.get('autonomous_system_number')
-        self.autonomous_system_organization = raw.get(
-            'autonomous_system_organization')
-        self.isp = raw.get('isp')
-        self.organization = raw.get('organization')
-        self.ip_address = raw.get('ip_address')
+        self.autonomous_system_number = raw.get("autonomous_system_number")
+        self.autonomous_system_organization = raw.get("autonomous_system_organization")
+        self.isp = raw.get("isp")
+        self.organization = raw.get("organization")
+        self.ip_address = raw.get("ip_address")
         self.raw = raw

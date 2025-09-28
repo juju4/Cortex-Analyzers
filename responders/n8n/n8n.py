@@ -8,7 +8,6 @@ class SendToN8NResponder(Responder):
         Responder.__init__(self)
         self.url = self.get_param("config.webhook", None, "n8n webhook URL missing!")
 
-
     def run(self):
         Responder.run(self)
 
@@ -18,6 +17,6 @@ class SendToN8NResponder(Responder):
         else:
             self.error(r.status_code)
 
+
 if __name__ == "__main__":
     SendToN8NResponder().run()
-

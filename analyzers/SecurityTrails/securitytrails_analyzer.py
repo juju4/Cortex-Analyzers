@@ -9,10 +9,12 @@ class SecurityTrailsAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.service = self.get_param(
-            "config.service", None, "SecurityTrails service is missing")
+            "config.service", None, "SecurityTrails service is missing"
+        )
 
         self.api_key = self.get_param(
-            "config.api_key", None, "SecurityTrails API key is missing")
+            "config.api_key", None, "SecurityTrails API key is missing"
+        )
 
     def summary(self, raw):
         taxonomies = []
@@ -40,12 +42,9 @@ class SecurityTrailsAnalyzer(Analyzer):
             if "contactEmail" in raw and raw["contactEmail"]:
                 email = raw["contactEmail"]
 
-            value = "Registrar name: {} / Contact email: {}".format(
-                name, email)
+            value = "Registrar name: {} / Contact email: {}".format(name, email)
 
-        taxonomies.append(
-            self.build_taxonomy(level, namespace, predicate, value)
-        )
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
 

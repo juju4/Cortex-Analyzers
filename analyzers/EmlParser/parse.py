@@ -227,9 +227,9 @@ def parseEml(filepath, job_directory, wkhtmltoimage, sanitized_rendering):
                                 b.get("content"), 0, wkhtmltoimage.get("path"), "/tmp"
                             )
                         except Exception as e:
-                            b[
-                                "content"
-                            ] = '<html><body><div style="background-color:red; color:white; text-align: center;"><strong>WARNING:</strong> this page cannot be rendered because some imports failed</div></body></html>'
+                            b["content"] = (
+                                '<html><body><div style="background-color:red; color:white; text-align: center;"><strong>WARNING:</strong> this page cannot be rendered because some imports failed</div></body></html>'
+                            )
                             img_file = convert_png(
                                 b.get("content"), 0, wkhtmltoimage.get("path"), "/tmp"
                             )

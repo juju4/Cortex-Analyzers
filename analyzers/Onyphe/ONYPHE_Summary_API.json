@@ -5,7 +5,11 @@
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "description": "Retrieve summary information Onyphe has for given ip, domain, or fqdn.",
-  "dataTypeList": ["ip", "domain", "fqdn"],
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "fqdn"
+  ],
   "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
   "config": {

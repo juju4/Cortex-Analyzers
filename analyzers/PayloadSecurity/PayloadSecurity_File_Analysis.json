@@ -5,7 +5,9 @@
   "url": "https://github.com/notset/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "PayloadSecurity Sandbox File Analysis",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "command": "PayloadSecurity/payloadsecurity_analyzer.py",
   "baseConfig": "PayloadSecurity",
   "configurationItems": [

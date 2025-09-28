@@ -1,4 +1,4 @@
-### EmergingThreats 
+### EmergingThreats
 [EmergingThreats](https://www.proofpoint.com/us/products/advanced-threat-protection/et-intelligence) intelligence helps prevent attacks and reduce risk by helping you understand the historical context of where these threats originated, who is behind them, when have they attacked, what methods they used, and what they're after.
 
 The analyzer is available in 3 flavors:

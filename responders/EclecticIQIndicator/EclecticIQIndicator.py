@@ -255,7 +255,9 @@ class EclecticIQIndicator(Responder):
         if not report_id or not indicator_id:
             return None
 
-        relation_id = str(uuid.uuid5(uuid.NAMESPACE_X500, f"{report_id}-{indicator_id}"))
+        relation_id = str(
+            uuid.uuid5(uuid.NAMESPACE_X500, f"{report_id}-{indicator_id}")
+        )
         relationship = {
             "data": [
                 {

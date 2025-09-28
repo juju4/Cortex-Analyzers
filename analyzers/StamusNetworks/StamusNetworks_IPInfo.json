@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get information from your Scirius Security Platform for an IP address.",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "command": "StamusNetworks/hostid_analyzer.py",
   "baseConfig": "StamusNetworks",
   "config": {

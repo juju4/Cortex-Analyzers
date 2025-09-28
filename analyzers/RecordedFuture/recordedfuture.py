@@ -31,18 +31,18 @@ HASH_DATA_TYPE = "hash"
 RF_API = "https://api.recordedfuture.com/v2/"
 URL_DATA_TYPE = "url"
 DEFAULT_LINKS_MAP = {
-    'Links_Threat_Actors': ["No Threat Actor Links Found"],
-    'Links_Tools_Malware': ["No Malware Links Found"],
-    'Links_TTPs_Mitre': ["No MITRE ATT&CK TTP Links Found"],
-    'Links_TTPs_Attack_Vector': ["No Attack Vector Links Found"],
-    'Links_Indicators_IP': ["No IP Address Links Found"],
-    'Links_Indicators_Domain': ["No Domain Links Found"],
-    'Links_Indicators_URL': ["No URL Links Found"],
-    'Links_Indicators_Hash': ["No Hash Links Found"],
-    'Links_Detection_Malware_Sig': ["No Malware Signature Links Found"],
-    'Links_Victims_Org': ["No Victim Organization Links Found"],
-    'Links_Victims_IP': ["No Victim IP Address Links Found"],
-    'Links_Exploit_Vuln': ["No Vulnerability Links Found"],
+    "Links_Threat_Actors": ["No Threat Actor Links Found"],
+    "Links_Tools_Malware": ["No Malware Links Found"],
+    "Links_TTPs_Mitre": ["No MITRE ATT&CK TTP Links Found"],
+    "Links_TTPs_Attack_Vector": ["No Attack Vector Links Found"],
+    "Links_Indicators_IP": ["No IP Address Links Found"],
+    "Links_Indicators_Domain": ["No Domain Links Found"],
+    "Links_Indicators_URL": ["No URL Links Found"],
+    "Links_Indicators_Hash": ["No Hash Links Found"],
+    "Links_Detection_Malware_Sig": ["No Malware Signature Links Found"],
+    "Links_Victims_Org": ["No Victim Organization Links Found"],
+    "Links_Victims_IP": ["No Victim IP Address Links Found"],
+    "Links_Exploit_Vuln": ["No Vulnerability Links Found"],
 }
 
 
@@ -51,7 +51,9 @@ class RecordedFuture(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.api_key = self.get_param("config.key", None, "Recorded Future token is missing")
+        self.api_key = self.get_param(
+            "config.key", None, "Recorded Future token is missing"
+        )
 
     def lookup_observable(self, observable, data_type):
         """Query the Recorded Future API for entity enrichment.
@@ -73,11 +75,13 @@ class RecordedFuture(Analyzer):
             data_type = DOMAIN_DATA_TYPE
 
         # URL to query Recorded Future API
-        params = {'fields': 'aiInsights,counts,entity,intelCard,links,relatedEntities,risk'}
+        params = {
+            "fields": "aiInsights,counts,entity,intelCard,links,relatedEntities,risk"
+        }
         url = RF_API + ("%s/%s?%s") % (data_type, observable, urlencode(params))
 
         token = self.api_key
-        headers = {'X-RFToken': token, 'User-Agent': APP_ID}
+        headers = {"X-RFToken": token, "User-Agent": APP_ID}
         req = urllib.request.Request(url, None, headers)
 
         json_response = {}
@@ -100,8 +104,8 @@ class RecordedFuture(Analyzer):
             entities_list (list): append entities to this list if they pass the check
         """
         for related in related_entities:
-            if int(related['count']) > 4:
-                entities_list.append(related['entity']['name'])
+            if int(related["count"]) > 4:
+                entities_list.append(related["entity"]["name"])
 
     def format_related_entities(self, json_response, dict_report):
         """
@@ -124,21 +128,31 @@ class RecordedFuture(Analyzer):
         relatedAttackVector = []
 
         try:
-            for relatedEntity in json_response['data']['relatedEntities']:
-                if relatedEntity['type'] == "RelatedMalwareCategory":
-                    self.add_related_entities(relatedEntity['entities'], malwareCategory)
-                if relatedEntity['type'] == "RelatedHash":
-                    self.add_related_entities(relatedEntity['entities'], relatedHash)
-                if relatedEntity['type'] == "RelatedIpAddress":
-                    self.add_related_entities(relatedEntity['entities'], relatedIpAddress)
-                if relatedEntity['type'] == "RelatedThreatActor":
-                    self.add_related_entities(relatedEntity['entities'], relatedThreatActor)
-                if relatedEntity['type'] == "RelatedInternetDomainName":
-                    self.add_related_entities(relatedEntity['entities'], relatedInternetDomainName)
-                if relatedEntity['type'] == "RelatedMalware":
-                    self.add_related_entities(relatedEntity['entities'], relatedMalware)
-                if relatedEntity['type'] == "RelatedAttackVector":
-                    self.add_related_entities(relatedEntity['entities'], relatedAttackVector)
+            for relatedEntity in json_response["data"]["relatedEntities"]:
+                if relatedEntity["type"] == "RelatedMalwareCategory":
+                    self.add_related_entities(
+                        relatedEntity["entities"], malwareCategory
+                    )
+                if relatedEntity["type"] == "RelatedHash":
+                    self.add_related_entities(relatedEntity["entities"], relatedHash)
+                if relatedEntity["type"] == "RelatedIpAddress":
+                    self.add_related_entities(
+                        relatedEntity["entities"], relatedIpAddress
+                    )
+                if relatedEntity["type"] == "RelatedThreatActor":
+                    self.add_related_entities(
+                        relatedEntity["entities"], relatedThreatActor
+                    )
+                if relatedEntity["type"] == "RelatedInternetDomainName":
+                    self.add_related_entities(
+                        relatedEntity["entities"], relatedInternetDomainName
+                    )
+                if relatedEntity["type"] == "RelatedMalware":
+                    self.add_related_entities(relatedEntity["entities"], relatedMalware)
+                if relatedEntity["type"] == "RelatedAttackVector":
+                    self.add_related_entities(
+                        relatedEntity["entities"], relatedAttackVector
+                    )
         except KeyError:
             pass
 
@@ -157,13 +171,13 @@ class RecordedFuture(Analyzer):
         if not relatedAttackVector:
             relatedAttackVector.append("No Related Attack Vector Found")
 
-        dict_report['Malware_Category'] = malwareCategory
-        dict_report['Malware_Family'] = relatedMalware
-        dict_report['Threat_Actor'] = relatedThreatActor
-        dict_report['Related_Hashes'] = relatedHash
-        dict_report['Related_IPs'] = relatedIpAddress
-        dict_report['Related_Domains'] = relatedInternetDomainName
-        dict_report['Attack_Vector'] = relatedAttackVector
+        dict_report["Malware_Category"] = malwareCategory
+        dict_report["Malware_Family"] = relatedMalware
+        dict_report["Threat_Actor"] = relatedThreatActor
+        dict_report["Related_Hashes"] = relatedHash
+        dict_report["Related_IPs"] = relatedIpAddress
+        dict_report["Related_Domains"] = relatedInternetDomainName
+        dict_report["Attack_Vector"] = relatedAttackVector
 
         return dict_report
 
@@ -176,8 +190,8 @@ class RecordedFuture(Analyzer):
             links (list): append entities to this list if they are unique
         """
         for entity in entities:
-            if entity['name'] not in links:
-                links.append(entity['name'])
+            if entity["name"] not in links:
+                links.append(entity["name"])
 
     def add_actors_tools_ttps(self, section_lists, dict_report):
         """
@@ -190,27 +204,27 @@ class RecordedFuture(Analyzer):
         Returns:
             dict: the analyzer report content with Actors, Tools & TTPs
         """
-        linksThreatActors = dict_report.get('Links_Threat_Actors', [])
-        linksToolsMalware = dict_report.get('Links_Tools_Malware', [])
-        linksTTPsMitre = dict_report.get('Links_TTPs_Mitre', [])
-        linksTTPsAttackVector = dict_report.get('Links_TTPs_Attack_Vector', [])
+        linksThreatActors = dict_report.get("Links_Threat_Actors", [])
+        linksToolsMalware = dict_report.get("Links_Tools_Malware", [])
+        linksTTPsMitre = dict_report.get("Links_TTPs_Mitre", [])
+        linksTTPsAttackVector = dict_report.get("Links_TTPs_Attack_Vector", [])
 
         for section_list in section_lists:
-            type_name = section_list.get('type', {}).get('name')
+            type_name = section_list.get("type", {}).get("name")
 
             if type_name == "Threat Actor":
-                self.add_link_to_list(section_list['entities'], linksThreatActors)
+                self.add_link_to_list(section_list["entities"], linksThreatActors)
             elif type_name == "Malware":
-                self.add_link_to_list(section_list['entities'], linksToolsMalware)
+                self.add_link_to_list(section_list["entities"], linksToolsMalware)
             elif type_name == "MitreAttackIdentifier":
-                self.add_link_to_list(section_list['entities'], linksTTPsMitre)
+                self.add_link_to_list(section_list["entities"], linksTTPsMitre)
             elif type_name == "AttackVector":
-                self.add_link_to_list(section_list['entities'], linksTTPsAttackVector)
+                self.add_link_to_list(section_list["entities"], linksTTPsAttackVector)
 
-        dict_report['Links_Threat_Actors'] = linksThreatActors
-        dict_report['Links_Tools_Malware'] = linksToolsMalware
-        dict_report['Links_TTPs_Mitre'] = linksTTPsMitre
-        dict_report['Links_TTPs_Attack_Vector'] = linksTTPsAttackVector
+        dict_report["Links_Threat_Actors"] = linksThreatActors
+        dict_report["Links_Tools_Malware"] = linksToolsMalware
+        dict_report["Links_TTPs_Mitre"] = linksTTPsMitre
+        dict_report["Links_TTPs_Attack_Vector"] = linksTTPsAttackVector
 
         return dict_report
 
@@ -225,31 +239,33 @@ class RecordedFuture(Analyzer):
         Returns:
             dict: the analyzer report content with Indicators & Detection Rules
         """
-        linksIndicatorsIP = dict_report.get('Links_Indicators_IP', [])
-        linksIndicatorsDomain = dict_report.get('Links_Indicators_Domain', [])
-        linksIndicatorsURL = dict_report.get('Links_Indicators_URL', [])
-        linksIndicatorsHash = dict_report.get('Links_Indicators_Hash', [])
-        linksDetectionMalwareSig = dict_report.get('Links_Detection_Malware_Sig', [])
+        linksIndicatorsIP = dict_report.get("Links_Indicators_IP", [])
+        linksIndicatorsDomain = dict_report.get("Links_Indicators_Domain", [])
+        linksIndicatorsURL = dict_report.get("Links_Indicators_URL", [])
+        linksIndicatorsHash = dict_report.get("Links_Indicators_Hash", [])
+        linksDetectionMalwareSig = dict_report.get("Links_Detection_Malware_Sig", [])
 
         for section_list in section_lists:
-            type_name = section_list.get('type', {}).get('name')
+            type_name = section_list.get("type", {}).get("name")
 
             if type_name == "IpAddress":
-                self.add_link_to_list(section_list['entities'], linksIndicatorsIP)
+                self.add_link_to_list(section_list["entities"], linksIndicatorsIP)
             elif type_name == "InternetDomainName":
-                self.add_link_to_list(section_list['entities'], linksIndicatorsDomain)
+                self.add_link_to_list(section_list["entities"], linksIndicatorsDomain)
             elif type_name == "URL":
-                self.add_link_to_list(section_list['entities'], linksIndicatorsURL)
+                self.add_link_to_list(section_list["entities"], linksIndicatorsURL)
             elif type_name == "Hash":
-                self.add_link_to_list(section_list['entities'], linksIndicatorsHash)
+                self.add_link_to_list(section_list["entities"], linksIndicatorsHash)
             elif type_name == "MalwareSignature":
-                self.add_link_to_list(section_list['entities'], linksDetectionMalwareSig)
+                self.add_link_to_list(
+                    section_list["entities"], linksDetectionMalwareSig
+                )
 
-        dict_report['Links_Indicators_IP'] = linksIndicatorsIP
-        dict_report['Links_Indicators_Domain'] = linksIndicatorsDomain
-        dict_report['Links_Indicators_URL'] = linksIndicatorsURL
-        dict_report['Links_Indicators_Hash'] = linksIndicatorsHash
-        dict_report['Links_Detection_Malware_Sig'] = linksDetectionMalwareSig
+        dict_report["Links_Indicators_IP"] = linksIndicatorsIP
+        dict_report["Links_Indicators_Domain"] = linksIndicatorsDomain
+        dict_report["Links_Indicators_URL"] = linksIndicatorsURL
+        dict_report["Links_Indicators_Hash"] = linksIndicatorsHash
+        dict_report["Links_Detection_Malware_Sig"] = linksDetectionMalwareSig
 
         return dict_report
 
@@ -264,23 +280,23 @@ class RecordedFuture(Analyzer):
         Returns:
             dict: the analyzer report content with Victims & Exploit Targets
         """
-        linksVictimsOrg = dict_report.get('Links_Victims_Org', [])
-        linksVictimsIP = dict_report.get('Links_Victims_IP', [])
-        linksExploitVuln = dict_report.get('Links_Exploit_Vuln', [])
+        linksVictimsOrg = dict_report.get("Links_Victims_Org", [])
+        linksVictimsIP = dict_report.get("Links_Victims_IP", [])
+        linksExploitVuln = dict_report.get("Links_Exploit_Vuln", [])
 
         for section_list in section_lists:
-            type_name = section_list.get('type', {}).get('name')
+            type_name = section_list.get("type", {}).get("name")
 
             if type_name == "Organization":
-                self.add_link_to_list(section_list['entities'], linksVictimsOrg)
+                self.add_link_to_list(section_list["entities"], linksVictimsOrg)
             elif type_name == "IpAddress":
-                self.add_link_to_list(section_list['entities'], linksVictimsIP)
+                self.add_link_to_list(section_list["entities"], linksVictimsIP)
             elif type_name == "CyberVulnerability":
-                self.add_link_to_list(section_list['entities'], linksExploitVuln)
+                self.add_link_to_list(section_list["entities"], linksExploitVuln)
 
-        dict_report['Links_Victims_Org'] = linksVictimsOrg
-        dict_report['Links_Victims_IP'] = linksVictimsIP
-        dict_report['Links_Exploit_Vuln'] = linksExploitVuln
+        dict_report["Links_Victims_Org"] = linksVictimsOrg
+        dict_report["Links_Victims_IP"] = linksVictimsIP
+        dict_report["Links_Exploit_Vuln"] = linksExploitVuln
 
         return dict_report
 
@@ -313,20 +329,22 @@ class RecordedFuture(Analyzer):
             dict: the analyzer report content with links
         """
         try:
-            for hit in json_response['data']['links']['hits']:
-                for section in hit['sections']:
-                    if section['lists']:
-                        section_name = section.get('section_id', {}).get('name')
+            for hit in json_response["data"]["links"]["hits"]:
+                for section in hit["sections"]:
+                    if section["lists"]:
+                        section_name = section.get("section_id", {}).get("name")
 
                         if section_name == "Actors, Tools & TTPs":
-                            dict_report = self.add_actors_tools_ttps(section['lists'], dict_report)
+                            dict_report = self.add_actors_tools_ttps(
+                                section["lists"], dict_report
+                            )
                         elif section_name == "Indicators & Detection Rules":
                             dict_report = self.add_indicators_detection_rules(
-                                section['lists'], dict_report
+                                section["lists"], dict_report
                             )
                         elif section_name == "Victims & Exploit Targets":
                             dict_report = self.add_victims_exploit_targets(
-                                section['lists'], dict_report
+                                section["lists"], dict_report
                             )
         except KeyError:
             pass
@@ -347,15 +365,15 @@ class RecordedFuture(Analyzer):
             dict: the analyzer report content with Risk data
         """
         evidenceDetails = {}
-        risk_obj = json_response['data']['risk']
+        risk_obj = json_response["data"]["risk"]
 
         try:
-            riskScore = risk_obj['score']
+            riskScore = risk_obj["score"]
         except KeyError:
             riskScore = 0
 
         try:
-            evidenceDetails = risk_obj['evidenceDetails']
+            evidenceDetails = risk_obj["evidenceDetails"]
             evidenceDetails.reverse()
         except KeyError:
             pass
@@ -370,15 +388,15 @@ class RecordedFuture(Analyzer):
                 }
             ]
 
-        risk_summary = risk_obj['riskSummary']
-        criticality = risk_obj['criticality']
-        criticality_label = risk_obj['criticalityLabel']
+        risk_summary = risk_obj["riskSummary"]
+        criticality = risk_obj["criticality"]
+        criticality_label = risk_obj["criticalityLabel"]
 
-        dict_report['Risk_Score'] = riskScore
-        dict_report['Risk_Summary'] = risk_summary
-        dict_report['Risk_Details'] = evidenceDetails
-        dict_report['Criticality'] = criticality
-        dict_report['Criticality_Label'] = criticality_label
+        dict_report["Risk_Score"] = riskScore
+        dict_report["Risk_Summary"] = risk_summary
+        dict_report["Risk_Details"] = evidenceDetails
+        dict_report["Criticality"] = criticality
+        dict_report["Criticality_Label"] = criticality_label
 
         return dict_report
 
@@ -389,25 +407,27 @@ class RecordedFuture(Analyzer):
             json_response (dict): API response containing entity context
             observable (string): observable enriched with Recorded Future
         """
-        ai_insights_obj = json_response['data']['aiInsights']
-        if ai_insights_obj['text']:
-            ai_insights = ai_insights_obj['text']
-        elif ai_insights_obj['comment']:
-            ai_insights = ai_insights_obj['comment']
+        ai_insights_obj = json_response["data"]["aiInsights"]
+        if ai_insights_obj["text"]:
+            ai_insights = ai_insights_obj["text"]
+        elif ai_insights_obj["comment"]:
+            ai_insights = ai_insights_obj["comment"]
         else:
             ai_insights = "Insufficient Information for Analysis"
 
         try:
             if self.data_type == URL_DATA_TYPE:
-                intel_card = "https://app.recordedfuture.com/live/sc/entity/url%3A" + observable
+                intel_card = (
+                    "https://app.recordedfuture.com/live/sc/entity/url%3A" + observable
+                )
             else:
-                intel_card = json_response['data']['intelCard']
+                intel_card = json_response["data"]["intelCard"]
         except KeyError:
             intel_card = "https://app.recordedfuture.com/live/"
 
         dict_report = {
-            'Intel_Card': intel_card,
-            'AI_Insights': ai_insights,
+            "Intel_Card": intel_card,
+            "AI_Insights": ai_insights,
         }
 
         dict_report = self.format_risk(json_response, dict_report)
@@ -432,9 +452,9 @@ class RecordedFuture(Analyzer):
         namespace = "RecordedFuture"
         predicate = "RiskScore"
         level = "safe"
-        value = raw['Risk_Score']
+        value = raw["Risk_Score"]
 
-        criticality = raw['Criticality']
+        criticality = raw["Criticality"]
 
         if criticality == 1:
             level = "info"
@@ -444,12 +464,18 @@ class RecordedFuture(Analyzer):
             level = "malicious"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        return {'taxonomies': taxonomies}
+        return {"taxonomies": taxonomies}
 
     def run(self):
         """The entry point when the Recorded Future Analyzer is run on an observable."""
         Analyzer.run(self)
-        types = [IP_DATA_TYPE, DOMAIN_DATA_TYPE, FQDN_DATA_TYPE, HASH_DATA_TYPE, URL_DATA_TYPE]
+        types = [
+            IP_DATA_TYPE,
+            DOMAIN_DATA_TYPE,
+            FQDN_DATA_TYPE,
+            HASH_DATA_TYPE,
+            URL_DATA_TYPE,
+        ]
 
         if self.data_type in types:
             observable = self.get_param("data", None, "Data is missing")

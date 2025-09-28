@@ -13,27 +13,27 @@
 		Staxx Report
 	</div>
 	<div class="panel-body">
-	
+
         <dl class="dl-horizontal" ng-if="content.errortext">
 			<dt><i class="fa fa-warning"></i> ERROR: </dt>
 			<dd class="wrap">{{content.errortext}}&nbsp;</dd>
 		</dl>
-		
+
 		<dl class="dl-horizontal">
 			<dt>Related Hits Found: </dt>
 			<dd class="wrap">{{content.count}}</dd>
 		</dl>
-		
+
 		<dl class="dl-horizontal">
 		    <dt>Last seen: </dt>
 		    <dd class="wrap">{{content.hits[0].date_last}}</dd>
 		</dl>
-		
+
 		<dl class="dl-horizontal">
 		    <dt>Last type: </dt>
 		    <dd class="wrap">{{content.hits[0].itype}}</dd>
 		</dl>
-		
+
 			<dl class="dl-horizontal">
 		    <dt>Lastest details: </dt>
 		    <dd class="wrap">{{content.hits[0].detail}}</dd>

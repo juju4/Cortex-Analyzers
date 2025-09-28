@@ -4,7 +4,7 @@ analyzers & responders.
 
 ![](images/cortex-ui.png)
 
-Analyzers can be written in any programming language supported by Linux such 
+Analyzers can be written in any programming language supported by Linux such
 as Python, Ruby, Perl, etc. Refer to the [How to Write and Submit an Analyzer](https://thehive-project.github.io/Cortex-Analyzers/dev_guides/how-to-create-an-analyzer/)
 page for details on how to write and submit one.
 

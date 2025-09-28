@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Detonate your suspicious file in SophosLabs Sandbox and find what behaviours the file has. For more information or to sign up for SophosLabs Intelix (with a free tier) see https://www.sophos.com/en-us/labs/intelix.aspx",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "command": "SophosIntelix/intelix_analyzer.py",
   "baseConfig": "SophosIntelix",
   "config": {

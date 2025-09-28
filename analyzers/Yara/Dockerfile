@@ -5,7 +5,7 @@ WORKDIR /worker
 RUN apk add --no-cache \
     gcc \
     musl-dev \
-    libffi-dev 
+    libffi-dev
 
 COPY requirements.txt Yara/
 RUN test ! -e Yara/requirements.txt || pip install --no-cache-dir -r Yara/requirements.txt

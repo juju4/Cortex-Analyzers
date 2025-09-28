@@ -5,7 +5,13 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Query AlienVault OTX for IPs, domains, URLs, or file hashes.",
-  "dataTypeList": ["url", "domain", "file", "hash", "ip"],
+  "dataTypeList": [
+    "url",
+    "domain",
+    "file",
+    "hash",
+    "ip"
+  ],
   "baseConfig": "OTXQuery",
   "command": "OTXQuery/otxquery.py",
   "configurationItems": [

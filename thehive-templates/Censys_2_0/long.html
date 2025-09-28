@@ -52,8 +52,8 @@
               <hr />
           </div>
       </div>
-  
-  
+
+
       <!-- Hash Results -->
       <div class="hash-results" ng-if="content.cert">
           <!-- Metadata -->
@@ -65,7 +65,7 @@
                   <p>Validated at: {{content.cert.validated_at}}</p>
               </dd>
           </dl>
-          
+
             <!-- Fingerprints -->
             <dl class="dl-horizontal">
                 <dt>Fingerprints</dt>
@@ -75,19 +75,19 @@
                     <p>MD5: {{content.cert.fingerprint_md5}}</p>
                 </dd>
             </dl>
-        
+
             <!-- Validation Level -->
             <dl class="dl-horizontal">
                 <dt>Validation Level</dt>
                 <dd>{{content.cert.validation_level}}</dd>
             </dl>
-        
+
             <!-- Labels -->
             <dl class="dl-horizontal">
                 <dt>Labels</dt>
                 <dd>{{content.cert.labels.join(', ')}}</dd>
             </dl>
-        
+
             <!-- Subject Alternative Names -->
             <dl class="dl-horizontal">
                 <dt>Subject Alternative Names</dt>
@@ -95,7 +95,7 @@
                     <p ng-repeat="dnsName in content.cert.parsed.extensions.subject_alt_name.dns_names">{{dnsName}}</p>
                 </dd>
             </dl>
-        
+
             <!-- Signed Certificate Timestamps -->
             <dl class="dl-horizontal">
                 <dt>Signed Certificate Timestamps</dt>
@@ -108,7 +108,7 @@
                     </div>
                 </dd>
             </dl>
-        
+
             <!-- Issuer -->
             <dl class="dl-horizontal">
                 <dt>Issuer</dt>
@@ -116,7 +116,7 @@
                     <p ng-repeat="cn in content.cert.parsed.issuer.common_name">{{cn}}</p>
                 </dd>
             </dl>
-        
+
             <!-- Validity -->
             <dl class="dl-horizontal">
                 <dt>Validity</dt>
@@ -125,7 +125,7 @@
                     <p>Valid until: {{content.cert.parsed.validity_period.not_after | date:'medium'}}</p>
                 </dd>
             </dl>
-        
+
             <!-- Full Certificate Data -->
             <dl class="dl-horizontal">
                 <dt>Full Certificate Data</dt>
@@ -142,8 +142,8 @@
                 </dd>
             </dl>
       </div>
-  
-  
+
+
       <!-- Website Results -->
       <div class="website-results" ng-if="content.website && content.website.length > 0">
         <!-- Iterate over the website array -->
@@ -174,7 +174,7 @@
             <dt>Reverse DNS</dt>
             <dd>{{site.dns.reverse_dns.names.join(', ')}}</dd>
           </dl>
-  
+
           <!-- Services -->
           <div class="website-services" ng-if="site.services && site.services.length > 0">
             <h4>Services</h4>
@@ -199,13 +199,13 @@
               </dd>
             </dl>
           </div>
-  
+
           <hr/>
         </div>
       </div>
     </div>
   </div>
-  
+
   <!-- General error -->
   <div class="panel panel-danger" ng-if="!success">
     <div class="panel-heading">

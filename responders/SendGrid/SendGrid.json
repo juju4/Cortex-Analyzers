@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Send an email with information from a TheHive case or alert via SendGrid API over HTTPS",
-  "dataTypeList": ["thehive:case", "thehive:alert"],
+  "dataTypeList": [
+    "thehive:case",
+    "thehive:alert"
+  ],
   "command": "SendGrid/SendGrid.py",
   "baseConfig": "SendGrid",
   "configurationItems": [

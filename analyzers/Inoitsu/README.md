@@ -7,7 +7,7 @@ No API key required.
 If the email is compromised then it returns:
 - Total breaches
 - Most recent breach
-- Breached data 
+- Breached data
 - Critical data
 - Exposure rating: The comparative data exposure and risk rating assigned to this email address.
 

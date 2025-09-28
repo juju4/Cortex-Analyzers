@@ -5,7 +5,11 @@
   "url": "https://github.com/pjuhas/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Analyze IP address, domain or hash via Kaspersky Threat Intelligence Portal",
-  "dataTypeList": ["ip", "domain", "hash"],
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "hash"
+  ],
   "baseConfig": "KasperskyTIP",
   "configurationItems": [
     {

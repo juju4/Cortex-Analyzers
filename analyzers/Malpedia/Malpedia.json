@@ -5,7 +5,9 @@
   "url": "https://github.com/LDO-CERT/cortex-analyzers",
   "version": "1.0",
   "description": "Check files against Malpedia YARA rules.",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "baseConfig": "Malpedia",
   "command": "Malpedia/malpedia_analyzer.py",
   "configurationItems": [

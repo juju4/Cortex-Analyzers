@@ -6,7 +6,7 @@ from cybercrimetracker.cybercrimeTrackerAPI import cybercrimeTrackerAPI
 
 class CyberCrimeTrackerAnalyzer(Analyzer):
     """
-    This analyzer searches 
+    This analyzer searches
     http://cybercrime-tracker.net
     for possible c2 servers.
     """
@@ -15,23 +15,21 @@ class CyberCrimeTrackerAnalyzer(Analyzer):
         Analyzer.__init__(self)
 
     def summary(self, raw):
-        level = 'info'
-        namespace = 'CCT'
-        predicate = 'C2 Search'
+        level = "info"
+        namespace = "CCT"
+        predicate = "C2 Search"
 
-        hit_count = len(raw.get('results', []))
+        hit_count = len(raw.get("results", []))
         value = "{} hits".format(hit_count)
         if hit_count == 1:
             value = value[:-2] + ""
 
         if hit_count > 0:
-            level = 'malicious'
+            level = "malicious"
 
         taxonomies = []
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        return {
-            "taxonomies": taxonomies
-        }
+        return {"taxonomies": taxonomies}
 
     def run(self):
         observable = self.get_data()
@@ -42,7 +40,9 @@ class CyberCrimeTrackerAnalyzer(Analyzer):
 
         try:
             while True:
-                new_results = cybercrimeTrackerAPI().search(query=observable, offset=offset, limit=limit)
+                new_results = cybercrimeTrackerAPI().search(
+                    query=observable, offset=offset, limit=limit
+                )
                 results.extend(new_results)
 
                 current_hit_count = len(new_results)
@@ -51,12 +51,10 @@ class CyberCrimeTrackerAnalyzer(Analyzer):
                     break
                 offset += limit
 
-            self.report({
-                'results': results
-            })
+            self.report({"results": results})
         except Exception:
-            self.error('An error occurred while scraping cybercrime-tracker.')
+            self.error("An error occurred while scraping cybercrime-tracker.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     CyberCrimeTrackerAnalyzer().run()

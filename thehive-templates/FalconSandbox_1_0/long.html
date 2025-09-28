@@ -17,7 +17,7 @@
         <a target="_blank" href="https://falcon.crowdstrike.com/intelligence/sandbox/report/{{content.resources[0].id}}/report-summary">Open the Crowdstrike Sandbox Report here</a>
     </div>
     <div class="panel-body" ng-repeat="sample in content.resources">
-        
+
         <div class="panel-body" ng-repeat="sandbox in sample.sandbox">
             <div ng-repeat="(key, value) in sandbox">
                 <dl class="dl-horizontal">
@@ -35,7 +35,7 @@
                             <div ng-switch-default>{{value}}</div>
                         </div>
                     </dd>
-                </dl>        
+                </dl>
             </div>
 	    </div>
 	</div>

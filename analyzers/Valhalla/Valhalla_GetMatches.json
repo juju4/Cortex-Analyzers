@@ -5,7 +5,9 @@
   "url": "https://github.com/NextronSystems/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Gets matching YARA rules for a given sample SHA256 hash",
-  "dataTypeList": ["hash"],
+  "dataTypeList": [
+    "hash"
+  ],
   "command": "Valhalla/valhalla.py",
   "baseConfig": "Valhalla",
   "configurationItems": [
@@ -22,13 +24,18 @@
   "subscription_required": false,
   "free_subscription": false,
   "service_homepage": "https://valhalla.nextron-systems.com",
-  "service_logo": {"path":"assets/Valhalla_logo.png", "caption": "logo"},
+  "service_logo": {
+    "path": "assets/Valhalla_logo.png",
+    "caption": "logo"
+  },
   "screenshots": [
-    {"path":"assets/Valhalla_GetMatches_short.png",
-      "caption":"Valhalla Get Hashes short report sample"
+    {
+      "path": "assets/Valhalla_GetMatches_short.png",
+      "caption": "Valhalla Get Hashes short report sample"
     },
     {
       "path": "assets/Valhalla_GetMatches_long.png",
-      "caption:":"Valhalla Get Hashes long report sample"
-    }]
+      "caption:": "Valhalla Get Hashes long report sample"
+    }
+  ]
 }

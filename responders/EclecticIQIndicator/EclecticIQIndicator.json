@@ -5,7 +5,10 @@
   "url": "https://eclecticiq.com",
   "license": "MIT",
   "description": "Submit indicators to the EclecticIQ Intelligence Center api",
-  "dataTypeList": ["thehive:case_artifact", "thehive:case"],
+  "dataTypeList": [
+    "thehive:case_artifact",
+    "thehive:case"
+  ],
   "command": "EclecticIQIndicator/EclecticIQIndicator.py",
   "baseConfig": "EclecticIQIndicator",
   "configurationItems": [

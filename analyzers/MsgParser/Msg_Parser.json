@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Parse Outlook MSG files and extract the main artifacts.",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "baseConfig": "MsgParser",
   "command": "MsgParser/parse.py"
 }

@@ -5,11 +5,15 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use DomainTools to get a list of domain names sharing the same IP address.",
-  "dataTypeList": ["ip", "domain","fqdn"],
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "fqdn"
+  ],
   "command": "DomainTools/domaintools_analyzer.py",
   "baseConfig": "DomainTools",
   "config": {
-      "service": "reverse-ip"
+    "service": "reverse-ip"
   },
   "configurationItems": [
     {

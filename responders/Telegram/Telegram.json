@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Send a message to Telegram with information from TheHive case",
-  "dataTypeList": ["thehive:case"],
+  "dataTypeList": [
+    "thehive:case"
+  ],
   "command": "Telegram/telegram.py",
   "baseConfig": "Telegram",
   "configurationItems": [

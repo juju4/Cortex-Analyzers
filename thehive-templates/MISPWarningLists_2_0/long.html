@@ -14,7 +14,7 @@
                 </ul>
                 <ul ng-repeat="list in content.results" ng-if="content.mode == 'db'">
                     <li>{{list.value}} - {{list.list_name}} - ver. {{list.list_version}}</li>
-                </ul>                
+                </ul>
             </dd>
             <dd ng-if="content.results.length == 0">
                 <p>
@@ -31,7 +31,7 @@
                 </span>
                 <span class="label label-warning" ng-if="content.mode == 'db'">
                     N/A
-                </span>                
+                </span>
             </dd>
         </dl>
     </div>

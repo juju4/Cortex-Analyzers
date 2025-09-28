@@ -5,14 +5,18 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "2.0",
   "description": "Submit artifacts to the Recorded Future Triage sandbox service. This analyzer requires a paid subscription for the Private and Recorded Future sandboxes.",
-  "dataTypeList": ["ip", "url", "file"],
+  "dataTypeList": [
+    "ip",
+    "url",
+    "file"
+  ],
   "baseConfig": "Triage",
   "config": {
-      "check_tlp": true,
-      "max_tlp": 2,
-      "check_pap": true,
-      "max_pap": 2
-   },
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
   "command": "Triage/triage_analyzer.py",
   "configurationItems": [
     {
@@ -43,22 +47,27 @@
       "multi": false,
       "required": false
     }
-   ],
-   "registration_required": true,
-   "subscription_required": true,
-   "free_subscription": true,
-   "service_homepage": "https://tria.ge",
-   "service_logo": {"path":"assets/recorded_future_triage_logo.png", "caption": "logo"},
-   "screenshots": [
-     {"path":"assets/triage_cortex_settings.png",
-       "caption":"Triage analyzer cortex setting"
-     },
-     {
-       "path": "assets/triage_long_report.png",
-       "caption:":"Triage analyzer full report"
-     },
-     {
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://tria.ge",
+  "service_logo": {
+    "path": "assets/recorded_future_triage_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/triage_cortex_settings.png",
+      "caption": "Triage analyzer cortex setting"
+    },
+    {
+      "path": "assets/triage_long_report.png",
+      "caption:": "Triage analyzer full report"
+    },
+    {
       "path": "assets/triage_verdict.png",
-      "caption:":"Triage analyzer verdict"
-    }]
+      "caption:": "Triage analyzer verdict"
+    }
+  ]
 }

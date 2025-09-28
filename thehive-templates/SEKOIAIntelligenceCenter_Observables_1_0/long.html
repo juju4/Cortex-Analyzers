@@ -42,14 +42,14 @@
                     <dd>
                         <div ng-if="observable.x_inthreat_tags.length === 0">No tags defined</div>
                         <div ng-if="observable.x_inthreat_tags.length > 0">
-                            <span class="label label-info" style="margin: 2px;" ng-repeat="tag in observable.x_inthreat_tags">{{tag.name}}</span> 
+                            <span class="label label-info" style="margin: 2px;" ng-repeat="tag in observable.x_inthreat_tags">{{tag.name}}</span>
                         </div>
                     </dd>
                 </dl>
                 <dl class="dl-horizontal" ng-if="observable.x_ic_indicated_threats && observable.x_ic_indicated_threats.length > 0">
                     <dt>Threats</dt>
                     <dd>
-                        <span class="label label-danger" style="margin: 2px;" ng-repeat="threat in observable.x_ic_indicated_threats">{{threat.name}}</span> 
+                        <span class="label label-danger" style="margin: 2px;" ng-repeat="threat in observable.x_ic_indicated_threats">{{threat.name}}</span>
                     </dd>
                 </dl>
                 <dl class="dl-horizontal">

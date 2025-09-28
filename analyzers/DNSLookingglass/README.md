@@ -3,4 +3,4 @@ Lookup domain names from different locations using the ISC SANS [DNS Lookingglas
 
 
 ##### Requirements
-There is no requirements to use this analyzer. 
+There is no requirements to use this analyzer.

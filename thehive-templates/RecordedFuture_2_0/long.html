@@ -51,7 +51,7 @@
 			</tr>
 			<tr ng-repeat="evidence in content.Risk_Details">
 				<td>
-					<span ng-style="{'font-weight': 'bold'}" 
+					<span ng-style="{'font-weight': 'bold'}"
 						ng-class="{'text-success': evidence.criticality == 0, 'text-warning': evidence.criticality > 0 && evidence.criticality <= 2, 'text-danger': evidence.criticality > 2}">
                         {{evidence.criticalityLabel}}
                     </span>

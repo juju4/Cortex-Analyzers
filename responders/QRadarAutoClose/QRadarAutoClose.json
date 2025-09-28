@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Closing the QRadar Offense associated to your case in one clic !",
-  "dataTypeList": ["thehive:case"],
+  "dataTypeList": [
+    "thehive:case"
+  ],
   "command": "QRadarAutoClose/QRadarAutoClose.py",
   "baseConfig": "QRadarAutoClose",
   "configurationItems": [

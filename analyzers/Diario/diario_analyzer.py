@@ -8,28 +8,24 @@ from cortexutils.analyzer import Analyzer
 
 
 class DiarioAnalyzer(Analyzer):
-
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.get_param('config.service', None, 'Service parameter is missing')
-        self.client_id = self.get_param('config.client_id', None, 'Missing Client ID')
-        self.secret = self.get_param('config.secret', None, 'Missing Secret')
-        self.polling_interval = self.get_param('config.polling_interval', 60)
+        self.service = self.get_param(
+            "config.service", None, "Service parameter is missing"
+        )
+        self.client_id = self.get_param("config.client_id", None, "Missing Client ID")
+        self.secret = self.get_param("config.secret", None, "Missing Secret")
+        self.polling_interval = self.get_param("config.polling_interval", 60)
         self.api = Diario(self.client_id, self.secret)
 
     _predictions = {
         "M": "Malware",
         "G": "Goodware",
         "NM": "No Macros present",  # Only applies to office documents
-        "U": "Unknown"
+        "U": "Unknown",
     }
 
-    _stages = {
-        "A": "Analyzed",
-        "Q": "Queued",
-        "P": "Processing",
-        "F": "Failed"
-    }
+    _stages = {"A": "Analyzed", "Q": "Queued", "P": "Processing", "F": "Failed"}
 
     def check_response(self, document_hash):
         response = self.api.search(document_hash)
@@ -77,10 +73,9 @@ class DiarioAnalyzer(Analyzer):
         return {"taxonomies": taxonomies}
 
     def run(self):
-
         if self.service == "scan":
             if self.data_type == "file":
-                filepath = self.get_param('file', None, 'File is missing')
+                filepath = self.get_param("file", None, "File is missing")
                 response = self.api.upload(filepath)
                 if response.error:
                     self.error(response.error["message"])
@@ -93,7 +88,7 @@ class DiarioAnalyzer(Analyzer):
             # If we want to only get the report of a file we get the
             # SHA256 hash and check if there is a report
             if self.data_type == "file":
-                filepath = self.get_param('file', None, 'File is missing')
+                filepath = self.get_param("file", None, "File is missing")
                 sha256_hash = hashlib.sha256()
                 with open(filepath, "rb") as f:
                     # Read and update hash string value in blocks of 4K
@@ -101,7 +96,7 @@ class DiarioAnalyzer(Analyzer):
                         sha256_hash.update(byte_block)
                 data = sha256_hash.hexdigest()
             elif self.data_type == "hash":
-                data = self.get_param('data', None, 'Data is missing')
+                data = self.get_param("data", None, "Data is missing")
             else:
                 self.error("Data type has to be a File or Hash")
                 return
@@ -113,5 +108,5 @@ class DiarioAnalyzer(Analyzer):
         self.report(self.check_response(data))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     DiarioAnalyzer().run()

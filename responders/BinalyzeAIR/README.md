@@ -11,7 +11,7 @@ AIR is an "Automated Incident Response" platform that provides the complete feat
 
 #### What does this integration do?
 
-This responder lets you start acquisition and isolation of an endpoint with Binalyze AIR. 
+This responder lets you start acquisition and isolation of an endpoint with Binalyze AIR.
 
 ##### Acquisition
 One of the core features of AIR is collecting evidence remotely. This feature is made possible by "Acquisition Profiles," a group of different evidence categories. With this integration, you can use following profiles:
@@ -31,4 +31,3 @@ When an endpoint is isolated, you can still perform tasks such as Acquisition.
 
 For more information, please refer to [Knowledge Base](https://kb.binalyze.com/)
 The program uses [Binalyze AIR API](https://www.binalyze.com)
-

@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Start a job on AWX",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "AWX/awx.py",
   "baseConfig": "AWX",
   "configurationItems": [

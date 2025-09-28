@@ -5,12 +5,17 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "test",
-  "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:case_task", "thehive:case_task_log"],
+  "dataTypeList": [
+    "thehive:case",
+    "thehive:alert",
+    "thehive:case_artifact",
+    "thehive:case_task",
+    "thehive:case_task_log"
+  ],
   "command": "Test/test.py",
   "baseConfig": "Test",
   "config": {
     "service": "test"
   },
-  "configurationItems": [
-  ]
+  "configurationItems": []
 }

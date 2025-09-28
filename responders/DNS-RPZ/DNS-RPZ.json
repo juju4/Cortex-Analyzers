@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Add a dynamic DNS entry to a Response Policy Zone, blackholing or redirecting a FQDN.",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "DNS-RPZ/dns-rpz.py",
   "baseConfig": "DNS-RPZ",
   "config": {

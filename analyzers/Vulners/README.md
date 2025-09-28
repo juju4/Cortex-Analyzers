@@ -1,5 +1,5 @@
 ### Vulners-analyzer
- 
+
 This analyzer consists of 2 parts.
 1. **Vulners_IOC**: As a result of collaboration between Vulners and RST Threat Feed, the idea was to send IOC analysis results through theHive analyzer: blog post
 2. **Vulners_CVE**: Vulners have a strong vulnerability database. This data is useful if:
@@ -41,7 +41,7 @@ Long template:
 
 ##### Vulnerabilities:
 
-Short template: 
+Short template:
 
 ![Short CVE template](assets/cve_short_template.png)
 

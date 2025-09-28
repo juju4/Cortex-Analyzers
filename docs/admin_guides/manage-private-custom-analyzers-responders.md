@@ -21,7 +21,7 @@ analyzer {
 [..]
 }
 [..]
-responder { 
+responder {
   urls = [
         "https://download.thehive-project.org/responders.json"
         "/opt/customneurons/responders"
@@ -38,7 +38,7 @@ See:
 * [How to create an Analyzer guide](../dev_guides/how-to-create-an-analyzer.md)
 * [Analyzer definition file](../dev_guides/analyzers_definition.md)
 
-To prepare your package you have to write your `Dockerfile`. We recommend starting with [this one](https://github.com/TheHive-Project/Cortex-Analyzers/blob/master/utils/docker/Dockerfile_template) and update it, especially if additional packages or programs are required in the image. 
+To prepare your package you have to write your `Dockerfile`. We recommend starting with [this one](https://github.com/TheHive-Project/Cortex-Analyzers/blob/master/utils/docker/Dockerfile_template) and update it, especially if additional packages or programs are required in the image.
 
 As a result, your program should be at least:
 
@@ -64,16 +64,16 @@ Download it, and edit the file to adjust few variables:
 ```bash
 #############################
 #  VARIABLES TO CUSTOMISE   #
-############################# 
+#############################
 ## Set the path to your custom analyzers repository (configured in Cortex)
 analyzerspath="/opt/customneurons/analyzers"
 ## Set the path to your custom responders repository  (configured in Cortex)
 responderspath="/opt/customneurons/responders"
 # Set path to your docker images archives
 dockerimagearchives="/opt/backup-images"
-# Set a name for the docker image registry 
+# Set a name for the docker image registry
 dockerimageregistryname="localhost"
-# Set a name for the docker image repository 
+# Set a name for the docker image repository
 dockerimagerepositoryname="customimage"
 ```
 
@@ -101,12 +101,12 @@ The program has several options.
 
 ```
 Build docker images for Custom analyzers and responders
-  
+
    Syntax: build-customimage.sh [options]
-   
+
    options:
    -h          Print this Help.
-   -t type     Type: 'analyzer' or 'responder' 
+   -t type     Type: 'analyzer' or 'responder'
    -b path     path to analyzer or responder json file
 ```
 

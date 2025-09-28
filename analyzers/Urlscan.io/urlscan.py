@@ -34,7 +34,7 @@ class Urlscan:
 
             finished = False
             tries = 0
-            while tries <= 15:        
+            while tries <= 15:
                 submission_req = requests.get(submission_url)
                 if submission_req.status_code == 200:
                     return submission_req.json()

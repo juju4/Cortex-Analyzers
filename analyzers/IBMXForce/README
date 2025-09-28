@@ -40,10 +40,9 @@ print(_query_url.text, _query_malware.text, _query_info.text )
 
 
 ####### ip_query ################
-data = "122.252.241.122" 
+data = "122.252.241.122"
 _query_ip = _session.get('%s/ipr/%s' % (url, data), proxies=proxies, verify=verify)
 _query_malware = _session.get('%s/ipr/malware/%s' % (url, data), proxies=proxies, verify=verify)
 _query_info = _session.get('%s/resolve/%s' % (url, data), proxies=proxies, verify=verify)
 
 print(_query_ip.text, _query_malware.text, _query_info.text )
-

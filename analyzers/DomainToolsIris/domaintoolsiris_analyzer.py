@@ -18,7 +18,9 @@ class DomainToolsAnalyzer(Analyzer):
             "config.service", None, "Service parameter is missing"
         )
         self.raw = ""
-        self.pivot_count_threshold = int(self.get_param("config.pivot_count_threshold", 500))
+        self.pivot_count_threshold = int(
+            self.get_param("config.pivot_count_threshold", 500)
+        )
 
     @staticmethod
     def get_domain_age(create_date):
@@ -124,10 +126,10 @@ class DomainToolsAnalyzer(Analyzer):
                 domain_risk["proximity"]["value"] = proximity_data.get("risk_score", 0)
             elif blacklist_data:
                 domain_risk["proximity"]["value"] = blacklist_data.get("risk_score", 0)
-            domain_risk["proximity"][
-                "class"
-            ] = DomainToolsAnalyzer.get_threat_level_class(
-                domain_risk["proximity"]["value"]
+            domain_risk["proximity"]["class"] = (
+                DomainToolsAnalyzer.get_threat_level_class(
+                    domain_risk["proximity"]["value"]
+                )
             )
             threat_profile_data = DomainToolsAnalyzer.get_threat_component(
                 risk_components, "threat_profile"
@@ -148,10 +150,10 @@ class DomainToolsAnalyzer(Analyzer):
                 domain_risk["tpm"]["value"] = threat_profile_malware_data.get(
                     "risk_score", 0
                 )
-                domain_risk["tpm"][
-                    "class"
-                ] = DomainToolsAnalyzer.get_threat_level_class(
-                    domain_risk["tpm"]["value"]
+                domain_risk["tpm"]["class"] = (
+                    DomainToolsAnalyzer.get_threat_level_class(
+                        domain_risk["tpm"]["value"]
+                    )
                 )
             threat_profile_phishing_data = DomainToolsAnalyzer.get_threat_component(
                 risk_components, "threat_profile_phishing"
@@ -161,10 +163,10 @@ class DomainToolsAnalyzer(Analyzer):
                 domain_risk["tpp"]["value"] = threat_profile_phishing_data.get(
                     "risk_score", 0
                 )
-                domain_risk["tpp"][
-                    "class"
-                ] = DomainToolsAnalyzer.get_threat_level_class(
-                    domain_risk["tpp"]["value"]
+                domain_risk["tpp"]["class"] = (
+                    DomainToolsAnalyzer.get_threat_level_class(
+                        domain_risk["tpp"]["value"]
+                    )
                 )
             threat_profile_spam_data = DomainToolsAnalyzer.get_threat_component(
                 risk_components, "threat_profile_spam"
@@ -174,10 +176,10 @@ class DomainToolsAnalyzer(Analyzer):
                 domain_risk["tps"]["value"] = threat_profile_spam_data.get(
                     "risk_score", 0
                 )
-                domain_risk["tps"][
-                    "class"
-                ] = DomainToolsAnalyzer.get_threat_level_class(
-                    domain_risk["tps"]["value"]
+                domain_risk["tps"]["class"] = (
+                    DomainToolsAnalyzer.get_threat_level_class(
+                        domain_risk["tps"]["value"]
+                    )
                 )
 
         # Contacts Flatten

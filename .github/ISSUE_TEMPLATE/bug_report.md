@@ -23,7 +23,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots and any additional information that might help explain your problem.
 
 **Work environment**
- - Client OS: 
+ - Client OS:
 - Server OS:
  - Browse type and version:
 - Cortex version:

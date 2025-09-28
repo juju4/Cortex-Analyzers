@@ -80,12 +80,12 @@ Provides execution details for IoC management actions, such as successful additi
 
 ### 3. **CrowdstrikeFalcon_Sync Responder**
 
-- **Description**: This responder performs **one-way status synchronization** from **TheHive** to **CrowdStrike Falcon**. It supports execution on both **alerts** and **cases** in TheHive.  
+- **Description**: This responder performs **one-way status synchronization** from **TheHive** to **CrowdStrike Falcon**. It supports execution on both **alerts** and **cases** in TheHive.
   The synchronization relies on custom fields in TheHive containing:
   - `csfalcon-alert-id` – for CrowdStrike Falcon Alert IDs.
   - `csfalcon-incident-id` – for CrowdStrike Falcon Incident IDs.
 
-- **Permissions Required**: 
+- **Permissions Required**:
   - `Alerts: Read, Write`
   - `Incidents: Read, Write`
 

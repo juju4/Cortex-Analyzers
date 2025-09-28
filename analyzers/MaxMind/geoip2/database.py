@@ -4,6 +4,7 @@ GeoIP2 Database Reader
 ======================
 
 """
+
 import inspect
 
 import geoip2
@@ -13,7 +14,6 @@ import maxminddb
 
 
 class Reader(object):
-
     """Creates a new GeoIP2 database Reader object.
 
     Instances of this class provide a reader for the GeoIP2 database format.
@@ -38,11 +38,11 @@ class Reader(object):
     database is corrupt or invalid, a ``maxminddb.InvalidDatabaseError`` will
     be thrown.
 
-"""
+    """
 
     def __init__(self, filename, locales=None):
         if locales is None:
-            locales = ['en']
+            locales = ["en"]
         self._db_reader = maxminddb.Reader(filename)
         self._locales = locales
 
@@ -55,7 +55,7 @@ class Reader(object):
 
         """
 
-        return self._model_for(geoip2.models.Country, 'Country', ip_address)
+        return self._model_for(geoip2.models.Country, "Country", ip_address)
 
     def city(self, ip_address):
         """Get the City object for the IP address
@@ -65,7 +65,7 @@ class Reader(object):
         :returns: :py:class:`geoip2.models.City` object
 
         """
-        return self._model_for(geoip2.models.City, 'City', ip_address)
+        return self._model_for(geoip2.models.City, "City", ip_address)
 
     def connection_type(self, ip_address):
         """Get the ConnectionType object for the IP address
@@ -75,9 +75,9 @@ class Reader(object):
         :returns: :py:class:`geoip2.models.ConnectionType` object
 
         """
-        return self._flat_model_for(geoip2.models.ConnectionType,
-                                    'GeoIP2-Connection-Type',
-                                    ip_address)
+        return self._flat_model_for(
+            geoip2.models.ConnectionType, "GeoIP2-Connection-Type", ip_address
+        )
 
     def domain(self, ip_address):
         """Get the Domain object for the IP address
@@ -87,9 +87,7 @@ class Reader(object):
         :returns: :py:class:`geoip2.models.Domain` object
 
         """
-        return self._flat_model_for(geoip2.models.Domain,
-                                    'GeoIP2-Domain',
-                                    ip_address)
+        return self._flat_model_for(geoip2.models.Domain, "GeoIP2-Domain", ip_address)
 
     def isp(self, ip_address):
         """Get the ISP object for the IP address
@@ -99,30 +97,30 @@ class Reader(object):
         :returns: :py:class:`geoip2.models.ISP` object
 
         """
-        return self._flat_model_for(geoip2.models.ISP,
-                                    'GeoIP2-ISP',
-                                    ip_address)
+        return self._flat_model_for(geoip2.models.ISP, "GeoIP2-ISP", ip_address)
 
     def _get(self, database_type, ip_address):
         if not database_type in self.metadata().database_type:
             caller = inspect.stack()[2][3]
-            raise TypeError("The %s method cannot be used with the "
-                            "%s database" %
-                            (caller, self.metadata().database_type))
+            raise TypeError(
+                "The %s method cannot be used with the "
+                "%s database" % (caller, self.metadata().database_type)
+            )
         record = self._db_reader.get(ip_address)
         if record is None:
             raise geoip2.errors.AddressNotFoundError(
-                "The address %s is not in the database." % ip_address)
+                "The address %s is not in the database." % ip_address
+            )
         return record
 
     def _model_for(self, model_class, types, ip_address):
         record = self._get(types, ip_address)
-        record.setdefault('traits', {})['ip_address'] = ip_address
+        record.setdefault("traits", {})["ip_address"] = ip_address
         return model_class(record, locales=self._locales)
 
     def _flat_model_for(self, model_class, types, ip_address):
         record = self._get(types, ip_address)
-        record['ip_address'] = ip_address
+        record["ip_address"] = ip_address
         return model_class(record)
 
     def metadata(self):

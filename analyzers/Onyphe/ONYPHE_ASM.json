@@ -5,7 +5,12 @@
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "description": "Manage an attack surface from The Hive using ONYPHE riskscan category",
-  "dataTypeList": ["ip", "domain", "fqdn", "hash"],
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "fqdn",
+    "hash"
+  ],
   "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
   "config": {

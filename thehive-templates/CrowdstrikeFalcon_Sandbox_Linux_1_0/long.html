@@ -20,8 +20,8 @@
             <tr>
                 <td><strong>Quota</strong></td>
                 <td>
-                    Total: {{ content["meta"]["quota"]["total"] }}, 
-                    Used: {{ content["meta"]["quota"]["used"] }}, 
+                    Total: {{ content["meta"]["quota"]["total"] }},
+                    Used: {{ content["meta"]["quota"]["used"] }},
                     In Progress: {{ content["meta"]["quota"]["in_progress"] }}
                 </td>
             </tr>
@@ -119,7 +119,7 @@
                 </table>
             </div>
             <p ng-if="sandbox.mitre_attacks.length === 0">No MITRE ATT&CK techniques reported.</p>
-            
+
             <!-- Malquery -->
             <div ng-if="resource.malquery.length > 0">
                 <h5><i class="fa fa-search"></i> Malquery Analysis</h5>
@@ -149,7 +149,7 @@
                 </table>
             </div>
             <p ng-if="resource.malquery.length === 0">No malquery results available.</p>
-            
+
             <!-- Extracted Files -->
             <div>
                 <h5><i class="fa fa-archive"></i> Extracted Files</h5>
@@ -175,7 +175,7 @@
                 </table>
                 <p ng-if="!sandbox.extracted_files || sandbox.extracted_files.length === 0">No extracted files found.</p>
             </div>
-            
+
             <!-- Threat Graph -->
             <div>
                 <h5><i class="fa fa-network-wired"></i> Threat Graph Indicators</h5>
@@ -197,7 +197,7 @@
                 </table>
                 <p ng-if="resource.threat_graph.indicators.length === 0">No threat graph indicators found.</p>
             </div>
-            
+
             <!-- IntelX -->
             <div ng-if="resource.intelx">
                 <h5><i class="fa fa-shield-alt"></i> IntelX Information</h5>

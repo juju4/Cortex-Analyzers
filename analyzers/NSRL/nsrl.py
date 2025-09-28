@@ -55,11 +55,10 @@ class NsrlAnalyzer(Analyzer):
         data = self.get_param("data", None, "Data is missing")
         data = data.upper()
 
-        if self.data_type not in ['filename', "hash"]:
+        if self.data_type not in ["filename", "hash"]:
             self.error("Invalid data type")
 
-        if self.data_type == 'hash':
-
+        if self.data_type == "hash":
             md5_re = re.compile(r"^[a-f0-9]{32}(:.+)?$", re.IGNORECASE)
             sha1_re = re.compile(r"^[a-f0-9]{40}(:.+)?$", re.IGNORECASE)
 
@@ -89,9 +88,7 @@ class NsrlAnalyzer(Analyzer):
                 for line in output.stdout.readlines():
                     tmp = {}
                     file_path, values = line.strip().split(":")
-                    values = [
-                        x.replace('"', "") for x in values.split(",")
-                    ]
+                    values = [x.replace('"', "") for x in values.split(",")]
                     for key, value in zip(FIELDS, values):
                         tmp[key] = value
                     tmp["dbname"], tmp["release"] = (
@@ -104,17 +101,17 @@ class NsrlAnalyzer(Analyzer):
             results["mode"] = "file"
 
         else:
-            if variable != 'filename':
+            if variable != "filename":
                 sql = "SELECT %s FROM nsrl WHERE %s='%s'" % (
                     ", ".join(FIELDS + ["dbname", "release"]),
                     variable,
-                    data
+                    data,
                 )
             else:
                 sql = "SELECT %s FROM nsrl WHERE %s ilike '%s'" % (
                     ", ".join(FIELDS + ["dbname", "release"]),
                     variable,
-                    "%%{}%%".format(data)
+                    "%%{}%%".format(data),
                 )
             values = self.engine.execute(sql)
             self.engine.dispose()

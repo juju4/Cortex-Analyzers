@@ -4,7 +4,10 @@
   "url": "https://www.splunk.com",
   "author": "Unit777, LetMeR00t",
   "license": "AGPL-V3",
-  "dataTypeList": ["domain", "fqdn"],
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
   "description": "Execute a savedsearch on a Splunk instance with a domain or a FQDN as argument",
   "baseConfig": "Splunk",
   "config": {

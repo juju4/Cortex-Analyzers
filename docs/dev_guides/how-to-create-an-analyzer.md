@@ -118,7 +118,7 @@ original file.
       "description": "API key for Virustotal",
       "type": "string", <== defines what kind of data type the configuration item is (string, number)
       "multi": false, <== setting multi to true allows to pass a list of items (e.g. MISP analyzer)
-      "required": true 
+      "required": true
     },
     {
       "name": "polling_interval",
@@ -206,7 +206,7 @@ If you need additional datatypes for your analyzer, please let us know at
 #### baseConfig
 Name used to group configuration items common to several analyzer. This
 prevent the user to enter the same API key for all analyzer flavors.
-The Cortex analyzer config page group configuration items by their `baseConfig`.  
+The Cortex analyzer config page group configuration items by their `baseConfig`.
 
 #### config
 Configuration dedicated to the analyzer's flavor. This is where we

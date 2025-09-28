@@ -1,4 +1,4 @@
-<!-- Success !--> 
+<!-- Success !-->
 <div class="panel panel-info" ng-if="content.status == 'Capture done' || content.status == 'Domain resolved'" >
     <div class="panel-heading" >
         <strong>Data submitted: "{{content.submitted_url}}" at {{content.submission_date}}</strong>
@@ -27,9 +27,9 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
-<!-- Domain not resolved !--> 
+<!-- Domain not resolved !-->
 <div class="panel panel-danger" ng-if="content.status == 'Domain not resolved'" >
     <div class="panel-heading" >
         <strong>Domain not resolved for: "{{content.submitted_url}}" at {{content.submission_date}}</strong>

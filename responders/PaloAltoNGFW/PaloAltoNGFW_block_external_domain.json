@@ -5,7 +5,11 @@
   "url": "https://www.paloaltonetworks.com/",
   "license": "AGPL-V3",
   "description": "Block external domain",
-  "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
+  "dataTypeList": [
+    "thehive:alert",
+    "thehive:case_artifact",
+    "thehive:case"
+  ],
   "command": "PaloAltoNGFW/block_external_domain.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
@@ -36,21 +40,21 @@
       "type": "string",
       "multi": false,
       "required": true,
-	  "defaultValue": "TheHive Block external Domain"
+      "defaultValue": "TheHive Block external Domain"
     },
-	{
-        "name": "TheHive_instance",
-        "description": "URL of the TheHive instance to query",
-        "type": "string",
-        "multi": false,
-        "required": true
-      },
-      {
-        "name": "TheHive_API_key",
-        "description": "TheHive API key with read access",
-        "type": "string",
-        "multi": false,
-        "required": true
-      }
+    {
+      "name": "TheHive_instance",
+      "description": "URL of the TheHive instance to query",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "TheHive_API_key",
+      "description": "TheHive API key with read access",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
   ]
 }

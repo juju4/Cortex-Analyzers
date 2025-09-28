@@ -5,7 +5,10 @@
   "url": "https://github.com/pjuhas/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "WHOIS queries from threatminer.org",
-  "dataTypeList": ["ip", "domain"],
+  "dataTypeList": [
+    "ip",
+    "domain"
+  ],
   "baseConfig": "ThreatMiner",
   "command": "ThreatMiner/ThreatMiner.py"
 }

@@ -14,8 +14,8 @@ class Threatcrowd(Analyzer):
         level = None
         value = None
 
-        if 'votes' in raw:
-            r = raw.get('votes')
+        if "votes" in raw:
+            r = raw.get("votes")
             value = r
             if r == 1:
                 level = "safe"
@@ -38,11 +38,21 @@ class Threatcrowd(Analyzer):
     def run(self):
         Analyzer.run(self)
 
-        if self.data_type == 'domain' or self.data_type == 'ip' or self.data_type == 'mail' or self.data_type == 'fqdn':
-            threatcrowd_data_type = self.data_type if self.data_type != 'mail' else 'email'
+        if (
+            self.data_type == "domain"
+            or self.data_type == "ip"
+            or self.data_type == "mail"
+            or self.data_type == "fqdn"
+        ):
+            threatcrowd_data_type = (
+                self.data_type if self.data_type != "mail" else "email"
+            )
             try:
-                response = requests.get("{}/{}/report/".format(self.URI, threatcrowd_data_type), verify=False,
-                                        params = {threatcrowd_data_type: self.get_data()})
+                response = requests.get(
+                    "{}/{}/report/".format(self.URI, threatcrowd_data_type),
+                    verify=False,
+                    params={threatcrowd_data_type: self.get_data()},
+                )
                 self.report(response.json())
             except Exception as e:
                 self.unexpectedError(e)
@@ -50,5 +60,5 @@ class Threatcrowd(Analyzer):
             self.notSupported()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     Threatcrowd().run()

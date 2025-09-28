@@ -1,6 +1,6 @@
 cortexutils
+filetype
 future
+python-magic
 requests
 vt-py
-python-magic
-filetype

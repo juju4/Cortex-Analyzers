@@ -3,6 +3,7 @@ from requests.compat import urljoin
 import requests
 import json
 
+
 class Scanyphe:
     """Wrapper around the Scanyphe REST API
     :param key: The Scanyphe API key
@@ -21,22 +22,24 @@ class Scanyphe:
         self._sessionPost = requests.Session()
         self._sessionGet = requests.Session()
 
-    def scan(self, path: str, scan_params: dict={}):
+    def scan(self, path: str, scan_params: dict = {}):
         """Specialized wrapper around the requests module to request data from Onyphe
         :param path: The URL path after the onyphe FQDN
         :type path: str
         :param query_params: The dictionnary of query parameters that gets appended to the URL
         :type query_params: str
         """
-        
-        self._sessionPost.headers.update({'X-Api-Key': self.api_key})
-        self._sessionPost.headers.update({'Content-Type': 'application/json'})
+
+        self._sessionPost.headers.update({"X-Api-Key": self.api_key})
+        self._sessionPost.headers.update({"Content-Type": "application/json"})
         url = urljoin(self.base_url, path)
-        
+
         try:
             response = self._sessionPost.post(url, data=json.dumps(scan_params))
         except:
-            raise APIGeneralError("Couldn't connect to Scanyphe API : {url}".format(url=url))
+            raise APIGeneralError(
+                "Couldn't connect to Scanyphe API : {url}".format(url=url)
+            )
 
         if response.status_code == 429:
             raise APIRateLimiting(response.text)
@@ -46,8 +49,11 @@ class Scanyphe:
             raise APIError("Couldn't parse response JSON from: {url}".format(url=url))
 
         if response_data["error"] > 0:
-            raise APIError("API error {}: {}".format(
-                str(response_data["error"]), response_data["text"]))
+            raise APIError(
+                "API error {}: {}".format(
+                    str(response_data["error"]), response_data["text"]
+                )
+            )
 
         return response_data
 
@@ -58,18 +64,22 @@ class Scanyphe:
         :param query_params: The dictionnary of query parameters that gets appended to the URL
         :type query_params: str
         """
-        
-        self._sessionGet.headers.update({'X-Api-Key': self.api_key})
-        self._sessionGet.headers.update({'Content-Type': 'application/json'})
-        url = urljoin(self.base_url, "ondemand/scope/result/{scanid}".format(scanid=str(scanid)))
-        
+
+        self._sessionGet.headers.update({"X-Api-Key": self.api_key})
+        self._sessionGet.headers.update({"Content-Type": "application/json"})
+        url = urljoin(
+            self.base_url, "ondemand/scope/result/{scanid}".format(scanid=str(scanid))
+        )
+
         scan_params = {}
         scan_params["full"] = "true"
-        
+
         try:
             response = self._sessionGet.get(url, data=json.dumps(scan_params))
         except:
-            raise APIGeneralError("Couldn't connect to Scanyphe API : {url}".format(url=url))
+            raise APIGeneralError(
+                "Couldn't connect to Scanyphe API : {url}".format(url=url)
+            )
 
         if response.status_code == 429:
             raise APIRateLimiting(response.text)
@@ -80,7 +90,7 @@ class Scanyphe:
 
         return response_data
 
-    
+
 class APIError(Exception):
     """This exception gets raised when the returned error code is non-zero positive"""
 
@@ -100,6 +110,7 @@ class APIRateLimiting(Exception):
     def __str__(self):
         return self.value
 
+
 class APIGeneralError(Exception):
     """This exception gets raised when there is a general API connection error"""
 
@@ -108,7 +119,8 @@ class APIGeneralError(Exception):
 
     def __str__(self):
         return self.value
-    
+
+
 class ScanypheError(Exception):
     """This exception gets raised when the returned error code is non-zero positive"""
 

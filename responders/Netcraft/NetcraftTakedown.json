@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Submit URL to Netcraft's Takedown API.",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "Netcraft/Netcraft.py",
   "baseConfig": "Netcraft",
   "configurationItems": [

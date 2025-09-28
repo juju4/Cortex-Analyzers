@@ -20,11 +20,11 @@
                 <dl class="dl-horizontal">
                     <dt>Reputations</dt>
                     <dd>{{content.safety.reputations}}</dd>
-                </dl>   
+                </dl>
                 <dl class="dl-horizontal">
                     <dt>Confidence</dt>
                     <dd>{{content.safety.confidence}}</dd>
-                </dl>                   
+                </dl>
             </div>
 
             <div ng-if="content.childSafety">
@@ -36,13 +36,13 @@
                 <dl class="dl-horizontal">
                     <dt>Confidence</dt>
                     <dd>{{content.childSafety.confidence}}</dd>
-                </dl>   
+                </dl>
             </div>
 
             <div ng-if="content.blackList">
                 <h4>Blacklists</h4>
                 <p><span class="label label-primary" ng-repeat="blk in content.blackList">{{blk}}</span></p>
-            </div>           
+            </div>
 
             <div ng-if="content.categories">
                 <h4>Categories</h4>
@@ -51,7 +51,7 @@
                     <dt>{{ctg.name}}</dt>
                     <dd>Confidence: {{ctg.confidence}}</dd>
                 </dl>
-            </div>  
+            </div>
 
         </div>
     </div>

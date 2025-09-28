@@ -6,20 +6,18 @@ from cortexutils.analyzer import Analyzer
 
 
 class ChainAbuse(Analyzer):
-
     def __init__(self):
         Analyzer.__init__(self)
-        self.key = self.get_param('config.key', None, 'Missing ChainAbuse API key')
+        self.key = self.get_param("config.key", None, "Missing ChainAbuse API key")
 
     def summary(self, raw):
         color = 0
         taxonomies = []
-        level = 'info'
-        namespace = 'ChainAbuse'
-        predicate = 'Report count'
+        level = "info"
+        namespace = "ChainAbuse"
+        predicate = "Report count"
         value = "0"
-        count = raw.get("count") or raw.get("total") \
-                or len(raw.get("data", []))
+        count = raw.get("count") or raw.get("total") or len(raw.get("data", []))
 
         value = str(count)
         color = count
@@ -32,7 +30,7 @@ class ChainAbuse(Analyzer):
             level = "malicious"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        return {'taxonomies': taxonomies}
+        return {"taxonomies": taxonomies}
 
     def run(self):
         Analyzer.run(self)
@@ -40,20 +38,16 @@ class ChainAbuse(Analyzer):
             data = self.get_data()
             s = requests.Session()
             url = "https://api.chainabuse.com/v0/reports"
-            headers = {
-                "accept": "application/json"
-            }
-            params = {
-                "address": data
-            }
+            headers = {"accept": "application/json"}
+            params = {"address": data}
             # ChainAbuse uses HTTP Basic Auth where the API-key is passed as both user & password
             response_details = s.get(
                 url,
                 params=params,
                 auth=(self.key, self.key),
                 headers=headers,
-                timeout=30
-            )                
+                timeout=30,
+            )
             if response_details.status_code == 200:
                 try:
                     result = response_details.json()
@@ -64,10 +58,12 @@ class ChainAbuse(Analyzer):
                     return self.error(f"Could not decode JSON: {str(e)}")
                 self.report(result if len(result) > 0 else {})
             else:
-                self.error(f'Failed to query ChainAbuse details. Status_code {response_details.status_code}, content: {response_details.text}')
+                self.error(
+                    f"Failed to query ChainAbuse details. Status_code {response_details.status_code}, content: {response_details.text}"
+                )
         except Exception as e:
-            self.error(f'Unexpected error: {str(e)}')
+            self.error(f"Unexpected error: {str(e)}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ChainAbuse().run()

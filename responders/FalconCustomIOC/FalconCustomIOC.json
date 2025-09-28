@@ -5,7 +5,10 @@
   "url": "https://www.crowdstrike.com/blog/tech-center/import-iocs-crowdstrike-falcon-host-platform-via-api/",
   "license": "MIT",
   "description": "Submit observables to the Crowdstrike Falcon Custom IOC api",
-  "dataTypeList": ["thehive:alert","thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:alert",
+    "thehive:case_artifact"
+  ],
   "command": "FalconCustomIOC/FalconCustomIOC.py",
   "baseConfig": "FalconCustomIOC",
   "configurationItems": [

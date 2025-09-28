@@ -6,12 +6,12 @@
     <div class="panel-body">
         <dl class="dl-horizontal" ng-if="content.error">
             <dt>Hash not found</dt>
-        </dl>    
+        </dl>
         <dl class="dl-horizontal" ng-if="!content.error">
-            
+
             <dt>ThreatScore</dt>
             <dd>
-                <span class="label" ng-class="{'label-danger': content.threatScore >= 80, 
+                <span class="label" ng-class="{'label-danger': content.threatScore >= 80,
                                                'label-warning': content.threatScore >= 50  && content.threatScore <80,
                                                'label-safe': content.threatScore < 50}">
                     {{content.threatScore}}
@@ -39,4 +39,3 @@
         </dl>
     </div>
 </div>
-

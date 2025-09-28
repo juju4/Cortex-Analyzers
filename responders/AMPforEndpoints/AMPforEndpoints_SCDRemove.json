@@ -5,7 +5,9 @@
   "url": "https://github.com/CiscoSecurity",
   "license": "MIT",
   "description": "Remove a SHA256 to an AMP for Endpoints Simple Custom Detection list",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "AMPforEndpoints/AMPforEndpoints.py",
   "baseConfig": "AMPforEndpoints",
   "config": {

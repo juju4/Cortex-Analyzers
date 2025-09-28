@@ -1,6 +1,6 @@
 ### CuckooSandbox
 
-[CuckooSandbox](https://cuckoosandbox.org/)  is an advanced, extremely modular, and 100% open source automated malware analysis system with infinite application opportunities. 
+[CuckooSandbox](https://cuckoosandbox.org/)  is an advanced, extremely modular, and 100% open source automated malware analysis system with infinite application opportunities.
 
 - Analyze many different malicious files (executables, office documents, pdf files, emails, etc) as well as malicious websites under Windows, Linux, macOS, and Android virtualized environments.
 - Trace API calls and general behavior of the file and distill this into high level information and signatures comprehensible by anyone.

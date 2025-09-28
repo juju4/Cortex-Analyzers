@@ -30,13 +30,16 @@ metadata.create_all(engine)
 conn = engine.raw_connection()
 cursor = conn.cursor()
 for NSRL_file_path in glob(NSRL_folder_path):
-    dbname, release = NSRL_file_path.split("/")[-1].replace(".txt","").split("_")
+    dbname, release = NSRL_file_path.split("/")[-1].replace(".txt", "").split("_")
     print(dbname, release)
     with open(NSRL_file_path, "r", encoding="latin-1") as f:
         cmd = 'COPY nsrl("sha1", "md5", "crc32", "filename", "filesize", "productcode", "opsystemcode", "specialcode") FROM STDIN WITH (FORMAT CSV, DELIMITER ",", HEADER TRUE)'
         cursor.copy_expert(cmd, f)
         conn.commit()
-        engine.execute("update nsrl set dbname='%s', release='%s' where dbname is null" % (dbname, release))
+        engine.execute(
+            "update nsrl set dbname='%s', release='%s' where dbname is null"
+            % (dbname, release)
+        )
         conn.commit()
 cursor.close()
 conn.close()

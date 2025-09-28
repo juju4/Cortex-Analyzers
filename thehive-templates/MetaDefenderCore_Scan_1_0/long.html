@@ -8,7 +8,7 @@
 </div>
 
 <div>
-    
+
     <div class="panel panel-info">
         <div class="panel-heading">
             <strong>Summary</strong>
@@ -28,7 +28,7 @@
                     </span>
                     <span ng-if="[3, 4, 6, 7].indexOf(content.scan_results.scan_all_result_i) !== -1" class="label label-info">
                         {{content.scan_results.scan_all_result_a}}
-                    </span>                
+                    </span>
                 </dd>
             </dl>
             <dl class="dl-horizontal" ng-if="content.scan_results">
@@ -61,27 +61,27 @@
                 <dd class="wrap">
                     {{content.file_info.file_size}}
                 </dd>
-            </dl>    
+            </dl>
             <dl class="dl-horizontal">
                 <dt>sha256</dt>
                 <dd class="wrap">
                     {{content.file_info.sha256}}
                 </dd>
-            </dl>  
+            </dl>
             <dl class="dl-horizontal">
                 <dt>sha1</dt>
                 <dd class="wrap">
                     {{content.file_info.sha1}}
                 </dd>
-            </dl>  
+            </dl>
             <dl class="dl-horizontal">
                 <dt>md5</dt>
                 <dd class="wrap">
                     {{content.file_info.md5}}
                 </dd>
-            </dl>                                                
+            </dl>
         </div>
-    </div>    
+    </div>
 
     <div class="panel panel-info" ng-if="content.scan_results.scan_details">
         <div class="panel-heading">

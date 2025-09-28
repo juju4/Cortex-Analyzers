@@ -5,7 +5,11 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Submit URL to PaloAlto Wildfire service.",
-  "dataTypeList": ["url", "domain", "fqdn"],
+  "dataTypeList": [
+    "url",
+    "domain",
+    "fqdn"
+  ],
   "command": "PaloAltoWildfire/PaloAltoWildfire.py",
   "baseConfig": "PaloAltoWildfire",
   "configurationItems": [

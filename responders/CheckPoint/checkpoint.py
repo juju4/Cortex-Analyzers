@@ -70,7 +70,6 @@ class CheckPoint(Responder):
                 self.error("Login failed!")
 
             if self.service == "lock":
-
                 # Check if group exists
                 get_group_response = client.api_call(
                     "show-group", {"name": self.group_name}

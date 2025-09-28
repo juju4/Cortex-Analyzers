@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Cuckoo Sandbox file analysis with Internet access.",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "command": "CuckooSandbox/cuckoosandbox_analyzer.py",
   "baseConfig": "CuckooSandbox",
   "configurationItems": [

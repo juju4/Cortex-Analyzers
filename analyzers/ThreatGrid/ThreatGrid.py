@@ -31,8 +31,7 @@ class ThreatGridAnalyzer(Analyzer):
         self.tg_session.params.update(auth_param)
 
     def verify_response(self, response, key):
-        """Verify the HTTP status code is 200 and the expected key is present in the JSON
-        """
+        """Verify the HTTP status code is 200 and the expected key is present in the JSON"""
         try:
             return bool(response.status_code == 200 and key in response.json())
         except JSONDecodeError:
@@ -41,8 +40,7 @@ class ThreatGridAnalyzer(Analyzer):
             )
 
     def wait_for_completion(self, sample_id):
-        """Check for sample completion every minute for 10 minutes
-        """
+        """Check for sample completion every minute for 10 minutes"""
         url = self.base_url + "/samples/{}/state".format(sample_id)
         finished = False
         tries = 0
@@ -64,8 +62,7 @@ class ThreatGridAnalyzer(Analyzer):
             )
 
     def get_fail_status(self, sample_id):
-        """When a sample fails get the reason for the failure
-        """
+        """When a sample fails get the reason for the failure"""
         url = self.base_url + "/samples/{}".format(sample_id)
         response = self.tg_session.get(url)
 
@@ -87,8 +84,7 @@ class ThreatGridAnalyzer(Analyzer):
             )
 
     def get_sample_id(self, submit_response):
-        """Verify response after submitting a sample and return the Sample ID
-        """
+        """Verify response after submitting a sample and return the Sample ID"""
         if self.verify_response(submit_response, "data"):
             sample_id = submit_response.json()["data"]["id"]
             return sample_id
@@ -100,8 +96,7 @@ class ThreatGridAnalyzer(Analyzer):
             )
 
     def get_sample_results(self, sample_id):
-        """Collect the sample analysis results
-        """
+        """Collect the sample analysis results"""
         # Get Analysis JSON from Threat Grid
         analysis_response = self.get_analysis_json(sample_id)
 
@@ -112,8 +107,7 @@ class ThreatGridAnalyzer(Analyzer):
         self.build_repot(analysis_response, summary_response)
 
     def get_summary(self, sample_id):
-        """Get the sample summary information
-        """
+        """Get the sample summary information"""
         # Get Summary about sample from Threat Grid
         url = self.base_url + "/samples/{}/summary".format(sample_id)
         response = self.tg_session.get(url)
@@ -128,8 +122,7 @@ class ThreatGridAnalyzer(Analyzer):
             )
 
     def get_analysis_json(self, sample_id):
-        """Get the sample analysis JSON
-        """
+        """Get the sample analysis JSON"""
         url = self.base_url + "/samples/{}/analysis.json".format(sample_id)
         response = self.tg_session.get(url)
 
@@ -143,8 +136,7 @@ class ThreatGridAnalyzer(Analyzer):
             )
 
     def build_repot(self, analysis_response, summary_response):
-        """Reformat elements from the analysis JSON into a custom report structure
-        """
+        """Reformat elements from the analysis JSON into a custom report structure"""
         analysis_json = analysis_response.json()
         summary_json = summary_response.json()
 
@@ -162,7 +154,6 @@ class ThreatGridAnalyzer(Analyzer):
         self.report(raw_report)
 
     def run(self):
-
         dataType = self.get_param("dataType")
 
         if dataType == "file":

@@ -69,7 +69,7 @@ class APIRequestHandler(object):
 
     def check_reputation(self, data_type, data):
         r = requests.get(
-            "%s/%s/%s" % (self.URL, data_type, urllib.parse.quote(data, safe='')),
+            "%s/%s/%s" % (self.URL, data_type, urllib.parse.quote(data, safe="")),
             headers={"apikey": self.apikey},
             proxies=self.proxies,
         )
@@ -79,7 +79,6 @@ class APIRequestHandler(object):
                 return {}
             return data
         return {}
-
 
 
 class OPSWATMetadefender(Analyzer):
@@ -98,7 +97,7 @@ class OPSWATMetadefender(Analyzer):
     def summary(self, raw):
         taxonomies = []
         level = "info"
-        if self.service in ("scan_cloud", "query_cloud", "reputation_cloud"): 
+        if self.service in ("scan_cloud", "query_cloud", "reputation_cloud"):
             namespace = "OPSWATMetadefender-Cloud"
         else:
             namespace = "OPSWATMetadefender-Core"
@@ -114,7 +113,7 @@ class OPSWATMetadefender(Analyzer):
                 level = "info"
             elif score_no in (0, 5):
                 level = "safe"
-        elif self.service == 'reputation_cloud':
+        elif self.service == "reputation_cloud":
             predicate = "Reputation"
             score_no = raw.get("lookup_results", {}).get("detected_by", 0)
             score_total = len(raw.get("lookup_results", {}).get("sources", []))
@@ -142,11 +141,11 @@ class OPSWATMetadefender(Analyzer):
                 filepath = self.get_param("file", None, "File is missing")
                 rep = self.request_handler.check_file(filename, filepath)
                 self.report(rep)
-        elif self.service == 'reputation_cloud':
+        elif self.service == "reputation_cloud":
             if self.data_type in ("ip", "url", "domain"):
                 data = self.get_param("data", None, "Data is missing")
                 rep = self.request_handler.check_reputation(self.data_type, data)
-                self.report(rep)                
+                self.report(rep)
         else:
             self.error("Invalid service")
 

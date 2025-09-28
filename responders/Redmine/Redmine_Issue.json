@@ -1,7 +1,7 @@
 {
   "name": "Redmine_Issue",
   "version": "1.0",
-  "author": "Marc-André DOLL",
+  "author": "Marc-Andr\u00e9 DOLL",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Create a redmine issue from a case",

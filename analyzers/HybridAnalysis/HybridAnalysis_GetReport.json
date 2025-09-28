@@ -4,7 +4,13 @@
   "author": "Daniil Yugoslavskiy, Tieto",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "dataTypeList": ["hash", "file", "filename", "url", "domain"],
+  "dataTypeList": [
+    "hash",
+    "file",
+    "filename",
+    "url",
+    "domain"
+  ],
   "description": "Fetch Hybrid Analysis reports associated with hashes and filenames.",
   "command": "HybridAnalysis/HybridAnalysis_analyzer.py",
   "baseConfig": "HybridAnalysis",

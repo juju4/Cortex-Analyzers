@@ -4,10 +4,7 @@
 # Copyright 2021 Pierre LALET <pierre@droids-corp.org>
 
 
-"""Cortex Analyzer that queries an IVRE instance.
-
-"""
-
+"""Cortex Analyzer that queries an IVRE instance."""
 
 from datetime import datetime
 
@@ -26,7 +23,6 @@ DATABASES = [
 
 
 class Processor:
-
     databases = []
 
     def __init__(self, analyzer):
@@ -285,7 +281,6 @@ class ProcessorAsnum(ProcessorNet):
 
 
 class ProcessorPort(Processor):
-
     databases = ["passive", "scans"]
 
     def flt(self, dbase):
@@ -301,7 +296,6 @@ class ProcessorPort(Processor):
 
 
 class ProcessorCert(Processor):
-
     databases = ["passive", "scans"]
 
     def flt(self, dbase):
@@ -311,7 +305,6 @@ class ProcessorCert(Processor):
 
 
 class ProcessorFqdn(Processor):
-
     databases = ["passive", "scans"]
 
     def flt(self, dbase):
@@ -358,7 +351,6 @@ class ProcessorDomain(ProcessorFqdn):
 
 
 class ProcessorUserAgent(Processor):
-
     databases = ["passive"]
 
     def flt(self, dbase):

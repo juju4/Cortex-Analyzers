@@ -1,4 +1,5 @@
 """FileInfo oletools submodule; WIP"""
+
 from .submodule_base import SubmoduleBaseclass
 from oletools.olevba import VBA_Parser_CLI
 from oletools.msodde import process_file

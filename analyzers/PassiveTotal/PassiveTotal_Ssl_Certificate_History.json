@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "PassiveTotal SSL Certificate History Lookup.",
-  "dataTypeList": ["hash", "ip"],
+  "dataTypeList": [
+    "hash",
+    "ip"
+  ],
   "command": "PassiveTotal/passivetotal_analyzer.py",
   "baseConfig": "PassiveTotal",
   "config": {

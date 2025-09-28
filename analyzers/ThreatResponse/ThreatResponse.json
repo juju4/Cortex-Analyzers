@@ -5,7 +5,14 @@
   "url": "https://github.com/CiscoSecurity",
   "version": "1.0",
   "description": "Threat Response",
-  "dataTypeList": ["domain", "filename", "fqdn", "hash", "ip", "url"],
+  "dataTypeList": [
+    "domain",
+    "filename",
+    "fqdn",
+    "hash",
+    "ip",
+    "url"
+  ],
   "command": "ThreatResponse/ThreatResponse.py",
   "baseConfig": "ThreatResponse",
   "configurationItems": [

@@ -5,7 +5,9 @@
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
   "version": "3.0",
   "description": "Check files against YARA rules, either from local filesystem or from one or multiple GitHub repositories. NOTE: Performance & execution time may be much longer according to the number of rules checked.",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "command": "Yara/yara_analyzer.py",
   "baseConfig": "Yara",
   "configurationItems": [

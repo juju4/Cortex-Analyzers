@@ -9,19 +9,23 @@ from cortexutils.analyzer import Analyzer
 from abuse_finder import domain_abuse, ip_abuse, email_abuse, url_abuse
 
 import logging
+
 logging.getLogger("tldextract").setLevel(logging.CRITICAL)
 
 
 class AbuseFinderAnalyzer(Analyzer):
-
     def summary(self, raw):
         taxonomies = []
         try:
-            if raw and raw['abuse_finder'].get('abuse'):
-                for abuse in raw['abuse_finder']['abuse']:
-                    taxonomies.append(self.build_taxonomy("info", "Abuse_Finder", "Address", abuse))
+            if raw and raw["abuse_finder"].get("abuse"):
+                for abuse in raw["abuse_finder"]["abuse"]:
+                    taxonomies.append(
+                        self.build_taxonomy("info", "Abuse_Finder", "Address", abuse)
+                    )
             else:
-                taxonomies.append(self.build_taxonomy("info", "Abuse_Finder", "Address", "None"))
+                taxonomies.append(
+                    self.build_taxonomy("info", "Abuse_Finder", "Address", "None")
+                )
         except:
             pass
         return {"taxonomies": taxonomies}
@@ -41,8 +45,8 @@ class AbuseFinderAnalyzer(Analyzer):
             self.error("invalid datatype")
 
     def run(self):
-        self.report({'abuse_finder': self.abuse()})
+        self.report({"abuse_finder": self.abuse()})
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     AbuseFinderAnalyzer().run()

@@ -7,5 +7,5 @@ COPY ./patches /patches
 RUN pip install papermill
 RUN apt update
 RUN apt install patch
-RUN patch $(python3 -c "from papermill import iorw; print(iorw.__file__)") /patches/papermill_iorw.patch 
+RUN patch $(python3 -c "from papermill import iorw; print(iorw.__file__)") /patches/papermill_iorw.patch
 ENTRYPOINT Jupyter_Analyzer/jupyter.py

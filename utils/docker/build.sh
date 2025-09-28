@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ###
-# This program assumes your analyzers and responders folder looks like: 
+# This program assumes your analyzers and responders folder looks like:
 #
 #     Custom-Analyzers
 #     ├── analyzers/
@@ -14,10 +14,10 @@
 #             ├── README.md
 #             └── requirements.txt
 #
-# Usage: 
+# Usage:
 # Update DOCKER_REPOSITORY variable
 # cd ./Custom-Analyzers
-# bash /path/to/build.sh 
+# bash /path/to/build.sh
 ###
 
 # Set your docker repository name
@@ -38,7 +38,7 @@ EOF
 
     DEFAULT_DOCKERFILE=/tmp/default_dockerfile
       TAG=`cat ${JSON} | jq -r '( "'"$DOCKER_REPOSITORY"'" + "/" + (.name | ascii_downcase) + ":" + (.version))'`
-    WORKER_NAME=`cat ${JSON} | jq -r '(.version)'`  
+    WORKER_NAME=`cat ${JSON} | jq -r '(.version)'`
     COMMAND=`cat ${JSON} | jq -r '(.command)'`
     DIRNAME=`dirname ${JSON}`
       WORKER_NAME=`basename ${DIRNAME}`
@@ -58,13 +58,13 @@ build_catalog() {
     first=1
     for JSON in ${DIR}/*/*.json
     do
-          build_image ${JSON} 
+          build_image ${JSON}
         if test -z "${first}"
         then
               echo ',' >> ${DIR}/${DIR}.json
         else
               first=
-        fi  
+        fi
         jq 'del(.command) + { dockerImage: ("'"$DOCKER_REPOSITORY"'" + "/" + (.name | ascii_downcase) + ":" + (.version)) }' ${JSON} >> ${DIR}/${DIR}.json
     done
 

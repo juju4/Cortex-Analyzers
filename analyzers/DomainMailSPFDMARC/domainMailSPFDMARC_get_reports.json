@@ -5,7 +5,10 @@
   "author": "torsolaso",
   "license": "AGPL-V3",
   "description": "DomainMailSPFDMARC",
-  "dataTypeList": ["domain", "fqdn"],
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
   "command": "DomainMailSPFDMARC/domainMailSPFDMARC.py",
   "baseConfig": "DomainMailSPFDMARC",
   "config": {

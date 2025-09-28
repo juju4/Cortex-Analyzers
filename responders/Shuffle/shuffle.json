@@ -5,7 +5,13 @@
   "url": "https://github.com/frikky/shuffle",
   "license": "AGPL-V3",
   "description": "Execute a workflow in Shuffle",
-  "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:case_task", "thehive:case_task_log"],
+  "dataTypeList": [
+    "thehive:case",
+    "thehive:alert",
+    "thehive:case_artifact",
+    "thehive:case_task",
+    "thehive:case_task_log"
+  ],
   "command": "Shuffle/shuffle.py",
   "baseConfig": "Shuffle",
   "configurationItems": [
@@ -17,7 +23,7 @@
       "required": true,
       "defaultValue": "https://shuffler.io"
     },
-		{
+    {
       "name": "api_key",
       "description": "The API key to your Shuffle user",
       "type": "string",

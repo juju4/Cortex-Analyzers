@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Any.Run Sandbox file analysis",
-  "dataTypeList": ["file", "url"],
+  "dataTypeList": [
+    "file",
+    "url"
+  ],
   "command": "AnyRun/anyrun_analyzer.py",
   "baseConfig": "AnyRun",
   "configurationItems": [
@@ -134,18 +137,17 @@
   "free_subscription": false,
   "service_homepage": "https://any.run/",
   "service_logo": {
-      "path": "assets/anyrun.png",
-      "caption": "AnyRun logo"
+    "path": "assets/anyrun.png",
+    "caption": "AnyRun logo"
   },
   "screenshots": [
-      {
-          "path": "assets/short_report.png",
-          "caption": "AnyRun: Short report template"
-      },
-    
-      {
-          "path": "assets/long_report.png",
-          "caption": "AnyRun: Long report template"
-      }
+    {
+      "path": "assets/short_report.png",
+      "caption": "AnyRun: Short report template"
+    },
+    {
+      "path": "assets/long_report.png",
+      "caption": "AnyRun: Long report template"
+    }
   ]
 }

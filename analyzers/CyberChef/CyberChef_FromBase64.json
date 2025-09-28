@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Convert Base64 with CyberChef Server",
-  "dataTypeList": ["other"],
+  "dataTypeList": [
+    "other"
+  ],
   "baseConfig": "CyberChef",
   "config": {
     "service": "FromBase64"

@@ -5,7 +5,7 @@
 			<strong>{{name}} report</strong>
 		</div>
 		<div class="panel-body">
-		 
+
 			<h4>IBM X-Force information for {{artifact.data | fang}}</h4>
 
 			<dl class="dl-horizontal">
@@ -50,11 +50,11 @@
 		</div>
 	</div>
 
-	
+
 	<div class="panel panel-info" ng-if="content.emails_info.length > 0" ng-init="content.emails_info_limit = 5">
 		<div class="panel-heading">
 			<strong>Emails Info</strong>
-			
+
 			<span class="pull-right" ng-if="::content.emails_info.length > 5">
 				<a  ng-if="content.emails_info_limit == 5" href="" ng-click="emails_info_limit = content.emails_info.length">View All ({{::content.emails_info.length}})</a>
 				<a  ng-if="content.emails_info_limit > 5" href="" ng-click="emails_info_limit = 5">View All ({{::content.emails_info.length}})</a>
@@ -77,7 +77,7 @@
 			</table>
 		</div>
 	</div>
-	
+
 	<div class="panel panel-info" ng-if="content.dns.length > 0" ng-init="content.dns_limit = 5">
 		<div class="panel-heading">
 			<strong>DNS Info</strong>

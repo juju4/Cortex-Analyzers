@@ -5,7 +5,9 @@
   "url": "https://github.com/pjuhas/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Analyze e-mail address via Verifalia",
-  "dataTypeList": ["mail"],
+  "dataTypeList": [
+    "mail"
+  ],
   "baseConfig": "Verifalia",
   "configurationItems": [
     {

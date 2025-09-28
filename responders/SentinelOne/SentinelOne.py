@@ -67,7 +67,11 @@ class SentinelOne(Responder):
                         "value": self.observable,
                         "osType": self.s1_blacklist_ostype,
                     },
-                    "filter": {"accountIds": [self.s1_account_id,]},
+                    "filter": {
+                        "accountIds": [
+                            self.s1_account_id,
+                        ]
+                    },
                 },
             )
 

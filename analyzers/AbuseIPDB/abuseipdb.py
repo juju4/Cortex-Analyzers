@@ -44,7 +44,6 @@ class AbuseIPDBAnalyzer(Analyzer):
         return mapping.get(str(category_number), "Unknown Category")
 
     def run(self):
-
         try:
             if self.data_type == "ip":
                 api_key = self.get_param(
@@ -92,7 +91,7 @@ class AbuseIPDBAnalyzer(Analyzer):
                                 if category_as_str not in categories_strings:
                                     categories_strings.append(category_as_str)
                         response["categories_strings"] = categories_strings
-                        
+
                         reports = response["data"].get("reports") or []
 
                         # reporter geography
@@ -109,9 +108,12 @@ class AbuseIPDBAnalyzer(Analyzer):
                         # category frequency
                         cat_counts = Counter()
                         for r in reports:
-                            for c in (r.get("categories_strings") or []):
+                            for c in r.get("categories_strings") or []:
                                 cat_counts[c] += 1
-                        response["category_counts"] = [{"category": k, "count": v} for k, v in cat_counts.most_common(6)]
+                        response["category_counts"] = [
+                            {"category": k, "count": v}
+                            for k, v in cat_counts.most_common(6)
+                        ]
 
                         # freshness windows (simple counts)
                         def to_dt(x):
@@ -127,13 +129,12 @@ class AbuseIPDBAnalyzer(Analyzer):
                             dt = to_dt(r.get("reportedAt"))
                             if not dt:
                                 continue
-                            if (now - dt).total_seconds() <= 24*3600:
+                            if (now - dt).total_seconds() <= 24 * 3600:
                                 last_24h += 1
-                            if (now - dt).total_seconds() <= 7*24*3600:
+                            if (now - dt).total_seconds() <= 7 * 24 * 3600:
                                 last_7d += 1
 
                         response["freshness"] = {"last24h": last_24h, "last7d": last_7d}
-
 
                 self.report({"values": response_list})
             else:
@@ -207,7 +208,7 @@ class AbuseIPDBAnalyzer(Analyzer):
         for entry in raw["values"]:
             data = entry.get("data") or {}
 
-            # base domain 
+            # base domain
             base = (data.get("domain") or "").strip().rstrip(".").lower()
             if base:
                 domains_out.add(base)

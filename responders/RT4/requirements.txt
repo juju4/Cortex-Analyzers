@@ -1,5 +1,5 @@
+cortexutils
 defang
 jinja2
-rt
 requests
-cortexutils
+rt

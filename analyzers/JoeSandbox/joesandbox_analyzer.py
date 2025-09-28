@@ -4,7 +4,7 @@
 from cortexutils.analyzer import Analyzer
 
 import zipfile
-import os 
+import os
 import base64
 import io
 import requests
@@ -13,21 +13,22 @@ import json
 import re
 from jbxapi import JoeSandbox
 
+
 def get_files(folder):
     # function to get all files in a folder sorted
-    
+
     # get the path of the files
     files = [f"{file}" for file in os.listdir(folder)]
     # split <filename>.<extention>
     for i in range(len(files)):
-        files[i]=files[i].split('.')
+        files[i] = files[i].split(".")
     # sort by <filename> numerically
     files.sort(key=lambda x: int(x[0]))
     # merge <folder>/<filename>.<extention>
     for i in range(len(files)):
-        files[i]=folder+"/"+files[i][0]+"."+files[i][1]
-    return files    
- 
+        files[i] = folder + "/" + files[i][0] + "." + files[i][1]
+    return files
+
 
 class JoeSandboxAnalyzer(Analyzer):
     def __init__(self):
@@ -72,37 +73,39 @@ class JoeSandboxAnalyzer(Analyzer):
         return {"taxonomies": taxonomies}
 
     def artifacts(self, raw):
-        artifacts= []
+        artifacts = []
 
         if self.observables:
-            #IP
-            if self.analysis['contacted']['ips']:
-                for i in self.analysis['contacted']['ips']['ip']:
-                    if(i['$']!='unknown'):
-                        #print('ip ',str(i['$']))
-                        artifacts.append(self.build_artifact('ip',str(i['$'])))       
+            # IP
+            if self.analysis["contacted"]["ips"]:
+                for i in self.analysis["contacted"]["ips"]["ip"]:
+                    if i["$"] != "unknown":
+                        # print('ip ',str(i['$']))
+                        artifacts.append(self.build_artifact("ip", str(i["$"])))
 
-            #URL
-            if self.analysis['contacted']['domains']:
-                for i in self.analysis['contacted']['domains']['domain']:
-                    if(i['ip']!="unknown"):
-                        #print('ip ',str(i['ip']))
-                        artifacts.append(self.build_artifact('ip',str(i['ip'])))
-                    #print('url',str(i['name']))
-                    artifacts.append(self.build_artifact('url',str(i['name'])))
-        
-        #HTML report
+            # URL
+            if self.analysis["contacted"]["domains"]:
+                for i in self.analysis["contacted"]["domains"]["domain"]:
+                    if i["ip"] != "unknown":
+                        # print('ip ',str(i['ip']))
+                        artifacts.append(self.build_artifact("ip", str(i["ip"])))
+                    # print('url',str(i['name']))
+                    artifacts.append(self.build_artifact("url", str(i["name"])))
+
+        # HTML report
         if self.HTML_report:
             if self.webid:
                 webid = self.webid
                 response = self.joe.analysis_download(webid, "html", run=0)
-                with open('/tmp/'+str(response[0]), 'wb') as the_file:
+                with open("/tmp/" + str(response[0]), "wb") as the_file:
                     the_file.write(response[1])
-                artifacts.append(self.build_artifact('file',"/tmp/"+str(response[0])))
-                os.remove('/tmp/'+str(response[0]))
-        
+                artifacts.append(
+                    self.build_artifact("file", "/tmp/" + str(response[0]))
+                )
+                os.remove("/tmp/" + str(response[0]))
+
         return artifacts
-   
+
     def run(self):
         Analyzer.run(self)
 
@@ -140,39 +143,39 @@ class JoeSandboxAnalyzer(Analyzer):
         if not finished:
             self.error("JoeSandbox analysis timed out")
         # Download the report
-        response = self.joe.analysis_download(self.webid, "irjsonfixed", run=0)    
+        response = self.joe.analysis_download(self.webid, "irjsonfixed", run=0)
         self.analysis = json.loads(response[1].decode("utf-8")).get("analysis", None)
 
-        if self.images: 
+        if self.images:
             # Download images
             zip_images = self.joe.analysis_download(self.webid, "shoots", run=0)
-            zip_location = "/tmp/"+str(zip_images[0])
-            zip_folder = "/tmp/images/"+str(zip_images[0])
+            zip_location = "/tmp/" + str(zip_images[0])
+            zip_folder = "/tmp/images/" + str(zip_images[0])
             # write ziped images in /tmp
-            with open(zip_location, 'wb') as file:
+            with open(zip_location, "wb") as file:
                 file.write(zip_images[1])
             if not os.path.exists("/tmp/images/"):
-                os.mkdir(path="/tmp/images/", mode = 0o744)
+                os.mkdir(path="/tmp/images/", mode=0o744)
             if not os.path.exists(zip_folder):
-                os.mkdir(path=zip_folder, mode = 0o744)
+                os.mkdir(path=zip_folder, mode=0o744)
             # unzip images
             with zipfile.ZipFile(zip_location) as z:
                 z.extractall(path=zip_folder)
             # remove ziped images (not needed anymore)
-            os.remove(zip_location) 
+            os.remove(zip_location)
             # put image in json
-            images=[]
+            images = []
             for f in get_files(zip_folder):
-                with open(str(f), mode='rb') as file:
-                    images.append( base64.encodebytes(file.read()).decode('utf-8') )
-                os.remove(f) 
+                with open(str(f), mode="rb") as file:
+                    images.append(base64.encodebytes(file.read()).decode("utf-8"))
+                os.remove(f)
             self.analysis["images"] = images
             # remove not needed files
-            os.rmdir(zip_folder) 
+            os.rmdir(zip_folder)
 
         if self.analysis:
-            report_url = re.sub(r'/api.*$', '', self.url.rstrip('/'))
-            
+            report_url = re.sub(r"/api.*$", "", self.url.rstrip("/"))
+
             self.analysis["htmlreport"] = (
                 f"{report_url}/analysis/{self.analysis['id']}/0/html"
             )
@@ -186,4 +189,3 @@ class JoeSandboxAnalyzer(Analyzer):
 
 if __name__ == "__main__":
     JoeSandboxAnalyzer().run()
-

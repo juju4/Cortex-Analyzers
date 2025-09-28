@@ -1,4 +1,4 @@
-This analyzer let you run Virustotal services on several datatypes: 
+This analyzer let you run Virustotal services on several datatypes:
 
 * _file_
 * _hash_
@@ -9,7 +9,7 @@ This analyzer let you run Virustotal services on several datatypes:
 
 The program uses [VirusTotal API v3](https://developers.virustotal.com/v3.0/reference).
 
-Major improvements have been added with _VirusTotal\_GetReport_ flavor. Now, with the classical scan results, the report can display: 
+Major improvements have been added with _VirusTotal\_GetReport_ flavor. Now, with the classical scan results, the report can display:
 
 * A Summary: with qualitative informnation about the detection
 

@@ -5,11 +5,14 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use DNSDB to fetch historical records for a fully-qualified domain name.",
-  "dataTypeList": ["domain","fqdn"],
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
   "command": "DNSDB/dnsdb.py",
   "baseConfig": "DNSDB",
   "config": {
-      "service": "name_history"
+    "service": "name_history"
   },
   "configurationItems": [
     {
@@ -28,5 +31,4 @@
       "required": true
     }
   ]
-
 }

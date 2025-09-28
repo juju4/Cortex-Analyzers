@@ -1,4 +1,4 @@
-### MISPWarningLists 
+### MISPWarningLists
 [MISPWarningLists](https://github.com/MISP/misp-warninglists) are lists of well-known indicators that can be associated to potential false positives, errors or mistakes.
 
 The analyzer comes in a single flavour that will check observables against MISP Warninglists to filter false positives.

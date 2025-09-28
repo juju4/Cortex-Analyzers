@@ -5,7 +5,9 @@
   "url": "https://github.com/NextronSystems/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Submits sample to an on-premise THOR Thunderstorm web service and processes the scan result",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "command": "Thunderstorm/thunderstorm.py",
   "baseConfig": "Thunderstorm",
   "configurationItems": [
@@ -54,17 +56,22 @@
   "subscription_required": true,
   "free_subscription": false,
   "service_homepage": "https://www.nextron-systems.com/thor-thunderstorm/",
-  "service_logo": {"path":"assets/thor_thunderstorm_logo.png", "caption": "logo"},
+  "service_logo": {
+    "path": "assets/thor_thunderstorm_logo.png",
+    "caption": "logo"
+  },
   "screenshots": [
-    {"path":"assets/THOR_Thunderstorm_ScanSample_long.png",
-      "caption":"THOR Thunderstorm long report sample"
+    {
+      "path": "assets/THOR_Thunderstorm_ScanSample_long.png",
+      "caption": "THOR Thunderstorm long report sample"
     },
     {
       "path": "assets/THOR_Thunderstorm_ScanSample_short.png",
-      "caption:":"THOR Thunderstorm short report sample"
+      "caption:": "THOR Thunderstorm short report sample"
     },
-    {"path":"assets/THOR_Thunderstorm_ScanSample_raw.png",
-      "caption":"THOR Thunderstorm raw JSON"
+    {
+      "path": "assets/THOR_Thunderstorm_ScanSample_raw.png",
+      "caption": "THOR Thunderstorm raw JSON"
     }
   ]
 }

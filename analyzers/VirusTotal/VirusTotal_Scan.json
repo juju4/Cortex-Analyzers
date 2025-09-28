@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use VirusTotal to scan a file or URL.",
-  "dataTypeList": ["file", "url"],
+  "dataTypeList": [
+    "file",
+    "url"
+  ],
   "baseConfig": "VirusTotal",
   "config": {
     "service": "scan"

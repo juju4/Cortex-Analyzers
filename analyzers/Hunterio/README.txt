@@ -1,4 +1,4 @@
-### Hunter.io 
+### Hunter.io
 [Hunter.io](https://hunter.io/) Domain Search requires a domain name and returns a set of data about the organisation, the email address found and additional information about the people owning those email addresses.
 
 

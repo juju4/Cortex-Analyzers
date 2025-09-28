@@ -15,7 +15,7 @@
 			</div>
 			<div ng-repeat="event in res.result">
 				<uib-accordion>
-					<div uib-accordion-group class="panel-primary" heading="{{event.id}} - {{event.info}}" is-open="false" is-disabled="status.isFirstDisabled">				
+					<div uib-accordion-group class="panel-primary" heading="{{event.id}} - {{event.info}}" is-open="false" is-disabled="status.isFirstDisabled">
 					<dl class="dl-horizontal">
 						<dt>EventID:</dt>
 						<dd><a target="_blank" href="{{res.url}}/events/view/{{event.id}}">{{event.id}}</a></dd>

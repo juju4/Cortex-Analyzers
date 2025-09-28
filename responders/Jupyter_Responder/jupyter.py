@@ -31,7 +31,7 @@ class Jupyter(Responder):
         )
         today = datetime.date.today()
         # Parse the output folder to catch datetime masks
-        self.output_folder = datetime.datetime.strftime(today,self.output_folder)
+        self.output_folder = datetime.datetime.strftime(today, self.output_folder)
 
         # Initialize configuration objects for notebooks
         self.input_configuration = self.initialize_path(
@@ -78,27 +78,58 @@ class Jupyter(Responder):
 
         # Use input data as ID depending on the type
         if self.data_type == "thehive:alert":
-            self.id = "alert-"+self.get_param("data", None, "Data is missing")["id"].replace("~","")
+            self.id = "alert-" + self.get_param("data", None, "Data is missing")[
+                "id"
+            ].replace("~", "")
         elif self.data_type == "thehive:case":
-            self.id = "case-"+self.get_param("data", None, "Data is missing")["id"].replace("~","")
+            self.id = "case-" + self.get_param("data", None, "Data is missing")[
+                "id"
+            ].replace("~", "")
         elif self.data_type == "thehive:case_artifact":
-            self.id = "case-"+self.get_param("data", None, "Data is missing")["case"]["id"].replace("~","")+"-observable-"+self.get_param("data", None, "Data is missing")["id"].replace("~","")
+            self.id = (
+                "case-"
+                + self.get_param("data", None, "Data is missing")["case"]["id"].replace(
+                    "~", ""
+                )
+                + "-observable-"
+                + self.get_param("data", None, "Data is missing")["id"].replace("~", "")
+            )
         elif self.data_type == "thehive:case_task":
-            self.id = "case-"+self.get_param("data", None, "Data is missing")["case"]["id"].replace("~","")+"-task-"+self.get_param("data", None, "Data is missing")["id"].replace("~","")
+            self.id = (
+                "case-"
+                + self.get_param("data", None, "Data is missing")["case"]["id"].replace(
+                    "~", ""
+                )
+                + "-task-"
+                + self.get_param("data", None, "Data is missing")["id"].replace("~", "")
+            )
         elif self.data_type == "thehive:case_task_log":
-            self.id = "case-"+self.get_param("data", None, "Data is missing")["case_task"]["case"]["id"].replace("~","")+"-task-"+self.get_param("data", None, "Data is missing")["case_task"]["id"].replace("~","")+"-log-"+self.get_param("data", None, "Data is missing")["id"].replace("~","")
+            self.id = (
+                "case-"
+                + self.get_param("data", None, "Data is missing")["case_task"]["case"][
+                    "id"
+                ].replace("~", "")
+                + "-task-"
+                + self.get_param("data", None, "Data is missing")["case_task"][
+                    "id"
+                ].replace("~", "")
+                + "-log-"
+                + self.get_param("data", None, "Data is missing")["id"].replace("~", "")
+            )
         else:
             self.id = None
         # Initialize parameters
         self.parameters = {
             "thehive_organisation": str(
-                self.get_param("parameters", None, "Parameters are missing")["organisation"]
+                self.get_param("parameters", None, "Parameters are missing")[
+                    "organisation"
+                ]
             ),
-            "thehive_user": str(self.get_param("parameters", None, "Parameters are missing")["user"]),
+            "thehive_user": str(
+                self.get_param("parameters", None, "Parameters are missing")["user"]
+            ),
             "thehive_input_type": str(self.data_type),
-            "thehive_input_value": self.get_param(
-                "data", None, "Data is missing"
-            ),
+            "thehive_input_value": self.get_param("data", None, "Data is missing"),
         }
 
     def initialize_path(
@@ -176,7 +207,10 @@ class Jupyter(Responder):
                 ].replace("http://", "ws://")
 
             # Initialize the ouput path
-            self.create_output_path(hostname=result["server_uri_http_api_contents"],headers=result["handler_http_headers"])
+            self.create_output_path(
+                hostname=result["server_uri_http_api_contents"],
+                headers=result["handler_http_headers"],
+            )
 
         return result
 
@@ -212,23 +246,54 @@ class Jupyter(Responder):
         for notebook in raw["notebooks"]:
             for cell in notebook["cells"]:
                 if "taxonomies" in cell["metadata"]["tags"]:
-                        # Get payload
-                        if len(cell["outputs"]) > 0:
-                            raw_observables = cell["outputs"][0]["text"].split("\n")
-                            for ro in raw_observables:
-                                if ro != "":
-                                    try:
-                                        json_taxonomy = json.loads(ro)
-                                        level = json_taxonomy["level"] if "level" in json_taxonomy else "info"
-                                        namespace = json_taxonomy["namespace"] if "namespace" in json_taxonomy else "Jupyter"
-                                        predicate = json_taxonomy["predicate"] if "predicate" in json_taxonomy else self.error("Error: Detected taxonomy '{0}' but no predicate was given".format(json_taxonomy))
-                                        value = json_taxonomy["value"] if "value" in json_taxonomy else self.error("Error: Detected taxonomy '{0}' but no value was given".format(json_taxonomy))
-                                        taxonomies.append(self.build_taxonomy(level=level, namespace=namespace, predicate=predicate, value=value))
-                                    except json.decoder.JSONDecodeError as e:
-                                        self.error("{0} with input: {1}".format(e,ro))
+                    # Get payload
+                    if len(cell["outputs"]) > 0:
+                        raw_observables = cell["outputs"][0]["text"].split("\n")
+                        for ro in raw_observables:
+                            if ro != "":
+                                try:
+                                    json_taxonomy = json.loads(ro)
+                                    level = (
+                                        json_taxonomy["level"]
+                                        if "level" in json_taxonomy
+                                        else "info"
+                                    )
+                                    namespace = (
+                                        json_taxonomy["namespace"]
+                                        if "namespace" in json_taxonomy
+                                        else "Jupyter"
+                                    )
+                                    predicate = (
+                                        json_taxonomy["predicate"]
+                                        if "predicate" in json_taxonomy
+                                        else self.error(
+                                            "Error: Detected taxonomy '{0}' but no predicate was given".format(
+                                                json_taxonomy
+                                            )
+                                        )
+                                    )
+                                    value = (
+                                        json_taxonomy["value"]
+                                        if "value" in json_taxonomy
+                                        else self.error(
+                                            "Error: Detected taxonomy '{0}' but no value was given".format(
+                                                json_taxonomy
+                                            )
+                                        )
+                                    )
+                                    taxonomies.append(
+                                        self.build_taxonomy(
+                                            level=level,
+                                            namespace=namespace,
+                                            predicate=predicate,
+                                            value=value,
+                                        )
+                                    )
+                                except json.decoder.JSONDecodeError as e:
+                                    self.error("{0} with input: {1}".format(e, ro))
 
         return {"taxonomies": taxonomies}
-    
+
     def operations(self, raw):
         """This is used to execute new operations in TheHive
 
@@ -244,16 +309,21 @@ class Jupyter(Responder):
         for notebook in raw["notebooks"]:
             for cell in notebook["cells"]:
                 if "operations" in cell["metadata"]["tags"]:
-                        # Get payload
-                        if len(cell["outputs"]) > 0:
-                            raw_operations = cell["outputs"][0]["text"].split("\n")
-                            for ro in raw_operations:
-                                if ro != "":
-                                    try:
-                                        json_artifact = json.loads(ro)
-                                        operations.append(self.build_operation(op_type=json_artifact.pop("type"),**json_artifact))
-                                    except json.decoder.JSONDecodeError as e:
-                                        self.error("{0} with input: {1}".format(e,ro))
+                    # Get payload
+                    if len(cell["outputs"]) > 0:
+                        raw_operations = cell["outputs"][0]["text"].split("\n")
+                        for ro in raw_operations:
+                            if ro != "":
+                                try:
+                                    json_artifact = json.loads(ro)
+                                    operations.append(
+                                        self.build_operation(
+                                            op_type=json_artifact.pop("type"),
+                                            **json_artifact,
+                                        )
+                                    )
+                                except json.decoder.JSONDecodeError as e:
+                                    self.error("{0} with input: {1}".format(e, ro))
         return operations
 
     def event_stream(self, url, headers=""):
@@ -337,17 +407,16 @@ class Jupyter(Responder):
         for sp in subpaths:
             new_path += "/{0}".format(sp)
             # Build the path
-            final_path = "{0}{1}".format(
-                hostname,
-                new_path
-            )
+            final_path = "{0}{1}".format(hostname, new_path)
 
             # Check if folder is existing
             status_code = requests.get(final_path, headers=headers).status_code
             # If the folder exists, it will return a status code 200. Otherwise, we will need to create
             if status_code != 200:
                 # Create the folder
-                requests.put(final_path, json={"name": sp, "type": "directory"}, headers=headers)
+                requests.put(
+                    final_path, json={"name": sp, "type": "directory"}, headers=headers
+                )
 
     @gen.coroutine
     def execute_notebook_remotely(self):
@@ -396,8 +465,7 @@ class Jupyter(Responder):
 
             # Parametrize the input notebook to be the output notebook
             nb_output = pm.parameterize.parameterize_notebook(
-                nb_input,
-                parameters=self.parameters
+                nb_input, parameters=self.parameters
             )
 
             # Start timer
@@ -602,13 +670,17 @@ class Jupyter(Responder):
                     )
 
                     # Sanitize secrets
-                    nb_output["metadata"]["papermill"]["input_path"] = nb_output["metadata"]["papermill"]["input_path"].replace(
+                    nb_output["metadata"]["papermill"]["input_path"] = nb_output[
+                        "metadata"
+                    ]["papermill"]["input_path"].replace(
                         "?token={0}".format(
                             self.get_conf("output", "handler_http_service_api_token")
                         ),
                         "",
                     )
-                    nb_output["metadata"]["papermill"]["output_path"] = nb_output["metadata"]["papermill"]["output_path"].replace(
+                    nb_output["metadata"]["papermill"]["output_path"] = nb_output[
+                        "metadata"
+                    ]["papermill"]["output_path"].replace(
                         "?token={0}".format(
                             self.get_conf("output", "handler_http_service_api_token")
                         ),
@@ -628,7 +700,6 @@ class Jupyter(Responder):
 
                 # Store the result
                 results.append(nb_output)
-
 
         # Report the results
         report_results = {"notebooks": results}

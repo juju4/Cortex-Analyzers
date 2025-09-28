@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-v3",
   "description": "Submit observables to the Crowdstrike FalconX Sandbox",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "command": "FalconSandbox/FalconSandbox.py",
   "baseConfig": "FalconSandbox",
   "configurationItems": [
@@ -15,7 +17,7 @@
       "type": "string",
       "multi": false,
       "required": true,
-      "default":"https://api.crowdstrike.com"
+      "default": "https://api.crowdstrike.com"
     },
     {
       "name": "Client_ID",

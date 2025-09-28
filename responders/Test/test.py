@@ -2,10 +2,13 @@
 # encoding: utf-8
 from cortexutils.responder import Responder
 
+
 class Test(Responder):
     def __init__(self):
         Responder.__init__(self)
-        self.service = self.get_param("config.service", None, "Service parameter is missing.")
+        self.service = self.get_param(
+            "config.service", None, "Service parameter is missing."
+        )
 
     def run(self):
         Responder.run(self)
@@ -13,7 +16,7 @@ class Test(Responder):
             self.report({"message": "test"})
         elif self.service == "echo":
             self.report(self.get_param("data"))
-            
+
     def operations(self, raw):
         artifacts = []
         # AddTagToArtifact ({ "type": "AddTagToArtifact", "tag": "tag to add" }): add a tag to the artifact related to the object

@@ -61,57 +61,52 @@ class SampleStatus(TypedDict):
 
 class MCAPAnalyzer(Analyzer):
     @staticmethod
-    def get_file_hash(
-            file_path: str,
-            blocksize: int = 8192,
-            algorithm=hashlib.sha256):
+    def get_file_hash(file_path: str, blocksize: int = 8192, algorithm=hashlib.sha256):
         file_hash = algorithm()
-        with open(file_path, 'rb') as f:
+        with open(file_path, "rb") as f:
             for chunk in iter(lambda: f.read(blocksize), b""):
                 file_hash.update(chunk)
         return file_hash.hexdigest()
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.api_key = self.get_param(
-            'config.key', None, "Missing API Key")
+        self.api_key = self.get_param("config.key", None, "Missing API Key")
         self.private_samples = self.get_param(
-            'config.private_samples', None,
-            "Missing private_samples config")
-        self.minimum_confidence = self.get_param(
-            'config.minimum_confidence', 80)
-        self.minimum_severity = self.get_param(
-            'config.minimum_severity', 80)
-        self.polling_interval = self.get_param('config.polling_interval', 60)
-        self.max_sample_result_wait = self.get_param(
-            'max_sample_result_wait', 1000)
+            "config.private_samples", None, "Missing private_samples config"
+        )
+        self.minimum_confidence = self.get_param("config.minimum_confidence", 80)
+        self.minimum_severity = self.get_param("config.minimum_severity", 80)
+        self.polling_interval = self.get_param("config.polling_interval", 60)
+        self.max_sample_result_wait = self.get_param("max_sample_result_wait", 1000)
         self.api_root = "https://mcap.cisecurity.org/api"
 
         self.session = requests.Session()
         self.session.verify = True
-        self.session.proxies = self.get_param('config.proxy', None)
-        self.session.headers.update({
-            'Accept': 'application/json',
-            'Authorization': f"Bearer {self.api_key}"
-        })
+        self.session.proxies = self.get_param("config.proxy", None)
+        self.session.headers.update(
+            {"Accept": "application/json", "Authorization": f"Bearer {self.api_key}"}
+        )
 
-    def _check_for_api_errors(self, response: requests.Response,
-                              error_prefix="", good_status_code=200):
+    def _check_for_api_errors(
+        self, response: requests.Response, error_prefix="", good_status_code=200
+    ):
         """Check for API a failure response and exit with error if needed"""
         if response.status_code != good_status_code:
             message = None
             try:
                 response_dict = response.json()
-                if 'message' in response_dict:
-                    errors = str(response_dict.get('errors', ''))
+                if "message" in response_dict:
+                    errors = str(response_dict.get("errors", ""))
                     message = "{} {}{}".format(
-                        error_prefix, response_dict['message'], errors)
+                        error_prefix, response_dict["message"], errors
+                    )
             except requests.exceptions.JSONDecodeError:
                 pass
 
             if message is None:
                 message = "{} HTTP {} {}".format(
-                    error_prefix, response.status_code, response.text)
+                    error_prefix, response.status_code, response.text
+                )
             self.error(message)
 
     def submit_file(self, file_path: str) -> SubmitResponse:
@@ -127,23 +122,20 @@ class MCAPAnalyzer(Analyzer):
         data = {
             "private": 1 if self.private_samples else 0,
             "source": 6,  # Other/Unknown
-            "email_notification": 0
+            "email_notification": 0,
         }
-        files = {"sample_file": open(file_path, mode='rb')}
+        files = {"sample_file": open(file_path, mode="rb")}
         try:
             response = self.session.post(url, data=data, files=files)
-            self._check_for_api_errors(
-                response,
-                "While submitting file:")
+            self._check_for_api_errors(response, "While submitting file:")
         except requests.RequestException as e:
-            self.error('Error while trying to submit file: ' + str(e))
+            self.error("Error while trying to submit file: " + str(e))
         submit_response: SubmitResponse = response.json()
         return submit_response
 
     def get_sample_status(
-            self,
-            mcap_id: Optional[str] = None,
-            sha256: Optional[str] = None) -> Optional[SampleStatus]:
+        self, mcap_id: Optional[str] = None, sha256: Optional[str] = None
+    ) -> Optional[SampleStatus]:
         """Get the status of a previously submitted sample
 
         Note that even after a sample is submitted, this function can still
@@ -157,7 +149,7 @@ class MCAPAnalyzer(Analyzer):
             Return the sample status if it was found, else None
         """
         request_url = self.api_root + "/sample/status"
-        assert(mcap_id is not None or sha256 is not None)
+        assert mcap_id is not None or sha256 is not None
 
         request_params = {}
         if mcap_id is not None:
@@ -167,11 +159,9 @@ class MCAPAnalyzer(Analyzer):
 
         try:
             response = self.session.get(request_url, params=request_params)
-            self._check_for_api_errors(
-                response,
-                "While getting sample status:")
+            self._check_for_api_errors(response, "While getting sample status:")
         except requests.RequestException as e:
-            self.error('Error while trying to get sample status: ' + str(e))
+            self.error("Error while trying to get sample status: " + str(e))
 
         status = response.json()
         if len(status) > 0:
@@ -183,25 +173,26 @@ class MCAPAnalyzer(Analyzer):
 
         # First figure out the request parameters
         request_data = {
-            'confidence': self.minimum_confidence,
-            'severity': self.minimum_severity
+            "confidence": self.minimum_confidence,
+            "severity": self.minimum_severity,
         }
-        if data_type == 'ip':
-            feed_name = 'ips'
-            request_data['ip'] = data
-        elif data_type in ['domain', 'fqdn']:
-            feed_name = 'domains'
-            request_data['domain'] = data
-        elif data_type == 'url':
-            feed_name = 'urls'
-            request_data['url'] = data
-        elif data_type == 'hash' and len(data) != 64:
+        if data_type == "ip":
+            feed_name = "ips"
+            request_data["ip"] = data
+        elif data_type in ["domain", "fqdn"]:
+            feed_name = "domains"
+            request_data["domain"] = data
+        elif data_type == "url":
+            feed_name = "urls"
+            request_data["url"] = data
+        elif data_type == "hash" and len(data) != 64:
             self.error(
                 "This API only supports SHA-256 hashes which have 64"
-                f" characters. Your hash '{data}' has {len(data)}")
-        elif data_type == 'hash':
-            feed_name = 'artifacts'
-            request_data['sha256'] = data
+                f" characters. Your hash '{data}' has {len(data)}"
+            )
+        elif data_type == "hash":
+            feed_name = "artifacts"
+            request_data["sha256"] = data
         else:
             self.error(f"Cannot check feed for {data_type=}")
 
@@ -212,7 +203,7 @@ class MCAPAnalyzer(Analyzer):
             self._check_for_api_errors(response, "While checking feed:")
             iocs = response.json()
         except requests.RequestException as e:
-            self.error('Error while trying to get check feed: ' + str(e))
+            self.error("Error while trying to get check feed: " + str(e))
 
         if isinstance(iocs, dict):
             # The IP feed was observed to return a dictionary keyed by the
@@ -226,57 +217,58 @@ class MCAPAnalyzer(Analyzer):
         taxonomies = []
         namespace = "CISMCAP"
         predicate = "IOC count"
-        ioc_count = len(full_report['iocs'])
+        ioc_count = len(full_report["iocs"])
         if ioc_count > 0:
             level = "malicious"
         else:
             level = "safe"
-        taxonomies.append(
-            self.build_taxonomy(level, namespace, predicate, ioc_count))
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, ioc_count))
         return {"taxonomies": taxonomies}
 
     def run(self):
-        if self.data_type not in [
-                "ip", "hash", "url", "domain", "fqdn", "file"]:
+        if self.data_type not in ["ip", "hash", "url", "domain", "fqdn", "file"]:
             self.error(f"Unsupported data type {self.data_type}")
 
         if self.data_type != "file":
-            data = self.get_param('data', None, 'Missing data field')
+            data = self.get_param("data", None, "Missing data field")
             iocs = self.check_feed(self.data_type, str.strip(data))
-            return self.report({'iocs': iocs})
+            return self.report({"iocs": iocs})
         # else the data type "file" is implied
 
-        filepath = self.get_param('file', None, 'File is missing')
-        sample_identifier = {'sha256': self.get_file_hash(filepath)}
+        filepath = self.get_param("file", None, "File is missing")
+        sample_identifier = {"sha256": self.get_file_hash(filepath)}
         sample_status = self.get_sample_status(**sample_identifier)
         if sample_status is None:
             submit_response = self.submit_file(filepath)
-            mcap_id = submit_response['sample']['mcap_id']
-            sample_identifier = {'mcap_id': mcap_id}
+            mcap_id = submit_response["sample"]["mcap_id"]
+            sample_identifier = {"mcap_id": mcap_id}
 
         # Loop until we get sample results or time out
         tries = 0
-        max_tries = math.ceil(
-            self.max_sample_result_wait // self.polling_interval)
-        while ((sample_status is None and tries <= max_tries)
-               or sample_status['state'] in ["pending", "running"]):
+        max_tries = math.ceil(self.max_sample_result_wait // self.polling_interval)
+        while (sample_status is None and tries <= max_tries) or sample_status[
+            "state"
+        ] in ["pending", "running"]:
             time.sleep(self.polling_interval)
             sample_status = self.get_sample_status(**sample_identifier)
             tries += 1
 
         if sample_status is None:
             self.error(f"No sample status received after {tries} tries.")
-        if sample_status['state'] in ["pending", "running"]:
+        if sample_status["state"] in ["pending", "running"]:
             self.error(
                 f"Gave up polling for pending sample after {tries} tries."
                 f" Last status details: {sample_status['status']}"
-                f" | Unique sample id: {sample_status['id']}")
+                f" | Unique sample id: {sample_status['id']}"
+            )
 
-        self.report({
-            'sample_status': sample_status,
-            'iocs': self.check_feed('hash', sample_status['sha256'])
-        })
+        self.report(
+            {
+                "sample_status": sample_status,
+                "iocs": self.check_feed("hash", sample_status["sha256"]),
+            }
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MCAPAnalyzer().run()

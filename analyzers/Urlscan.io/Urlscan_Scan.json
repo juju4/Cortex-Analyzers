@@ -5,11 +5,15 @@
   "url": "https://github.com/arnydo/Cortex-Analyzers",
   "version": "0.1.0",
   "description": "Scan URLs on urlscan.io",
-  "dataTypeList": ["url", "domain", "fqdn"],
+  "dataTypeList": [
+    "url",
+    "domain",
+    "fqdn"
+  ],
   "command": "Urlscan.io/urlscan_analyzer.py",
   "baseConfig": "Urlscan.io",
   "config": {
-    "service":"scan"
+    "service": "scan"
   },
   "configurationItems": [
     {

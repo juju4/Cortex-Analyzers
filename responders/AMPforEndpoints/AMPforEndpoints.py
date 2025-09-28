@@ -40,7 +40,7 @@ class AMPforEndpoints(Responder):
     def run(self):
         def parse_amp_error(error_response):
             """Parse AMP for Endponts error response
-               Return the human readable error message
+            Return the human readable error message
             """
             try:
                 response = error_response.json()
@@ -54,14 +54,12 @@ class AMPforEndpoints(Responder):
                 )
 
         def validate_guid(guid):
-            """Validate the provided GUIDs is the correct format
-            """
+            """Validate the provided GUIDs is the correct format"""
             expression = r"^[A-Fa-f0-9]{8}\-[A-Fa-f0-9]{4}\-[A-Fa-f0-9]{4}\-[A-Fa-f0-9]{4}\-[A-Fa-f0-9]{12}$"
             return bool(re.match(expression, guid))
 
         def scd_add(amp_cloud, scd_guid, sha256, caseId, title):
-            """Add a SHA256 to a Simple Custom Detection List
-            """
+            """Add a SHA256 to a Simple Custom Detection List"""
             url = "https://{}/v1/file_lists/{}/files/{}".format(
                 amp_cloud, scd_guid, sha256
             )
@@ -82,8 +80,7 @@ class AMPforEndpoints(Responder):
                 self.error("Failed to add to blacklist.")
 
         def scd_remove(amp_cloud, scd_guid, sha256):
-            """Remove a SHA256 from a Simple Custom Detection List
-            """
+            """Remove a SHA256 from a Simple Custom Detection List"""
             url = "https://{}/v1/file_lists/{}/files/{}".format(
                 amp_cloud, scd_guid, sha256
             )
@@ -97,8 +94,7 @@ class AMPforEndpoints(Responder):
                 self.error(error)
 
         def move_guid(amp_cloud, group_guid, connector_guid):
-            """Move a connector GUID to a new group
-            """
+            """Move a connector GUID to a new group"""
             url = "https://{}/v1/computers/{}".format(amp_cloud, connector_guid)
 
             body = {"group_guid": group_guid}
@@ -116,8 +112,7 @@ class AMPforEndpoints(Responder):
                 self.error(error)
 
         def isolation_start(amp_cloud, connector_guid, unlock_code):
-            """Send request to start host isolation for a connector
-            """
+            """Send request to start host isolation for a connector"""
             url = "https://{}/v1/computers/{}/isolation".format(
                 amp_cloud, connector_guid
             )
@@ -142,8 +137,7 @@ class AMPforEndpoints(Responder):
                 self.error(error)
 
         def isolation_stop(amp_cloud, connector_guid):
-            """Send request to stop host isolation for a connector
-            """
+            """Send request to stop host isolation for a connector"""
             url = "https://{}/v1/computers/{}/isolation".format(
                 amp_cloud, connector_guid
             )

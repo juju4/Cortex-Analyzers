@@ -8,7 +8,7 @@ on:
       - "*"
   workflow_dispatch:
   schedule:
-    # Every Month, the first day at 8:42 
+    # Every Month, the first day at 8:42
     - cron: "42 8 1 * *"
 
 jobs:
@@ -32,38 +32,38 @@ jobs:
           # If you want to disable filtering, set the corresponding flag to "false"
           filter_analyzers="false"
           filter_responders="false"
-          
+
           allowed_analyzers="Hippocampe|EmlParser|ClamAV|FileInfo"
           allowed_responders="MSDefenderOffice365"
-          
+
           # If filtering is disabled, use a regex that matches everything.
           if [ "$filter_analyzers" != "true" ]; then
             allowed_analyzers=".*"
           fi
-          
+
           if [ "$filter_responders" != "true" ]; then
             allowed_responders=".*"
           fi
-          
+
           echo "Building analyzers matrix..."
           analyzers_matrix=$(find analyzers -type f -name '*.json' -printf '%P\n' | \
             grep -E "^($allowed_analyzers)/" | \
             jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
-          
+
           echo "Building responders matrix..."
           responders_matrix=$(find responders -type f -name '*.json' -printf '%P\n' | \
             grep -E "^($allowed_responders)/" | \
             jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
-          
+
           echo "Generated analyzers matrix: $analyzers_matrix"
           echo "Generated responders matrix: $responders_matrix"
-          
+
           {
             echo "analyzers_matrix<<EOF"
             echo "$analyzers_matrix"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-          
+
           {
             echo "responders_matrix<<EOF"
             echo "$responders_matrix"
@@ -71,8 +71,8 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
 
-        
-          
+
+
   build_analyzers:
     name: Build Analyzers
     needs: generate-matrix
@@ -110,7 +110,7 @@ jobs:
         run: |
           owner="${{ github.repository_owner }}"
           lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
-          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV 
+          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV
 
       - name: Parse JSON and set environment variables from matrix.path (using jq)
         id: parse_json
@@ -149,7 +149,7 @@ jobs:
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
-            
+
             # Multi-stage build - Builder stage
             echo "# Builder stage" > "$dockerfile_path"
             echo "FROM python:3-slim as builder" >> "$dockerfile_path"
@@ -163,11 +163,11 @@ jobs:
             echo "COPY requirements.txt ." >> "$dockerfile_path"
             echo "RUN test ! -e requirements.txt || pip install --user --no-cache-dir -r requirements.txt" >> "$dockerfile_path"
             echo "" >> "$dockerfile_path"
-            
+
             # Runtime stage
             echo "# Runtime stage" >> "$dockerfile_path"
             echo "FROM python:3-slim" >> "$dockerfile_path"
-            
+
             # Check if current worker needs runtime libraries
             if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
               echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
@@ -197,12 +197,12 @@ jobs:
             echo "rebuild=true" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
+
           # Try to pull the image to check if it exists
           if docker pull --platform linux/amd64 "$IMAGE_NAME" >/dev/null 2>&1; then
             # Image exists, check if it has the current SHA
             EXISTING_SHA=$(docker inspect "$IMAGE_NAME" --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' 2>/dev/null || echo "")
-            
+
             if [[ "$EXISTING_SHA" == "$CURRENT_SHA" ]]; then
               echo "Image is up to date with current commit. No rebuild needed."
               echo "rebuild=false" >> $GITHUB_OUTPUT
@@ -227,11 +227,11 @@ jobs:
             echo "Image not found or inaccessible. Rebuild needed."
             echo "rebuild=true" >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Set build date
         id: build_date
-        run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
-  
+        run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
       - name: Set Image Tags
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
@@ -247,22 +247,22 @@ jobs:
             # Only the :devel tag
             echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
           fi
-      
+
       - name: Set Platforms
         id: set_platforms
         run: |
           NO_ARM64_DIRS="FileInfo"
-      
+
           CURRENT_DIR="${{ matrix.directory }}"
           # Default to multi-arch
           PLATFORMS="linux/amd64,linux/arm64"
-      
+
           # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
           if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
             echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
             PLATFORMS="linux/amd64"
           fi
-      
+
           echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
 
       - name: Build and push multi-arch image to GHCR
@@ -310,20 +310,20 @@ jobs:
           import subprocess
           import sys
           import textwrap
-          
+
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-      
+
           print(f"🔍 Testing (amd64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-      
+
           # in-container python snippet (AST-based import checking):
           test_code = textwrap.dedent(f'''
               import os, sys, ast, os.path as osp
-      
+
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-      
+
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -334,20 +334,20 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-      
+
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-      
+
               with open(entrypoint, 'r', encoding='utf-8') as f:
                   source = f.read()
-      
+
               try:
                   tree = ast.parse(source)
               except SyntaxError as e:
                   print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
                   sys.exit(1)
-      
+
               imports = []
               for node in ast.walk(tree):
                   if isinstance(node, ast.Import):
@@ -356,7 +356,7 @@ jobs:
                   elif isinstance(node, ast.ImportFrom):
                       if node.module:
                           imports.append(node.module)
-      
+
               print("🔍 Checking Python imports from", entrypoint)
               for mod in set(imports):
                   try:
@@ -365,10 +365,10 @@ jobs:
                   except Exception as e:
                       print(f"❌ {{mod}} - FAILED: {{e}}")
                       sys.exit(1)
-      
+
               print("✅ All imports tested successfully!")
           ''')
-      
+
           try:
               # Pull the amd64 variant explicitly
               pull_result = subprocess.run(
@@ -378,7 +378,7 @@ jobs:
               )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-      
+
               # Run the container with the Python test code
               result = subprocess.run(
                   [
@@ -394,14 +394,14 @@ jobs:
               # Print container logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-      
+
               if result.returncode != 0:
                   warning_message = f"Import testing FAILED (amd64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
                   print(f"::warning::{warning_message}")
               else:
                   print("✅ Import testing succeeded (amd64)")
-      
+
           except Exception as e:
               print("::warning::Error during import testing (amd64):", e)
               sys.exit(1)
@@ -415,20 +415,20 @@ jobs:
           import subprocess
           import sys
           import textwrap
-          
+
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-      
+
           print(f"🔍 Testing (arm64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-      
+
           # in-container python snippet (AST-based import checking):
           test_code = textwrap.dedent(f'''
               import os, sys, ast, os.path as osp
-      
+
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-      
+
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -439,20 +439,20 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-      
+
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-      
+
               with open(entrypoint, 'r', encoding='utf-8') as f:
                   source = f.read()
-      
+
               try:
                   tree = ast.parse(source)
               except SyntaxError as e:
                   print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
                   sys.exit(1)
-      
+
               imports = []
               for node in ast.walk(tree):
                   if isinstance(node, ast.Import):
@@ -461,7 +461,7 @@ jobs:
                   elif isinstance(node, ast.ImportFrom):
                       if node.module:
                           imports.append(node.module)
-      
+
               print("🔍 Checking Python imports from", entrypoint)
               for mod in set(imports):
                   try:
@@ -470,10 +470,10 @@ jobs:
                   except Exception as e:
                       print(f"❌ {{mod}} - FAILED: {{e}}")
                       sys.exit(1)
-      
+
               print("✅ All imports tested successfully!")
           ''')
-      
+
           try:
               # Pull the arm64 variant explicitly
               pull_result = subprocess.run(
@@ -483,7 +483,7 @@ jobs:
               )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-      
+
               # Run the container with the Python test code
               result = subprocess.run(
                   [
@@ -499,14 +499,14 @@ jobs:
               # Print container logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-      
+
               if result.returncode != 0:
                   warning_message = f"Import testing FAILED (arm64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
                   print(f"::warning::{warning_message}")
               else:
                   print("✅ Import testing succeeded (arm64)")
-      
+
           except Exception as e:
               print("::warning::Error during import testing (arm64):", e)
               sys.exit(1)
@@ -549,7 +549,7 @@ jobs:
         run: |
           owner="${{ github.repository_owner }}"
           lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
-          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV 
+          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV
 
       - name: Parse JSON and set environment variables from matrix.path (using jq)
         id: parse_json
@@ -588,7 +588,7 @@ jobs:
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
-            
+
             # Multi-stage build - Builder stage
             echo "# Builder stage" > "$dockerfile_path"
             echo "FROM python:3-slim as builder" >> "$dockerfile_path"
@@ -602,11 +602,11 @@ jobs:
             echo "COPY requirements.txt ." >> "$dockerfile_path"
             echo "RUN test ! -e requirements.txt || pip install --user --no-cache-dir -r requirements.txt" >> "$dockerfile_path"
             echo "" >> "$dockerfile_path"
-            
+
             # Runtime stage
             echo "# Runtime stage" >> "$dockerfile_path"
             echo "FROM python:3-slim" >> "$dockerfile_path"
-            
+
             # Check if current worker needs runtime libraries
             if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
               echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
@@ -636,12 +636,12 @@ jobs:
             echo "rebuild=true" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
+
           # Try to pull the image to check if it exists
           if docker pull --platform linux/amd64 "$IMAGE_NAME" >/dev/null 2>&1; then
             # Image exists, check if it has the current SHA
             EXISTING_SHA=$(docker inspect "$IMAGE_NAME" --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' 2>/dev/null || echo "")
-            
+
             if [[ "$EXISTING_SHA" == "$CURRENT_SHA" ]]; then
               echo "Image is up to date with current commit. No rebuild needed."
               echo "rebuild=false" >> $GITHUB_OUTPUT
@@ -669,8 +669,8 @@ jobs:
 
       - name: Set build date
         id: build_date
-        run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
-      
+        run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
       - name: Set Image Tags
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
@@ -691,17 +691,17 @@ jobs:
         id: set_platforms
         run: |
           NO_ARM64_DIRS="MSDefenderOffice365"
-      
+
           CURRENT_DIR="${{ matrix.directory }}"
           # Default to multi-arch
           PLATFORMS="linux/amd64,linux/arm64"
-      
+
           # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
           if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
             echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
             PLATFORMS="linux/amd64"
           fi
-      
+
           echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
 
       - name: Build and push multi-arch image to GHCR
@@ -749,20 +749,20 @@ jobs:
           import subprocess
           import sys
           import textwrap
-          
+
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-      
+
           print(f"🔍 Testing (amd64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-      
+
           # in-container python snippet (AST-based import checking):
           test_code = textwrap.dedent(f'''
               import os, sys, ast, os.path as osp
-      
+
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-      
+
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -773,20 +773,20 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-      
+
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-      
+
               with open(entrypoint, 'r', encoding='utf-8') as f:
                   source = f.read()
-      
+
               try:
                   tree = ast.parse(source)
               except SyntaxError as e:
                   print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
                   sys.exit(1)
-      
+
               imports = []
               for node in ast.walk(tree):
                   if isinstance(node, ast.Import):
@@ -795,7 +795,7 @@ jobs:
                   elif isinstance(node, ast.ImportFrom):
                       if node.module:
                           imports.append(node.module)
-      
+
               print("🔍 Checking Python imports from", entrypoint)
               for mod in set(imports):
                   try:
@@ -804,10 +804,10 @@ jobs:
                   except Exception as e:
                       print(f"❌ {{mod}} - FAILED: {{e}}")
                       sys.exit(1)
-      
+
               print("✅ All imports tested successfully!")
           ''')
-      
+
           try:
               # Pull the amd64 variant explicitly
               pull_result = subprocess.run(
@@ -817,7 +817,7 @@ jobs:
               )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-      
+
               # Run the container with the Python test code
               result = subprocess.run(
                   [
@@ -833,20 +833,20 @@ jobs:
               # Print container logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-      
+
               if result.returncode != 0:
                   warning_message = f"Import testing FAILED (amd64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
                   print(f"::warning::{warning_message}")
               else:
                   print("✅ Import testing succeeded (amd64)")
-      
+
           except Exception as e:
               print("::warning::Error during import testing (amd64):", e)
               sys.exit(1)
           EOF
 
-          
+
       - name: Test imports in the container (arm64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64') }}
         run: |
@@ -854,20 +854,20 @@ jobs:
           import subprocess
           import sys
           import textwrap
-          
+
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-      
+
           print(f"🔍 Testing (arm64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-      
+
           # in-container python snippet (AST-based import checking):
           test_code = textwrap.dedent(f'''
               import os, sys, ast, os.path as osp
-      
+
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-      
+
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -878,20 +878,20 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-      
+
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-      
+
               with open(entrypoint, 'r', encoding='utf-8') as f:
                   source = f.read()
-      
+
               try:
                   tree = ast.parse(source)
               except SyntaxError as e:
                   print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
                   sys.exit(1)
-      
+
               imports = []
               for node in ast.walk(tree):
                   if isinstance(node, ast.Import):
@@ -900,7 +900,7 @@ jobs:
                   elif isinstance(node, ast.ImportFrom):
                       if node.module:
                           imports.append(node.module)
-      
+
               print("🔍 Checking Python imports from", entrypoint)
               for mod in set(imports):
                   try:
@@ -909,10 +909,10 @@ jobs:
                   except Exception as e:
                       print(f"❌ {{mod}} - FAILED: {{e}}")
                       sys.exit(1)
-      
+
               print("✅ All imports tested successfully!")
           ''')
-      
+
           try:
               # Pull the arm64 variant explicitly
               pull_result = subprocess.run(
@@ -922,7 +922,7 @@ jobs:
               )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-      
+
               # Run the container with the Python test code
               result = subprocess.run(
                   [
@@ -938,20 +938,20 @@ jobs:
               # Print container logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-      
+
               if result.returncode != 0:
                   warning_message = f"Import testing FAILED (arm64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
                   print(f"::warning::{warning_message}")
               else:
                   print("✅ Import testing succeeded (arm64)")
-      
+
           except Exception as e:
               print("::warning::Error during import testing (arm64):", e)
               sys.exit(1)
           EOF
 
-  
+
   build_catalog:
     name: Build Catalog
     runs-on: ubuntu-latest
@@ -965,24 +965,24 @@ jobs:
         run: |
           owner="${{ github.repository_owner }}"
           lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
-          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV 
+          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV
       - name: Build catalog JSON files
         run: |
           build_catalog() {
             DIR=$1
             jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ env.LOWER_REPO_OWNER }}/" + (.name | ascii_downcase) + ":devel") }]' \
               ${DIR}/*/*.json > ${DIR}/${DIR}-devel.json
-  
+
             jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ env.LOWER_REPO_OWNER }}/" + (.name | ascii_downcase) + ":" + .version) }]' \
               ${DIR}/*/*.json > ${DIR}/${DIR}-stable.json
-  
+
             jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ env.LOWER_REPO_OWNER }}/" + (.name | ascii_downcase) + ":" + (.version | split("."))[0]) }]' \
               ${DIR}/*/*.json > ${DIR}/${DIR}.json
           }
-          
+
           build_catalog analyzers
           build_catalog responders
-  
+
       - name: Zip report-templates
         run: zip -r ../analyzers/report-templates.zip *
         working-directory: thehive-templates

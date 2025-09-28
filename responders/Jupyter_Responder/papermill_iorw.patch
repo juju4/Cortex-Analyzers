@@ -6,11 +6,11 @@
      def read(cls, path):
 -        return requests.get(path, headers={'Accept': 'application/json'}).text
 +        return json.dumps(requests.get(path, headers={'Accept': 'application/json'}).json()["content"])
- 
+
      @classmethod
      def listdir(cls, path):
 @@ -188,7 +188,9 @@
- 
+
      @classmethod
      def write(cls, buf, path):
 -        result = requests.put(path, json=json.loads(buf))
@@ -18,5 +18,5 @@
 +        payload["content"] = json.loads(buf)
 +        result = requests.put(path, json=payload)
          result.raise_for_status()
- 
+
      @classmethod

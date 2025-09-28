@@ -16,11 +16,11 @@ The UserID is used to change the "status" of the particular user.
   * copy the folders "DuoLockUserAccount" & "DuoUnlockUserAccount" into your Cortex responders path
   * install necessary python modules from the requirements.txt (**pip install -r requirements.txt**)
   * restart Cortex to initialize the new Responder "**systemctl restart cortex**"
-  * add the ResponderConfig 
+  * add the ResponderConfig
   * ![ResponderConfig](assets/ResponderConfig.jpg)
   * enable the Responder Actions
   * ![Responders](assets/Responders.jpg)
- 
+
 #### Add Observable type in TheHive**
   * per default TheHive has no "username" Observable type, so we have to add this in the Admin settings
   * ![AddObservableType](assets/AddObservableType.jpg)

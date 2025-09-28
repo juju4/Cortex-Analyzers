@@ -14,7 +14,13 @@ def __query(domain, limit=100):
     :returns: str -- Console output from whois call.
     :rtype: str
     """
-    s = check_output(['{}'.format(os.path.join(os.path.dirname(__file__), 'whois.sh')), '--limit {} {}'.format(limit, domain)], universal_newlines=True)
+    s = check_output(
+        [
+            "{}".format(os.path.join(os.path.dirname(__file__), "whois.sh")),
+            "--limit {} {}".format(limit, domain),
+        ],
+        universal_newlines=True,
+    )
     return s
 
 
@@ -26,26 +32,26 @@ def __process_results(results):
     :returns: python list of dictionaries containing the relevant results.
     :rtype: list
     """
-    if 'no match' in results and 'returning 0 elements' in results:
+    if "no match" in results and "returning 0 elements" in results:
         return []
 
     result_list = []
 
     # Splts the result and cuts first and last dataset which are comments
-    split = results.split(sep='\n\n')[1:-1]
+    split = results.split(sep="\n\n")[1:-1]
 
     for entry in split:
         entry_dict = {}
-        for value in entry.split('\n'):
+        for value in entry.split("\n"):
             if len(value) < 1:
                 continue
-            (desc, val) = value.split(': ')
-            entry_dict[desc.replace('-', '')] = val.strip(' ')
+            (desc, val) = value.split(": ")
+            entry_dict[desc.replace("-", "")] = val.strip(" ")
         result_list.append(entry_dict)
     return result_list
 
 
-def query(domain: str, limit: int=100):
+def query(domain: str, limit: int = 100):
     """Queries and returns a python dict with results.
 
     :param domain: domain that should be queried

@@ -1,6 +1,6 @@
 ### CkeckPoint
 
-This responder permits you to add/remove selected observable from a specific group. 
+This responder permits you to add/remove selected observable from a specific group.
 
 Some notes:
 
@@ -16,7 +16,7 @@ Some notes:
 #### Requirements
 The following options are required in CheckPoint Responder configuration:
 
-- `server` : URL of CheckPoint instance 
+- `server` : URL of CheckPoint instance
 - `username`: user accessing CheckPoint instance
 - `password`:  password for the user accessing CheckPoint instance
 - `group_name`: name of the group ip will be added to or removed

@@ -1,6 +1,6 @@
 ### AWS Lambda Responder
 
-This responder triggers an AWS Lambda function using the provided credentials and configuration, directly from TheHive. By default, it can be triggered from an alert, case, observable, task and sends the data of the object as input to the AWS Lambda Function for its execution. 
+This responder triggers an AWS Lambda function using the provided credentials and configuration, directly from TheHive. By default, it can be triggered from an alert, case, observable, task and sends the data of the object as input to the AWS Lambda Function for its execution.
 Make sure to manage these different objects appropriately if needed.
 
 #### Setup example

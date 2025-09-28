@@ -104,8 +104,7 @@
       "type": "string",
       "multi": false,
       "required": false
-    }
-    ,
+    },
     {
       "name": "any_generate_html",
       "description": "[ANY] Indicates if you want the HTML generation within the response. This setting is helpful if you want to reduce the size of the answer returned by the script and manage the HTML render yourself.",
@@ -123,6 +122,5 @@
     "path": "assets/jupyter.png",
     "caption": "logo"
   },
-  "screenshots": [
-  ]
+  "screenshots": []
 }

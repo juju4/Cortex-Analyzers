@@ -4,7 +4,10 @@
   "url": "https://www.splunk.com",
   "author": "Unit777, LetMeR00t",
   "license": "AGPL-V3",
-  "dataTypeList": ["mail", "email"],
+  "dataTypeList": [
+    "mail",
+    "email"
+  ],
   "description": "Execute a savedsearch on a Splunk instance with a mail/email as argument",
   "baseConfig": "Splunk",
   "config": {

@@ -13,4 +13,3 @@ COPY . ClamAV
 RUN chmod +x ClamAV/entrypoint.sh
 
 ENTRYPOINT ["/bin/sh", "ClamAV/entrypoint.sh"]
-    

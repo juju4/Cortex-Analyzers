@@ -7,13 +7,19 @@ import requests
 class GatewatcherCTI(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.api_key = self.get_param("config.apiKey", None, "Gatewatcher CTI API KEY is required")
-        self.extended_report = self.get_param("config.extendedReport", None, "Please set the Extended Report option")
+        self.api_key = self.get_param(
+            "config.apiKey", None, "Gatewatcher CTI API KEY is required"
+        )
+        self.extended_report = self.get_param(
+            "config.extendedReport", None, "Please set the Extended Report option"
+        )
         self.max_relations = self.get_param("config.maxRelations", None)
         self.observable_value = self.get_param("data", None, "Data is missing")
         self.data_type = self.get_param("dataType", None, "Data type is missing")
         self.base_url = "https://api.client.lastinfosec.com/v2/"
-        self.headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"}
+        self.headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0"
+        }
 
     def _IOCs_search(self):
         response = requests.post(
@@ -53,7 +59,10 @@ class GatewatcherCTI(Analyzer):
                     if item["IocId"] in relations:
                         total_found_relations += 1
 
-                        if all(x in ["MD5", "SHA1", "SHA256"] for x in [item["Type"], main["Type"]]):
+                        if all(
+                            x in ["MD5", "SHA1", "SHA256"]
+                            for x in [item["Type"], main["Type"]]
+                        ):
                             if item["Type"] not in additional:
                                 additional[item["Type"]] = item["Value"]
                             else:
@@ -64,7 +73,10 @@ class GatewatcherCTI(Analyzer):
             additional = {k: v for k, v in additional.items() if v is not None}
             main.update(additional)
             records["IOCs"].insert(0, main)
-            if len(records["IOCs"]) == 1 and records["IOCs"][0]["Risk"].lower() == "unknown":
+            if (
+                len(records["IOCs"]) == 1
+                and records["IOCs"][0]["Risk"].lower() == "unknown"
+            ):
                 records["IsOnGw"] = False
         return records
 
@@ -115,8 +127,14 @@ class GatewatcherCTI(Analyzer):
         if response.status_code not in [200, 422]:
             try:
                 result = response.json()
-                if "detail" in result and "details" in result["detail"] and "error" in result["detail"]["details"][0]:
-                    self.error(f'Bad status: {response.status_code}. {result["detail"]["details"][0]["error"]}')
+                if (
+                    "detail" in result
+                    and "details" in result["detail"]
+                    and "error" in result["detail"]["details"][0]
+                ):
+                    self.error(
+                        f"Bad status: {response.status_code}. {result['detail']['details'][0]['error']}"
+                    )
                 else:
                     self.error(f"Bad status: {response.status_code}")
             except Exception:
@@ -150,7 +168,10 @@ class GatewatcherCTI(Analyzer):
             else:
                 value = "leaked"
         else:
-            data = next((ioc for ioc in raw["IOCs"] if ioc["Value"] == self.observable_value), None)
+            data = next(
+                (ioc for ioc in raw["IOCs"] if ioc["Value"] == self.observable_value),
+                None,
+            )
             if data is not None:
                 level = data["Risk"].lower()
                 if level == "malicious":

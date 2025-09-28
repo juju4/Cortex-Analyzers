@@ -5,7 +5,7 @@ WORKDIR /worker
 RUN apk add --no-cache \
     gcc \
     musl-dev \
-    libffi-dev 
+    libffi-dev
 
 COPY requirements.txt Malpedia/
 RUN test ! -e Malpedia/requirements.txt || pip install --no-cache-dir -r Malpedia/requirements.txt

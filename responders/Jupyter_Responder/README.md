@@ -108,7 +108,7 @@ Please refer to the [Supported Name Handles](https://github.com/nteract/papermil
 
 [Papermill](https://github.com/nteract/papermill) is also used in this case but additional code (specific to this connector) was added to let you work with remote JupyterHun instance instead of having the notebooks run locally on the Cortex instance. This should help you to avoid having to install local dependencies on your Cortex instance.
 
-To do so, the connector is communicating directly with the remote kernel using the [Jupyter HTTP REST API](https://jupyter-server.readthedocs.io/en/latest/developers/rest-api.html) and [Jupyter Websocket API](https://jupyter-kernel-gateway.readthedocs.io/en/latest/websocket-mode.html) so you must use HTTP handlers accordingly (with the provided fix above applied). It's sending automatically the code to execute following the kernel logic explained here: [Messaging in Jupyter](https://jupyter-client.readthedocs.io/en/latest/messaging.html). 
+To do so, the connector is communicating directly with the remote kernel using the [Jupyter HTTP REST API](https://jupyter-server.readthedocs.io/en/latest/developers/rest-api.html) and [Jupyter Websocket API](https://jupyter-kernel-gateway.readthedocs.io/en/latest/websocket-mode.html) so you must use HTTP handlers accordingly (with the provided fix above applied). It's sending automatically the code to execute following the kernel logic explained here: [Messaging in Jupyter](https://jupyter-client.readthedocs.io/en/latest/messaging.html).
 
 You must use HTTP handlers provided by [Papermill](https://github.com/nteract/papermill), meaning that input notebooks must be starting with "http://" or "https://" and allow traffic using the websocket protocol ("ws://").
 

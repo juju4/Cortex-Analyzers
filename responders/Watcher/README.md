@@ -51,5 +51,5 @@ When an artifact of type `domain` is submitted to this Responder, it will:
 
 ### Author
 
-**Thales Group CERT** - [thalesgroup-cert on GitHub](https://github.com/thalesgroup-cert)  
+**Thales Group CERT** - [thalesgroup-cert on GitHub](https://github.com/thalesgroup-cert)
 **Ygal NEZRI** - [@ygalnezri](https://github.com/ygalnezri)

@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get information about CVE from powerful Vulners database.",
-  "dataTypeList": ["cve"],
+  "dataTypeList": [
+    "cve"
+  ],
   "command": "Vulners/vulners_analyzer.py",
   "baseConfig": "Vulners",
   "config": {
@@ -24,7 +26,10 @@
   "subscription_required": true,
   "free_subscription": true,
   "service_homepage": "https://vulners.com",
-  "service_logo": {"path":"assets/vulners_logo.png", "caption": "logo"},
+  "service_logo": {
+    "path": "assets/vulners_logo.png",
+    "caption": "logo"
+  },
   "screenshots": [
     {
       "path": "assets/theHive_add_cve",
