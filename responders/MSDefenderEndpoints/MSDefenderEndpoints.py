@@ -85,6 +85,39 @@ class MSDefenderEndpoints(Responder):
             except requests.exceptions.RequestException as e:
                 self.error({'message': e})
 
+        def getMachineActionId(action_type, machine_id):
+            """
+            List MachineActions API
+            """
+            url = "https://api.securitycenter.windows.com/api/machineactions'"
+
+            try:
+                response = self.msdefenderSession.get(url=url)
+                if response.status_code == 200:
+                    jsonResponse = response.json()
+
+                    for value in jsonResponse:
+                        if value.type == action_type and value.machineId == machine_id:
+                            return value.id
+            except requests.exceptions.RequestException as e:
+                self.error({"message": e})
+
+        def getPackageSASUri(machineactions_id):
+            """
+            Get package SAS URI API
+            """
+            url = f"https://api.securitycenter.windows.com/api/machineactions/{machineactions_id}/getPackageUri"
+
+            try:
+                response = self.msdefenderSession.get(url=url)
+                if response.status_code == 200:
+                    jsonResponse = response.json()
+
+                    if jsonResponse.value:
+                        return jsonResponse.value
+            except requests.exceptions.RequestException as e:
+                self.error({"message": e})
+
         def isolateMachine(machineId):
             '''
             example
@@ -222,6 +255,231 @@ class MSDefenderEndpoints(Responder):
             except requests.exceptions.RequestException as e:
                 self.error({'message': e})
 
+        def collectInvestigationPackage(machineId):
+            """
+            https://learn.microsoft.com/en-us/defender-endpoint/api/collect-investigation-package
+            """
+            url = "https://api.securitycenter.windows.com/api/machines/{}/collectInvestigationPackage".format(
+                machineId
+            )
+
+            body = {
+                "Comment": "Collect investigation package due to TheHive case {}".format(
+                    self.caseId
+                )
+            }
+
+            try:
+                response = self.msdefenderSession.post(url=url, json=body)
+                if response.status_code == 201:
+                    self.report(
+                        {
+                            "message": "Started collection investigation package on : "
+                            + self.observable
+                        }
+                    )
+
+                    package_url = getPackageSASUri(
+                        getMachineActionId("CollectInvestigationPackage", machineId)
+                    )
+                    self.report(
+                        {
+                            "message": f"Collection investigation package url: {package_url}"
+                        }
+                    )
+                elif (
+                    response.status_code == 400
+                    and "ActiveRequestAlreadyExists" in response.content.decode("utf-8")
+                ):
+                    self.report(
+                        {
+                            "message": "Error lauching collection investigation package on machine: ActiveRequestAlreadyExists"
+                        }
+                    )
+                else:
+                    self.error(
+                        {"message": "Error collection investigation package on machine"}
+                    )
+            except requests.exceptions.RequestException as e:
+                self.error({"message": e})
+
+        def runLiveResponseScript(machineId, commands_array=""):
+            """
+            https://learn.microsoft.com/en-us/defender-endpoint/api/run-live-response#request-example
+
+            Required files must be uploaded to MDE library beforehand.
+            """
+            url = "https://api.securitycenter.windows.com/api/machines/{}/runliveresponse".format(
+                machineId
+            )
+            if not commands_array:
+                commands_array = [
+                    {
+                        "type": "RunScript",
+                        "params": [
+                            {"key": "ScriptName", "value": "minidump.ps1"},
+                            {"key": "Args", "value": "OfficeClickToRun"},
+                        ],
+                    },
+                    {
+                        "type": "GetFile",
+                        "params": [
+                            {
+                                "key": "Path",
+                                "value": "C:\\windows\\TEMP\\OfficeClickToRun.dmp.zip",
+                            }
+                        ],
+                    },
+                ]
+
+            body = {
+                "Commands": commands_array,
+                "Comment": "Run Live Response script due to TheHive case {}".format(
+                    self.caseId
+                ),
+            }
+
+            try:
+                response = self.msdefenderSession.post(url=url, json=body)
+                if response.status_code == 201:
+                    self.report(
+                        {
+                            "message": "Started running Live Response script on : "
+                            + self.observable
+                        }
+                    )
+                elif (
+                    response.status_code == 400
+                    and "ActiveRequestAlreadyExists" in response.content.decode("utf-8")
+                ):
+                    self.report(
+                        {
+                            "message": "Error lauching running Live Response script on machine: ActiveRequestAlreadyExists"
+                        }
+                    )
+                else:
+                    self.error(
+                        {"message": "Error running Live Response script on machine"}
+                    )
+            except requests.exceptions.RequestException as e:
+                self.error({"message": e})
+
+        def runLiveResponseScriptKAPE(machineId, collector_filename="KAPE.7z"):
+            """
+            Run Live Response with KAPE
+            https://www.kroll.com/en/services/cyber/incident-response-recovery/kroll-artifact-parser-and-extractor-kape
+            https://ericzimmerman.github.io/KapeDocs/#!Pages\60-Tips-and-tricks.md#using-kape-with-crowdstrike-falcon-real-time-response
+            https://github.com/Snausage0x45/KapeStrike/blob/main/Invoke-Kape-Remote.ps1
+
+            Output upload is directly done by tool.
+            Required files must be uploaded to MDE library beforehand.
+            """
+            url = "https://api.securitycenter.windows.com/api/machines/{}/runliveresponse".format(
+                machineId
+            )
+
+            body = {
+                "Commands": [
+                    {
+                        "type": "PutFile",
+                        "params": [{"key": "FileName", "value": "7za.exe"}],
+                    },
+                    {
+                        "type": "PutFile",
+                        "params": [{"key": "FileName", "value": collector_filename}],
+                    },
+                    {
+                        "type": "RunScript",
+                        "params": [{"key": "ScriptName", "value": "Invoke-Kape.ps1"}],
+                    },
+                ],
+                "Comment": "Run KAPE Live Response script due to TheHive case {}".format(
+                    self.caseId
+                ),
+            }
+
+            try:
+                response = self.msdefenderSession.post(url=url, json=body)
+                if response.status_code == 201:
+                    self.report(
+                        {
+                            "message": "Started running Live Response script on : "
+                            + self.observable
+                        }
+                    )
+                elif (
+                    response.status_code == 400
+                    and "ActiveRequestAlreadyExists" in response.content.decode("utf-8")
+                ):
+                    self.report(
+                        {
+                            "message": "Error lauching running Live Response script on machine: ActiveRequestAlreadyExists"
+                        }
+                    )
+                else:
+                    self.error(
+                        {"message": "Error running Live Response script on machine"}
+                    )
+            except requests.exceptions.RequestException as e:
+                self.error({"message": e})
+
+        def runLiveResponseScriptVelociraptor(
+            machineId, collector_filename="WinTriage.exe"
+        ):
+            """
+            Run Live Response with Velociraptor
+            https://github.com/Velocidex/velociraptor
+            https://docs.velociraptor.app/docs/offline_triage/#offline-collections
+
+            Output upload is directly done by tool.
+            Required files must be uploaded to MDE library beforehand.
+            """
+            url = "https://api.securitycenter.windows.com/api/machines/{}/runliveresponse".format(
+                machineId
+            )
+
+            body = {
+                "Commands": [
+                    {
+                        "type": "PutFile",
+                        "params": [{"key": "FileName", "value": collector_filename}],
+                    },
+                    {
+                        "type": "RunScript",
+                        "params": [
+                            {"key": "ScriptName", "value": "Invoke-Velociraptor.ps1"}
+                        ],
+                    },
+                ],
+                "Comment": "Run Velociraptor Live Response script due to TheHive case {}".format(
+                    self.caseId
+                ),
+            }
+
+            try:
+                response = self.msdefenderSession.post(url=url, json=body)
+                if response.status_code == 201:
+                    self.report(
+                        {
+                            "message": "Started running Live Response script on : "
+                            + self.observable
+                        }
+                    )
+                elif (
+                    response.status_code == 400
+                    and "ActiveRequestAlreadyExists" in response.content.decode("utf-8")
+                ):
+                    self.report(
+                        {
+                            "message": "Error lauching running Live Response script on machine: ActiveRequestAlreadyExists"
+                        }
+                    )
+                else:
+                    self.error(
+                        {"message": "Error running Live Response script on machine"}
+                    )
+            except requests.exceptions.RequestException as e:
+                self.error({"message": e})
 
         def pushCustomIocAlert(observable):
             
@@ -312,6 +570,14 @@ class MSDefenderEndpoints(Responder):
             unrestrictAppExecution(getMachineId(self.observable))
         elif self.service == "startAutoInvestigation":
             startAutoInvestigation(getMachineId(self.observable))
+        elif self.service == "collectInvestigationPackage":
+            collectInvestigationPackage(getMachineId(self.observable))
+        elif self.service == "runLiveResponseScript":
+            runLiveResponseScript(getMachineId(self.observable))
+        elif self.service == "runLiveResponseScriptKAPE":
+            runLiveResponseScriptKAPE(getMachineId(self.observable))
+        elif self.service == "runLiveResponseScriptVelociraptor":
+            runLiveResponseScriptVelociraptor(getMachineId(self.observable))
         elif self.service == "pushIOCBlock":
             pushCustomIocBlock(self.observable)
         elif self.service == "pushIOCAlert":
@@ -331,6 +597,31 @@ class MSDefenderEndpoints(Responder):
             return [self.build_operation("AddTagToArtifact", tag="MsDefender:restrictedAppExec")]
         elif self.service == "unrestrictAppExecution":
             return [self.build_operation("AddTagToArtifact", tag="MsDefender:unrestrictedAppExec")]
+        elif self.service == "collectInvestigationPackage":
+            return [
+                self.build_operation(
+                    "AddTagToArtifact", tag="MsDefender:collectInvestigationPackage"
+                )
+            ]
+        elif self.service == "runLiveResponseScript":
+            return [
+                self.build_operation(
+                    "AddTagToArtifact", tag="MsDefender:runLiveResponseScript"
+                )
+            ]
+        elif self.service == "runLiveResponseScriptKAPE":
+            return [
+                self.build_operation(
+                    "AddTagToArtifact", tag="MsDefender:runLiveResponseScriptKAPE"
+                )
+            ]
+        elif self.service == "runLiveResponseScriptVelociraptor":
+            return [
+                self.build_operation(
+                    "AddTagToArtifact",
+                    tag="MsDefender:runLiveResponseScriptVelociraptor",
+                )
+            ]
 
 if __name__ == '__main__':
     
